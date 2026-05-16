@@ -8,59 +8,86 @@
 :root{--blue:#1a3a6b;--light:#4a7bc8;--gold:#c9a84c;--red:#c0392b;--green:#27ae60;--gray:#f4f6f9;--text:#2c3e50;--border:#dde3ed;--hint:#7f8c9a}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:var(--gray);color:var(--text);line-height:1.7}
-header{background:linear-gradient(135deg,var(--blue),#2c5282);color:#fff;padding:28px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-header h1{font-size:1.5rem;font-weight:700}
-.header-btns{display:flex;gap:10px}
-.btn{padding:9px 20px;border:none;border-radius:8px;font-size:.9rem;font-weight:700;cursor:pointer;transition:.2s;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
-.btn-white{background:#fff;color:var(--blue)}
-.btn-white:hover{background:#e8edf5}
-.btn-green{background:var(--green);color:#fff}
-.btn-green:hover{background:#219a52}
-.btn-red{background:var(--red);color:#fff}
-.btn-red:hover{background:#a93226}
-.container{max-width:1100px;margin:0 auto;padding:24px 16px 60px}
+header{background:linear-gradient(135deg,var(--blue),#2c5282);color:#fff;padding:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+header h1{font-size:1.4rem;font-weight:700}
+.header-btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn{padding:9px 18px;border:none;border-radius:8px;font-size:.88rem;font-weight:700;cursor:pointer;transition:.2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+.btn-white{background:#fff;color:var(--blue)}.btn-white:hover{background:#e8edf5}
+.btn-green{background:var(--green);color:#fff}.btn-green:hover{background:#219a52}
+.btn-gold{background:var(--gold);color:#fff}.btn-gold:hover{background:#b8952a}
+.btn-red{background:var(--red);color:#fff}.btn-red:hover{background:#a93226}
+.container{max-width:1200px;margin:0 auto;padding:24px 16px 60px}
 
-/* stats */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
-@media(max-width:640px){.stats{grid-template-columns:1fr 1fr}}
-.stat-card{background:#fff;border-radius:12px;padding:20px;border:1px solid var(--border);text-align:center;box-shadow:0 2px 6px rgba(0,0,0,.04)}
-.stat-num{font-size:2rem;font-weight:700;color:var(--blue)}
-.stat-label{font-size:.82rem;color:var(--hint);margin-top:4px}
+/* 统计卡 */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
+@media(max-width:700px){.stats{grid-template-columns:1fr 1fr}}
+.stat-card{background:#fff;border-radius:10px;padding:16px;border:1px solid var(--border);text-align:center;box-shadow:0 2px 6px rgba(0,0,0,.04)}
+.stat-num{font-size:1.8rem;font-weight:700;color:var(--blue)}
+.stat-label{font-size:.78rem;color:var(--hint);margin-top:2px}
 
-/* filter */
-.filter-bar{background:#fff;border-radius:12px;padding:16px 20px;border:1px solid var(--border);margin-bottom:20px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-.filter-bar input,.filter-bar select{padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;color:var(--text);background:#fafbfc}
+/* Tab */
+.tabs{display:flex;gap:0;background:#fff;border-radius:10px;border:1px solid var(--border);overflow:hidden;margin-bottom:20px}
+.tab-btn{flex:1;padding:12px;border:none;background:none;color:var(--hint);font-weight:700;font-size:.9rem;cursor:pointer;border-bottom:3px solid transparent;transition:.2s}
+.tab-btn.active{color:var(--blue);border-bottom-color:var(--gold);background:#f8faff}
 
-/* table */
-.table-wrap{background:#fff;border-radius:12px;border:1px solid var(--border);overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04)}
-table{width:100%;border-collapse:collapse;font-size:.88rem}
-th{background:var(--blue);color:#fff;padding:12px 16px;text-align:left;white-space:nowrap}
-td{padding:11px 16px;border-bottom:1px solid var(--border);vertical-align:middle}
+/* 分析图 */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+@media(max-width:640px){.chart-grid{grid-template-columns:1fr}}
+.chart-card{background:#fff;border-radius:10px;padding:18px;border:1px solid var(--border)}
+.chart-title{font-size:.9rem;font-weight:700;color:var(--blue);margin-bottom:12px}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;font-size:.82rem}
+.bar-label{width:120px;color:var(--hint);text-align:right;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-wrap{flex:1;background:#edf0f5;border-radius:4px;height:18px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--light),var(--gold));transition:.5s}
+.bar-count{width:40px;font-weight:700;color:var(--text);text-align:right;flex-shrink:0}
+
+/* 筛选栏 */
+.filter-bar{background:#fff;border-radius:10px;padding:14px 18px;border:1px solid var(--border);margin-bottom:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.filter-bar input,.filter-bar select{padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.85rem;color:var(--text);background:#fafbfc;font-family:inherit}
+.filter-bar label{font-size:.82rem;color:var(--hint)}
+
+/* 表格 */
+.table-wrap{background:#fff;border-radius:10px;border:1px solid var(--border);overflow-x:auto;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+table{width:100%;border-collapse:collapse;font-size:.84rem;min-width:700px}
+th{background:var(--blue);color:#fff;padding:11px 14px;text-align:left;white-space:nowrap;font-size:.82rem}
+td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:middle}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:#f0f4ff}
-.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.78rem;font-weight:700}
+.badge{display:inline-block;padding:3px 9px;border-radius:10px;font-size:.75rem;font-weight:700}
 .badge-done{background:#d4edda;color:#155724}
 .badge-draft{background:#fff3cd;color:#856404}
-.empty{text-align:center;padding:60px 20px;color:var(--hint)}
-.empty .icon{font-size:3rem;margin-bottom:12px}
+.empty{text-align:center;padding:50px;color:var(--hint)}
 
-/* detail modal */
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;align-items:flex-start;justify-content:center;overflow-y:auto;padding:40px 16px}
-.modal-bg.open{display:flex}
-.modal{background:#fff;border-radius:14px;padding:0;max-width:800px;width:100%;margin:auto}
-.modal-head{background:var(--blue);color:#fff;padding:20px 24px;border-radius:14px 14px 0 0;display:flex;justify-content:space-between;align-items:center}
-.modal-head h3{font-size:1.1rem}
-.modal-close{background:none;border:none;color:#fff;font-size:1.4rem;cursor:pointer;line-height:1}
-.modal-body{padding:24px;max-height:70vh;overflow-y:auto}
-.meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;background:#f4f6f9;border-radius:10px;padding:16px}
-.meta-item{font-size:.85rem}
-.meta-item strong{color:var(--blue)}
-.q-block{margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:16px}
+/* Detail Modal */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;overflow-y:auto;padding:30px 12px}
+.modal-bg.open{display:block}
+.modal{background:#fff;border-radius:14px;max-width:860px;width:100%;margin:0 auto}
+.modal-head{background:var(--blue);color:#fff;padding:18px 22px;border-radius:14px 14px 0 0;display:flex;justify-content:space-between;align-items:center}
+.modal-head h3{font-size:1rem}
+.modal-close{background:none;border:none;color:#fff;font-size:1.4rem;cursor:pointer}
+.modal-body{padding:22px;max-height:80vh;overflow-y:auto}
+
+/* 详情内部 */
+.detail-tabs{display:flex;gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:16px}
+.detail-tab{flex:1;padding:9px;border:none;background:#f8fafc;color:var(--hint);font-weight:700;font-size:.85rem;cursor:pointer;transition:.2s}
+.detail-tab.active{background:var(--blue);color:#fff}
+.detail-section{display:none}.detail-section.active{display:block}
+
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;background:#f4f6f9;border-radius:10px;padding:14px}
+.info-item{font-size:.84rem}.info-item strong{color:var(--blue)}
+
+.base-q{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.base-q:last-child{border-bottom:none}
+.base-q-label{font-weight:600;font-size:.85rem;color:var(--text);margin-bottom:6px}
+.base-q-ans{background:#eef2ff;border-radius:6px;padding:8px 12px;font-size:.85rem;color:var(--light);font-weight:700;display:inline-block}
+.base-q-ans.empty{background:#f4f6f9;color:var(--hint);font-weight:400;font-style:italic}
+
+.sec-title{background:var(--blue);color:#fff;padding:7px 12px;border-radius:6px;font-size:.82rem;font-weight:700;margin:14px 0 8px}
+.q-block{margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--border)}
 .q-block:last-child{border-bottom:none}
-.q-text{font-weight:600;font-size:.88rem;color:var(--text);margin-bottom:6px}
-.q-ans{background:#f4f6f9;border-radius:8px;padding:10px 14px;font-size:.88rem;color:#333;white-space:pre-wrap;min-height:36px}
-.q-ans.empty-ans{color:var(--hint);font-style:italic}
-.section-title{background:var(--blue);color:#fff;padding:8px 14px;border-radius:8px;font-size:.85rem;font-weight:700;margin:16px 0 10px}
+.q-label{font-weight:600;font-size:.83rem;color:var(--text);margin-bottom:4px}
+.q-val{background:#f4f6f9;border-radius:6px;padding:9px 12px;font-size:.83rem;white-space:pre-wrap;min-height:30px}
+.q-val.empty{color:var(--hint);font-style:italic}
 </style>
 </head>
 <body>
@@ -69,118 +96,102 @@ tr:hover td{background:#f0f4ff}
   <h1>📊 访谈记录看板</h1>
   <div class="header-btns">
     <a href="interview.html" class="btn btn-white">➕ 新建访谈</a>
-    <button class="btn btn-green" onclick="exportCSV()">📥 导出 CSV</button>
-    <button class="btn btn-white" onclick="exportJSON()">📦 导出 JSON</button>
+    <button class="btn btn-gold" onclick="exportCSV()">📥 导出 CSV</button>
+    <button class="btn btn-green" onclick="exportJSON()">📦 导出 JSON</button>
+    <button class="btn btn-red" onclick="clearAll()">🗑 清空</button>
   </div>
 </header>
 
 <div class="container">
 
+  <!-- 统计卡 -->
   <div class="stats">
-    <div class="stat-card"><div class="stat-num" id="stat-total">0</div><div class="stat-label">总访谈数</div></div>
-    <div class="stat-card"><div class="stat-num" id="stat-done">0</div><div class="stat-label">已完成提交</div></div>
-    <div class="stat-card"><div class="stat-num" id="stat-draft">0</div><div class="stat-label">草稿</div></div>
-    <div class="stat-card"><div class="stat-num" id="stat-today">0</div><div class="stat-label">今日访谈</div></div>
+    <div class="stat-card"><div class="stat-num" id="s-total">0</div><div class="stat-label">总访谈数</div></div>
+    <div class="stat-card"><div class="stat-num" id="s-done">0</div><div class="stat-label">已完成</div></div>
+    <div class="stat-card"><div class="stat-num" id="s-draft">0</div><div class="stat-label">草稿</div></div>
+    <div class="stat-card"><div class="stat-num" id="s-today">0</div><div class="stat-label">今日访谈</div></div>
+    <div class="stat-card"><div class="stat-num" id="s-base">0</div><div class="stat-label">已填基础问卷</div></div>
   </div>
 
-  <div class="filter-bar">
-    <input type="text" id="search" placeholder="🔍 搜索受访者/访谈员..." oninput="renderTable()"/>
-    <select id="filter-status" onchange="renderTable()">
-      <option value="">全部状态</option>
-      <option value="done">已完成</option>
-      <option value="draft">草稿</option>
-    </select>
-    <select id="filter-lang" onchange="renderTable()">
-      <option value="">全部语言</option>
-      <option value="zh">中文</option>
-      <option value="en">English</option>
-      <option value="fr">Français</option>
-    </select>
-    <button class="btn btn-red" style="margin-left:auto" onclick="clearAll()">🗑 清空所有记录</button>
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('list',this)">📋 访谈列表</button>
+    <button class="tab-btn" onclick="showTab('charts',this)">📊 基础问卷统计</button>
   </div>
 
-  <div class="table-wrap">
-    <table id="main-table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>受访者</th>
-          <th>访谈员</th>
-          <th>日期</th>
-          <th>语言</th>
-          <th>地点</th>
-          <th>状态</th>
-          <th>保存时间</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tbody id="table-body"></tbody>
-    </table>
-    <div class="empty" id="empty-state" style="display:none">
-      <div class="icon">📭</div>
-      <div>暂无访谈记录</div>
-      <div style="margin-top:8px"><a href="interview.html" class="btn btn-white" style="color:var(--blue);border:1px solid var(--blue)">➕ 开始第一个访谈</a></div>
+  <!-- ===== 列表 Tab ===== -->
+  <div id="tab-list">
+    <div class="filter-bar">
+      <input type="text" id="search" placeholder="🔍 搜索受访者/访谈员..." oninput="renderTable()" style="flex:1;min-width:160px"/>
+      <select id="f-status" onchange="renderTable()">
+        <option value="">全部状态</option>
+        <option value="done">已完成</option>
+        <option value="draft">草稿</option>
+      </select>
+      <select id="f-lang" onchange="renderTable()">
+        <option value="">全部语言</option>
+        <option value="zh">中文</option>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+      </select>
     </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th><th>受访者</th><th>访谈员</th><th>日期</th><th>语言</th><th>年龄段</th><th>旅行频率</th><th>状态</th><th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+      <div class="empty" id="empty" style="display:none">
+        <div style="font-size:2.5rem;margin-bottom:10px">📭</div>
+        <div>暂无记录</div>
+        <a href="interview.html" class="btn btn-white" style="margin-top:12px;color:var(--blue);border:1px solid var(--blue)">➕ 开始第一个访谈</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 统计 Tab ===== -->
+  <div id="tab-charts" style="display:none">
+    <div class="chart-grid" id="charts-container"></div>
   </div>
 
 </div>
 
-<!-- 详情 Modal -->
-<div class="modal-bg" id="detail-modal">
+<!-- Detail Modal -->
+<div class="modal-bg" id="modal">
   <div class="modal">
     <div class="modal-head">
       <h3 id="modal-title">访谈详情</h3>
-      <button class="modal-close" onclick="closeDetail()">✕</button>
+      <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
-    <div class="modal-body" id="modal-content"></div>
+    <div class="modal-body">
+      <div class="detail-tabs">
+        <button class="detail-tab active" onclick="showDetailTab('base',this)">📝 基础问卷</button>
+        <button class="detail-tab" onclick="showDetailTab('interview',this)">🎙 深度访谈</button>
+      </div>
+      <div id="detail-base" class="detail-section active"></div>
+      <div id="detail-interview" class="detail-section"></div>
+    </div>
   </div>
 </div>
 
 <script>
-// ==================== 问卷标题映射 ====================
-const SECTION_TITLES = {
-  zh: ['开场破冰','行前过程','交通选择','住宿偏好','体验与活动','旅游攻略 & 分享','产品Demo'],
-  en: ['Ice Breaker','Pre-trip Planning','Transportation','Accommodation','Experiences','Travel Guides','Product Demo'],
-  fr: ['Brise-glace','Planification avant départ','Transport','Hébergement','Expériences','Guides & Partage','Démo produit']
-};
+// ===== 映射表 =====
+const AGE_MAP = {A:'18–24',B:'25–34',C:'35–44',D:'45–54',E:'55+'};
+const EDU_MAP = {A:'Inf. Bac',B:'Bac',C:'Bac+2',D:'Bac+3',E:'Bac+5+',F:'Doctorat'};
+const FAM_MAP = {A:'Célibataire',B:'Concubinage',C:'Pacsé(e)',D:'Marié(e)',E:'Divorcé(e)/Veuf(ve)'};
+const CHILD_MAP = {0:'Aucun',1:'1',2:'2','3+':'3+'};
+const INC_MAP = {A:'–1500€',B:'1500–2500€',C:'2501–4000€',D:'4001–6000€',E:'+6000€',F:'不透露'};
+const FREQ_MAP = {A:'从不',B:'1次',C:'2–3次',D:'4–5次',E:'6次+'};
+const DEST_MAP = {A:'法国',B:'欧洲其他',C:'北非/地中海',D:'美洲',E:'亚洲',F:'其他远途'};
+const BUDA_MAP = {A:'–500€',B:'500–1500€',C:'1501–3000€',D:'3001–6000€',E:'+6000€'};
+const BUDP_MAP = {A:'–300€',B:'300–800€',C:'801–1500€',D:'1501–3000€',E:'+3000€'};
+const STYLE_MAP = {A:'海滨度假',B:'露营/户外',C:'徒步/自然',D:'山地/滑雪',E:'文化/历史/艺术',F:'美食/手工艺',G:'节庆/传统'};
 
-const Q_LABELS = {
-  zh: {
-    s0q1:'最近一次旅行',
-    s1q1:'动机',s1q2:'信息渠道',s1q3:'目的地了解程度',s1q4:'提前规划时间',
-    s1q5:'规划工具',s1q6:'AI工具使用',s1q7:'是否分开预定',s1q8:'package产品',
-    s1q9:'预定烦恼点',s1q10:'支付方式',
-    s2q1:'法国境内交通',
-    s3q1:'住宿类型',s3q2:'住宿重要因素',s3q3:'取消政策',
-    s4q1:'提前预订活动',s4q2:'体验平台',
-    s5q1:'分享攻略',
-    s6q1:'是否购买产品',s6q2:'产品意见',s6q3:'补充信息'
-  },
-  en: {
-    s0q1:'Recent Trip',
-    s1q1:'Motivation',s1q2:'Information Channels',s1q3:'Destination Knowledge',s1q4:'Planning Timeline',
-    s1q5:'Planning Tools',s1q6:'AI Tools',s1q7:'Separate Bookings',s1q8:'Package Products',
-    s1q9:'Booking Pain Points',s1q10:'Payment Methods',
-    s2q1:'Transportation in France',s2q2:'TGV Discount Card',
-    s3q1:'Accommodation Type',s3q2:'Accommodation Priorities',s3q3:'Cancellation Policy',
-    s4q1:'Advance Activity Booking',s4q2:'Activity Platforms',
-    s5q1:'Sharing Travel Guides',
-    s6q1:'Would Purchase Product',s6q2:'Product Feedback',s6q3:'Additional Comments'
-  },
-  fr: {
-    s0q1:'Voyage récent',
-    s1q1:'Motivation',s1q2:'Sources d\'information',s1q3:'Connaissance destination',s1q4:'Délai de planification',
-    s1q5:'Outils de planification',s1q6:'Outils IA',s1q7:'Réservations séparées',s1q8:'Forfaits',
-    s1q9:'Points de friction',s1q10:'Modes de paiement',
-    s2q1:'Transport en France',s2q2:'Carte TGV',
-    s3q1:'Type hébergement',s3q2:'Priorités hébergement',s3q3:'Politique d\'annulation',
-    s4q1:'Réservation activités',s4q2:'Plateformes activités',
-    s5q1:'Partage de guides',
-    s6q1:'Achat produit',s6q2:'Feedback produit',s6q3:'Commentaires supplémentaires'
-  }
-};
-
-const SECTION_Q_MAP = [
+const SECTION_TITLES = ['开场破冰','行前过程','交通选择','住宿偏好','体验与活动','旅游攻略 & 分享','产品Demo'];
+const SECTION_QS = [
   ['s0q1'],
   ['s1q1','s1q2','s1q3','s1q4','s1q5','s1q6','s1q7','s1q8','s1q9','s1q10'],
   ['s2q1','s2q2'],
@@ -189,183 +200,283 @@ const SECTION_Q_MAP = [
   ['s5q1'],
   ['s6q1','s6q2','s6q3']
 ];
+const Q_LABELS = {
+  s0q1:'最近一次旅行',
+  s1q1:'动机',s1q2:'信息渠道',s1q3:'目的地了解程度',s1q4:'提前规划时间',
+  s1q5:'规划工具',s1q6:'AI工具',s1q7:'分开预定',s1q8:'Package产品',
+  s1q9:'预定痛点',s1q10:'支付方式',
+  s2q1:'法国境内交通',s2q2:'TGV折扣卡',
+  s3q1:'住宿类型',s3q2:'住宿优先因素',s3q3:'取消政策',
+  s4q1:'提前预订活动',s4q2:'体验平台',
+  s5q1:'分享攻略意愿',
+  s6q1:'是否购买产品',s6q2:'产品意见',s6q3:'补充信息'
+};
 
-// ==================== 加载数据 ====================
+// ===== 数据加载 =====
 function loadAll() {
-  const list = JSON.parse(localStorage.getItem('interview_list') || '[]');
-  return list.map(key => {
-    const raw = localStorage.getItem(key);
+  const list = JSON.parse(localStorage.getItem('interview_list')||'[]');
+  return list.map(k => {
+    const raw = localStorage.getItem(k);
     if (!raw) return null;
-    try { return {key, ...JSON.parse(raw)}; } catch(e){ return null; }
+    try { return {key:k,...JSON.parse(raw)}; } catch(e){return null;}
   }).filter(Boolean);
 }
 
-// ==================== 渲染列表 ====================
+// ===== Tab切换 =====
+function showTab(id, btn) {
+  document.getElementById('tab-list').style.display = id==='list'?'block':'none';
+  document.getElementById('tab-charts').style.display = id==='charts'?'block':'none';
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  if (id==='charts') renderCharts();
+}
+
+// ===== 统计卡 =====
+function updateStats(all) {
+  const today = new Date().toISOString().slice(0,10);
+  document.getElementById('s-total').textContent = all.length;
+  document.getElementById('s-done').textContent = all.filter(d=>d.meta?.submitted).length;
+  document.getElementById('s-draft').textContent = all.filter(d=>!d.meta?.submitted).length;
+  document.getElementById('s-today').textContent = all.filter(d=>d.meta?.date===today).length;
+  document.getElementById('s-base').textContent = all.filter(d=>d.base?.q1).length;
+}
+
+// ===== 渲染列表 =====
 function renderTable() {
   const all = loadAll();
+  updateStats(all);
   const search = document.getElementById('search').value.toLowerCase();
-  const filterStatus = document.getElementById('filter-status').value;
-  const filterLang = document.getElementById('filter-lang').value;
-  const today = new Date().toISOString().slice(0,10);
-
-  // stats
-  document.getElementById('stat-total').textContent = all.length;
-  document.getElementById('stat-done').textContent = all.filter(d=>d.meta?.submitted).length;
-  document.getElementById('stat-draft').textContent = all.filter(d=>!d.meta?.submitted).length;
-  document.getElementById('stat-today').textContent = all.filter(d=>d.meta?.date===today).length;
+  const fStatus = document.getElementById('f-status').value;
+  const fLang = document.getElementById('f-lang').value;
 
   let filtered = all.filter(d => {
-    const m = d.meta || {};
-    if (search && !((m.interviewee||'').toLowerCase().includes(search) || (m.interviewer||'').toLowerCase().includes(search))) return false;
-    if (filterStatus === 'done' && !m.submitted) return false;
-    if (filterStatus === 'draft' && m.submitted) return false;
-    if (filterLang && m.lang !== filterLang) return false;
+    const m = d.meta||{};
+    if (search && !((m.interviewee||'').toLowerCase().includes(search)||(m.interviewer||'').toLowerCase().includes(search))) return false;
+    if (fStatus==='done' && !m.submitted) return false;
+    if (fStatus==='draft' && m.submitted) return false;
+    if (fLang && m.lang!==fLang) return false;
     return true;
   });
 
-  const tbody = document.getElementById('table-body');
-  const empty = document.getElementById('empty-state');
+  const tbody = document.getElementById('tbody');
+  const empty = document.getElementById('empty');
+  if (!filtered.length) { tbody.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
 
-  if (filtered.length === 0) {
-    tbody.innerHTML = '';
-    empty.style.display = 'block';
-    return;
-  }
-  empty.style.display = 'none';
-
-  const langMap = {zh:'🇨🇳 中文', en:'🇬🇧 EN', fr:'🇫🇷 FR'};
-  tbody.innerHTML = filtered.map((d, i) => {
-    const m = d.meta || {};
-    const saved = m.savedAt ? new Date(m.savedAt).toLocaleString('zh-CN',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}) : '-';
+  const langIcon = {zh:'🇨🇳',en:'🇬🇧',fr:'🇫🇷'};
+  tbody.innerHTML = filtered.map((d,i) => {
+    const m = d.meta||{}, b = d.base||{};
+    const age = b.q1 ? AGE_MAP[b.q1]||b.q1 : '<span style="color:#bbb">—</span>';
+    const freq = b.q6 ? FREQ_MAP[b.q6]||b.q6 : '<span style="color:#bbb">—</span>';
     const status = m.submitted
-      ? '<span class="badge badge-done">✅ 已完成</span>'
+      ? '<span class="badge badge-done">✅ 完成</span>'
       : '<span class="badge badge-draft">📝 草稿</span>';
     return `<tr>
       <td>${i+1}</td>
-      <td><strong>${m.interviewee||'-'}</strong></td>
-      <td>${m.interviewer||'-'}</td>
-      <td>${m.date||'-'}</td>
-      <td>${langMap[m.lang]||m.lang||'-'}</td>
-      <td>${m.location||'-'}</td>
+      <td><strong>${m.interviewee||'—'}</strong></td>
+      <td>${m.interviewer||'—'}</td>
+      <td>${m.date||'—'}</td>
+      <td>${langIcon[m.lang]||''} ${m.lang||'—'}</td>
+      <td>${age}</td>
+      <td>${freq}</td>
       <td>${status}</td>
-      <td style="font-size:.8rem;color:var(--hint)">${saved}</td>
-      <td>
-        <button class="btn btn-white" style="padding:5px 12px;font-size:.82rem" onclick="showDetail('${d.key}')">查看</button>
-        <button class="btn btn-red" style="padding:5px 12px;font-size:.82rem;margin-left:4px" onclick="deleteOne('${d.key}')">删除</button>
+      <td style="white-space:nowrap">
+        <button class="btn btn-white" style="padding:5px 10px;font-size:.78rem" onclick="showDetail('${d.key}')">查看</button>
+        <a href="interview.html?key=${d.key}" class="btn btn-white" style="padding:5px 10px;font-size:.78rem;margin-left:4px">编辑</a>
+        <button class="btn btn-red" style="padding:5px 10px;font-size:.78rem;margin-left:4px" onclick="deleteOne('${d.key}')">删除</button>
       </td>
     </tr>`;
   }).join('');
 }
 
-// ==================== 详情 ====================
+// ===== 统计图 =====
+function renderCharts() {
+  const all = loadAll();
+  const container = document.getElementById('charts-container');
+
+  const charts = [
+    {title:'Q1 年龄分布',field:'q1',map:AGE_MAP},
+    {title:'Q2 学历分布',field:'q2',map:EDU_MAP},
+    {title:'Q3 婚姻状况',field:'q3',map:FAM_MAP},
+    {title:'Q5 家庭月收入',field:'q5',map:INC_MAP},
+    {title:'Q6 年旅行频率',field:'q6',map:FREQ_MAP},
+    {title:'Q8 年旅行预算',field:'q8',map:BUDA_MAP},
+    {title:'Q9 单次旅行预算',field:'q9',map:BUDP_MAP},
+    {title:'Q10 旅行风格偏好（多选）',field:'q10',map:STYLE_MAP,multi:true},
+    {title:'Q7 主要目的地（多选）',field:'q7',map:DEST_MAP,multi:true},
+  ];
+
+  container.innerHTML = charts.map(c => {
+    const counts = {};
+    all.forEach(d => {
+      const val = (d.base||{})[c.field]||'';
+      if (!val) return;
+      if (c.multi) {
+        val.split(',').forEach(v => { if(v) counts[v]=(counts[v]||0)+1; });
+      } else {
+        counts[val]=(counts[val]||0)+1;
+      }
+    });
+    const total = c.multi ? all.filter(d=>(d.base||{})[c.field]).length : all.filter(d=>(d.base||{})[c.field]).length;
+    const maxVal = Math.max(...Object.values(counts),1);
+    const rows = Object.entries(c.map).map(([k,label]) => {
+      const cnt = counts[k]||0;
+      const pct = Math.round(cnt/maxVal*100);
+      return `<div class="bar-row">
+        <div class="bar-label" title="${label}">${label}</div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:${pct}%"></div></div>
+        <div class="bar-count">${cnt}</div>
+      </div>`;
+    }).join('');
+    return `<div class="chart-card"><div class="chart-title">${c.title} <span style="font-size:.75rem;font-weight:400;color:var(--hint)">(n=${total})</span></div>${rows||'<div style="color:var(--hint);font-size:.85rem">暂无数据</div>'}</div>`;
+  }).join('');
+}
+
+// ===== 详情 Modal =====
 function showDetail(key) {
   const raw = localStorage.getItem(key);
   if (!raw) return;
   const data = JSON.parse(raw);
-  const m = data.meta || {};
-  const lang = m.lang || 'zh';
-  const labels = Q_LABELS[lang] || Q_LABELS.zh;
-  const secTitles = SECTION_TITLES[lang] || SECTION_TITLES.zh;
-  const answers = data.answers || {};
+  const m = data.meta||{}, b = data.base||{}, ans = data.answers||{};
 
   document.getElementById('modal-title').textContent = `${m.interviewee||'受访者'} · ${m.date||''}`;
 
-  let html = `
-    <div class="meta-grid">
-      <div class="meta-item"><strong>受访者：</strong>${m.interviewee||'-'}</div>
-      <div class="meta-item"><strong>访谈员：</strong>${m.interviewer||'-'}</div>
-      <div class="meta-item"><strong>日期：</strong>${m.date||'-'}</div>
-      <div class="meta-item"><strong>地点：</strong>${m.location||'-'}</div>
-      <div class="meta-item"><strong>年龄：</strong>${m.age||'-'}</div>
-      <div class="meta-item"><strong>职业：</strong>${m.job||'-'}</div>
-      <div class="meta-item"><strong>语言：</strong>${m.lang||'-'}</div>
-      <div class="meta-item"><strong>状态：</strong>${m.submitted?'✅ 已完成':'📝 草稿'}</div>
-      ${m.notes ? `<div class="meta-item" style="grid-column:1/-1"><strong>备注：</strong>${m.notes}</div>` : ''}
-    </div>`;
+  // 基础问卷 tab
+  const info = `<div class="info-grid">
+    <div class="info-item"><strong>受访者：</strong>${m.interviewee||'—'}</div>
+    <div class="info-item"><strong>访谈员：</strong>${m.interviewer||'—'}</div>
+    <div class="info-item"><strong>日期：</strong>${m.date||'—'}</div>
+    <div class="info-item"><strong>地点：</strong>${m.location||'—'}</div>
+    <div class="info-item"><strong>状态：</strong>${m.submitted?'✅ 已完成':'📝 草稿'}</div>
+    <div class="info-item"><strong>语言：</strong>${m.lang||'—'}</div>
+    ${m.notes?`<div class="info-item" style="grid-column:1/-1"><strong>备注：</strong>${m.notes}</div>`:''}
+  </div>`;
 
-  SECTION_Q_MAP.forEach((qids, si) => {
-    const hasAny = qids.some(id => answers[id] && answers[id].trim());
+  const fmt = (val,map) => val ? (map[val]||val) : null;
+  const fmtMulti = (val,map) => val ? val.split(',').filter(Boolean).map(v=>map[v]||v).join('、') : null;
+  const fmtAns = (val,label) => {
+    const v = val||'';
+    return `<div class="base-q"><div class="base-q-label">${label}</div><span class="base-q-ans ${v?'':'empty'}">${v||'未填写'}</span></div>`;
+  };
+
+  document.getElementById('detail-base').innerHTML = info + `
+    ${fmtAns(fmt(b.q1,AGE_MAP),'Q1 年龄')}
+    ${fmtAns(fmt(b.q2,EDU_MAP),'Q2 学历')}
+    ${fmtAns(fmt(b.q3,FAM_MAP),'Q3 婚姻状况')}
+    ${fmtAns(b.q4!==undefined?CHILD_MAP[b.q4]||b.q4:null,'Q4 子女')}
+    ${fmtAns(fmt(b.q5,INC_MAP),'Q5 家庭月收入')}
+    ${fmtAns(fmt(b.q6,FREQ_MAP),'Q6 年旅行频率')}
+    ${fmtAns(fmtMulti(b.q7,DEST_MAP),'Q7 主要目的地')}
+    ${fmtAns(fmt(b.q8,BUDA_MAP),'Q8 年度旅行预算')}
+    ${fmtAns(fmt(b.q9,BUDP_MAP),'Q9 单次旅行预算')}
+    ${fmtAns(fmtMulti(b.q10,STYLE_MAP),'Q10 旅行风格偏好')}
+    ${b.q10_rank1?`<div class="base-q"><div class="base-q-label">Q10 排序</div><span class="base-q-ans">1️⃣ ${STYLE_MAP[b.q10_rank1]||b.q10_rank1}${b.q10_rank2?' &nbsp; 2️⃣ '+(STYLE_MAP[b.q10_rank2]||b.q10_rank2):''}${b.q10_rank3?' &nbsp; 3️⃣ '+(STYLE_MAP[b.q10_rank3]||b.q10_rank3):''}</span></div>`:''}
+  `;
+
+  // 深度访谈 tab
+  const SECTION_TITLES = ['开场破冰','行前过程','交通选择','住宿偏好','体验与活动','旅游攻略 & 分享','产品Demo'];
+  const SECTION_QS = [
+    ['s0q1'],
+    ['s1q1','s1q2','s1q3','s1q4','s1q5','s1q6','s1q7','s1q8','s1q9','s1q10'],
+    ['s2q1','s2q2'],['s3q1','s3q2','s3q3'],['s4q1','s4q2'],['s5q1'],['s6q1','s6q2','s6q3']
+  ];
+  const Q_LABELS = {s0q1:'最近一次旅行',s1q1:'动机',s1q2:'信息渠道',s1q3:'目的地了解程度',s1q4:'提前规划时间',s1q5:'规划工具',s1q6:'AI工具',s1q7:'分开预定',s1q8:'Package产品',s1q9:'预定痛点',s1q10:'支付方式',s2q1:'法国境内交通',s2q2:'TGV折扣卡',s3q1:'住宿类型',s3q2:'住宿优先因素',s3q3:'取消政策',s4q1:'提前预订活动',s4q2:'体验平台',s5q1:'分享攻略意愿',s6q1:'是否购买产品',s6q2:'产品意见',s6q3:'补充信息'};
+
+  let intHtml = '';
+  SECTION_QS.forEach((qids,si) => {
+    const hasAny = qids.some(id=>ans[id]&&ans[id].trim());
     if (!hasAny) return;
-    html += `<div class="section-title">Section ${si+1}: ${secTitles[si]||''}</div>`;
+    intHtml += `<div class="sec-title">Section ${si+1}: ${SECTION_TITLES[si]}</div>`;
     qids.forEach(id => {
-      const val = answers[id] || '';
-      const label = labels[id] || id;
-      html += `
-        <div class="q-block">
-          <div class="q-text">▸ ${label}</div>
-          <div class="q-ans ${val.trim()?'':'empty-ans'}">${val.trim()||'（未填写）'}</div>
-        </div>`;
+      const val = ans[id]||'';
+      intHtml += `<div class="q-block">
+        <div class="q-label">▸ ${Q_LABELS[id]||id}</div>
+        <div class="q-val ${val.trim()?'':'empty'}">${val.trim()||'（未填写）'}</div>
+      </div>`;
     });
   });
+  document.getElementById('detail-interview').innerHTML = intHtml||'<div style="color:var(--hint);padding:20px;text-align:center">暂无深度访谈记录</div>';
 
-  document.getElementById('modal-content').innerHTML = html;
-  document.getElementById('detail-modal').classList.add('open');
+  // 重置 tab 到基础问卷
+  document.querySelectorAll('.detail-tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.detail-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.detail-tab')[0].classList.add('active');
+  document.getElementById('detail-base').classList.add('active');
+
+  document.getElementById('modal').classList.add('open');
 }
 
-function closeDetail() {
-  document.getElementById('detail-modal').classList.remove('open');
+function showDetailTab(id, btn) {
+  document.querySelectorAll('.detail-tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.detail-section').forEach(s=>s.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('detail-'+id).classList.add('active');
 }
 
-// ==================== 删除 ====================
+function closeModal() { document.getElementById('modal').classList.remove('open'); }
+
+// ===== 删除 =====
 function deleteOne(key) {
-  if (!confirm('确认删除此条访谈记录？')) return;
+  if (!confirm('确认删除此条记录？')) return;
   localStorage.removeItem(key);
-  let list = JSON.parse(localStorage.getItem('interview_list') || '[]');
-  list = list.filter(k => k !== key);
-  localStorage.setItem('interview_list', JSON.stringify(list));
+  let list = JSON.parse(localStorage.getItem('interview_list')||'[]');
+  localStorage.setItem('interview_list', JSON.stringify(list.filter(k=>k!==key)));
   renderTable();
 }
-
 function clearAll() {
-  if (!confirm('⚠️ 确认清空所有访谈记录？此操作不可恢复！')) return;
-  const list = JSON.parse(localStorage.getItem('interview_list') || '[]');
-  list.forEach(k => localStorage.removeItem(k));
+  if (!confirm('⚠️ 确认清空所有记录？不可恢复！')) return;
+  JSON.parse(localStorage.getItem('interview_list')||'[]').forEach(k=>localStorage.removeItem(k));
   localStorage.removeItem('interview_list');
   renderTable();
 }
 
-// ==================== 导出 CSV ====================
+// ===== 导出 =====
 function exportCSV() {
   const all = loadAll();
   if (!all.length) { alert('暂无数据'); return; }
-
-  // 收集所有答题 ID
-  const allQIds = SECTION_Q_MAP.flat();
-  const headers = ['受访者','访谈员','日期','地点','年龄','职业','语言','状态','备注', ...allQIds];
-
+  const allQIds = ['s0q1','s1q1','s1q2','s1q3','s1q4','s1q5','s1q6','s1q7','s1q8','s1q9','s1q10','s2q1','s2q2','s3q1','s3q2','s3q3','s4q1','s4q2','s5q1','s6q1','s6q2','s6q3'];
+  const headers = [
+    '受访者','访谈员','日期','地点','状态','语言',
+    'Q1年龄','Q2学历','Q3婚姻','Q4子女','Q5收入','Q6旅行频率','Q7目的地','Q8年预算','Q9次预算',
+    'Q10风格','Q10排序1','Q10排序2','Q10排序3',
+    ...allQIds.map(id=>Q_LABELS[id]||id)
+  ];
   const rows = all.map(d => {
-    const m = d.meta || {};
-    const ans = d.answers || {};
+    const m=d.meta||{}, b=d.base||{}, ans=d.answers||{};
     const base = [
       m.interviewee||'', m.interviewer||'', m.date||'', m.location||'',
-      m.age||'', m.job||'', m.lang||'', m.submitted?'已完成':'草稿', m.notes||''
+      m.submitted?'已完成':'草稿', m.lang||'',
+      b.q1?AGE_MAP[b.q1]||b.q1:'', b.q2?EDU_MAP[b.q2]||b.q2:'',
+      b.q3?FAM_MAP[b.q3]||b.q3:'', b.q4?CHILD_MAP[b.q4]||b.q4:'',
+      b.q5?INC_MAP[b.q5]||b.q5:'', b.q6?FREQ_MAP[b.q6]||b.q6:'',
+      b.q7?(b.q7.split(',').map(v=>DEST_MAP[v]||v).join('|')):'',
+      b.q8?BUDA_MAP[b.q8]||b.q8:'', b.q9?BUDP_MAP[b.q9]||b.q9:'',
+      b.q10?(b.q10.split(',').map(v=>STYLE_MAP[v]||v).join('|')):'',
+      b.q10_rank1?STYLE_MAP[b.q10_rank1]||b.q10_rank1:'',
+      b.q10_rank2?STYLE_MAP[b.q10_rank2]||b.q10_rank2:'',
+      b.q10_rank3?STYLE_MAP[b.q10_rank3]||b.q10_rank3:'',
     ];
-    const qvals = allQIds.map(id => (ans[id]||'').replace(/\n/g,' | '));
-    return [...base, ...qvals];
+    const qvals = allQIds.map(id=>(ans[id]||'').replace(/\n/g,' | '));
+    return [...base,...qvals];
   });
-
-  const csv = [headers, ...rows].map(r =>
-    r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')
-  ).join('\n');
-
-  const bom = '\uFEFF';
-  download(bom + csv, `interviews_${new Date().toISOString().slice(0,10)}.csv`, 'text/csv');
+  const csv = [headers,...rows].map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  download('\uFEFF'+csv, `interviews_${new Date().toISOString().slice(0,10)}.csv`, 'text/csv');
 }
 
 function exportJSON() {
   const all = loadAll();
   if (!all.length) { alert('暂无数据'); return; }
-  download(JSON.stringify(all, null, 2), `interviews_${new Date().toISOString().slice(0,10)}.json`, 'application/json');
+  download(JSON.stringify(all,null,2), `interviews_${new Date().toISOString().slice(0,10)}.json`, 'application/json');
 }
 
-function download(content, filename, type) {
+function download(content,filename,type) {
   const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([content], {type}));
-  a.download = filename;
-  a.click();
+  a.href = URL.createObjectURL(new Blob([content],{type}));
+  a.download = filename; a.click();
 }
 
-// ==================== 初始化 ====================
+// ===== Init =====
+const Q_LABELS = {s0q1:'最近一次旅行',s1q1:'动机',s1q2:'信息渠道',s1q3:'目的地了解程度',s1q4:'提前规划时间',s1q5:'规划工具',s1q6:'AI工具',s1q7:'分开预定',s1q8:'Package产品',s1q9:'预定痛点',s1q10:'支付方式',s2q1:'法国境内交通',s2q2:'TGV折扣卡',s3q1:'住宿类型',s3q2:'住宿优先因素',s3q3:'取消政策',s4q1:'提前预订活动',s4q2:'体验平台',s5q1:'分享攻略意愿',s6q1:'是否购买产品',s6q2:'产品意见',s6q3:'补充信息'};
 renderTable();
 </script>
 </body>
