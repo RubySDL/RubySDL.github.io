@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>法国 & 德国短期出差指南</title>
+  <style>
+    :root {
+      --blue: #1a3a6b;
+      --gold: #c9a84c;
+      --red: #c0392b;
+      --gray: #f4f6f9;
+      --text: #2c3e50;
+      --border: #dde3ed;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: var(--gray);
+      color: var(--text);
+      line-height: 1.7;
+    }
+    header {
+      background: linear-gradient(135deg, var(--blue) 0%, #2c5282 100%);
+      color: #fff;
+      padding: 48px 24px 36px;
+      text-align: center;
+    }
+    header h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 8px; }
+    header p  { opacity: .85; font-size: 1.05rem; }
+    nav {
+      background: #fff;
+      border-bottom: 2px solid var(--border);
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,.07);
+    }
+    nav a {
+      padding: 14px 18px;
+      text-decoration: none;
+      color: var(--blue);
+      font-weight: 600;
+      font-size: .9rem;
+      border-bottom: 3px solid transparent;
+      transition: all .2s;
+    }
+    nav a:hover { border-bottom-color: var(--gold); color: var(--gold); }
+    .container { max-width: 960px; margin: 0 auto; padding: 32px 16px 64px; }
+    .country-tabs { display: flex; gap: 12px; margin-bottom: 32px; flex-wrap: wrap; }
+    .tab-btn {
+      padding: 10px 28px;
+      border: 2px solid var(--blue);
+      background: #fff;
+      color: var(--blue);
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 32px;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .tab-btn.active, .tab-btn:hover { background: var(--blue); color: #fff; }
+    .country-section { display: none; }
+    .country-section.active { display: block; }
+    .section { margin-bottom: 32px; }
+    .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .section-header .icon {
+      font-size: 1.4rem; width: 42px; height: 42px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--blue); border-radius: 50%;
+    }
+    .section-header h2 { font-size: 1.2rem; color: var(--blue); font-weight: 700; }
+    .card {
+      background: #fff; border-radius: 12px; padding: 20px 24px;
+      border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,.04);
+    }
+    .card ul { padding-left: 20px; }
+    .card ul li { margin-bottom: 8px; }
+    .card p { margin-bottom: 8px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media(max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
+    .tag {
+      display: inline-block; background: var(--gold); color: #fff;
+      border-radius: 6px; padding: 2px 10px; font-size: .8rem; font-weight: 700;
+      margin-right: 6px; margin-bottom: 4px; vertical-align: middle;
+    }
+    .tag.blue { background: var(--blue); }
+    .alert {
+      background: #fff8e1; border-left: 4px solid var(--gold);
+      border-radius: 8px; padding: 14px 18px; margin-bottom: 12px; font-size: .95rem;
+    }
+    .alert.danger { background: #fdecea; border-left-color: var(--red); }
+    table { width: 100%; border-collapse: collapse; font-size: .93rem; }
+    th { background: var(--blue); color: #fff; padding: 10px 14px; text-align: left; }
+    td { padding: 9px 14px; border-bottom: 1px solid var(--border); }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: #f8fafc; }
+    footer {
+      text-align: center; color: #888; font-size: .85rem;
+      padding: 24px; border-top: 1px solid var(--border); background: #fff;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🌍 欧洲短期出差指南</h1>
+  <p>法国 · 德国 — 商务旅行实用手册</p>
+</header>
+
+<nav>
+  <a href="#preparation">出发准备</a>
+  <a href="#transport">交通</a>
+  <a href="#accommodation">住宿</a>
+  <a href="#dining">餐饮</a>
+  <a href="#business">商务礼仪</a>
+  <a href="#tips">注意事项</a>
+  <a href="#emergency">紧急联系</a>
+</nav>
+
+<div class="container">
+
+  <div class="country-tabs">
+    <button class="tab-btn active" onclick="showCountry('france', this)">🇫🇷 法国</button>
+    <button class="tab-btn" onclick="showCountry('germany', this)">🇩🇪 德国</button>
+    <button class="tab-btn" onclick="showCountry('common', this)">🌐 通用信息</button>
+  </div>
+
+  <!-- ===== 法国 ===== -->
+  <div id="france" class="country-section active">
+
+    <div id="preparation" class="section">
+      <div class="section-header"><div class="icon">📋</div><h2>出发前准备</h2></div>
+      <div class="card">
+        <div class="alert"><strong>🛂 签证：</strong>申根签证（Schengen Visa），持中国护照需提前申请，建议出发前 3-4 周递签，商务类型。</div>
+        <ul>
+          <li><span class="tag">必带</span> 护照（有效期 ≥ 6 个月）及复印件</li>
+          <li><span class="tag">必带</span> 申根签证 / 有效居留证</li>
+          <li><span class="tag">必带</span> 公司邀请函、商务证明文件</li>
+          <li><span class="tag">必带</span> 行程单、酒店预订确认单</li>
+          <li><span class="tag">必带</span> 旅行医疗保险（覆盖金额 ≥ 3 万欧元）</li>
+          <li><span class="tag blue">推荐</span> 欧版两脚圆插头转换器</li>
+          <li><span class="tag blue">推荐</span> 欧洲 SIM 卡 / 开通漫游套餐</li>
+          <li><span class="tag blue">推荐</span> 少量欧元现金（€100-200 备用）</li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="transport" class="section">
+      <div class="section-header"><div class="icon">🚇</div><h2>交通出行</h2></div>
+      <div class="grid-2">
+        <div class="card">
+          <strong>✈️ 巴黎机场 → 市区</strong>
+          <ul style="margin-top:10px">
+            <li><strong>戴高乐（CDG）</strong></li>
+            <li>RER B 线 → 市中心约 35 分钟，€11.8</li>
+            <li>Le Bus Direct → 约 60 分钟，€18</li>
+            <li>出租车/Uber → €55-70</li>
+            <li style="margin-top:8px"><strong>奥利（ORY）</strong></li>
+            <li>Orlyval + RER B → 约 35 分钟</li>
+          </ul>
+        </div>
+        <div class="card">
+          <strong>🚇 巴黎市内交通</strong>
+          <ul style="margin-top:10px">
+            <li>地铁（Métro）覆盖全市，€2.15/次</li>
+            <li>推荐 <strong>Navigo Easy 卡</strong>充值使用</li>
+            <li>Uber / Bolt 均可使用</li>
+            <li>Vélib' 共享单车：短途代步方便</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <strong>🚄 城际高铁 TGV</strong>
+        <p style="margin-top:8px">连接全国主要城市，在 <strong>SNCF Connect</strong> App 提前订票可享优惠。</p>
+        <p>Paris → Lyon 约 2h | Paris → Marseille 约 3h15 | Paris → Bordeaux 约 2h</p>
+      </div>
+    </div>
+
+    <div id="accommodation" class="section">
+      <div class="section-header"><div class="icon">🏨</div><h2>住宿建议</h2></div>
+      <div class="card">
+        <ul>
+          <li><strong>巴黎商务推荐区域：</strong>拉德芳斯（商业区）、8区（香榭丽舍）、1-2区（中央商务区）</li>
+          <li><strong>价格参考：</strong>4星商务酒店 €120-250/晚</li>
+          <li><strong>预订：</strong>公司差旅系统 / Booking.com / 酒店官网</li>
+          <li><strong>旅游税：</strong>约 €1-8/人/晚，通常现付</li>
+          <li><strong>Check-in：</strong>通常 14:00-15:00，可提前寄存行李</li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="dining" class="section">
+      <div class="section-header"><div class="icon">🍽️</div><h2>餐饮</h2></div>
+      <div class="card">
+        <ul>
+          <li><strong>午餐：</strong>12:00-14:00，正式商务午宴常持续 1.5-2 小时</li>
+          <li><strong>晚餐：</strong>19:30-21:00，不要太早去餐厅</li>
+          <li><strong>小费：</strong>非强制，满意可留 5-10%</li>
+          <li><strong>礼仪：</strong>进门等待领位；呼叫服务员说"Excusez-moi"</li>
+          <li><strong>免费水：</strong>可要求 une carafe d'eau（免费自来水）</li>
+          <li><strong>早餐/午餐：</strong>Boulangerie（面包店）经济实惠</li>
+          <li><strong>中餐：</strong>13区唐人街选择丰富</li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="business" class="section">
+      <div class="section-header"><div class="icon">🤝</div><h2>商务礼仪</h2></div>
+      <div class="card">
+        <ul>
+          <li><strong>打招呼：</strong>初次见面握手；熟悉后可能行贴脸礼（la bise），跟随对方节奏</li>
+          <li><strong>语言：</strong>法国人重视法语，尝试用简单法语寒暄（Bonjour / Merci）会赢得好感</li>
+          <li><strong>着装：</strong>商务正装，注重品味与整洁</li>
+          <li><strong>时间观念：</strong>对会议时间相对灵活，但自己应准时</li>
+          <li><strong>决策节奏：</strong>层级分明，重要决定需经高层，谈判周期较长</li>
+          <li><strong>送礼：</strong>高档巧克力、葡萄酒（非本地产区）或艺术书籍为佳</li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="tips" class="section">
+      <div class="section-header"><div class="icon">⚠️</div><h2>注意事项</h2></div>
+      <div class="card">
+        <div class="alert danger"><strong>🚨 扒手警告：</strong>巴黎地铁、埃菲尔铁塔、蒙马特等旅游区扒手猖獗，钱包手机放内侧口袋或防盗包。</div>
+        <div class="alert danger"><strong>🚨 签名骗局：</strong>陌生人请你签"请愿书"后索要捐款，直接拒绝走开。</div>
+        <div class="alert"><strong>💊 药品：</strong>个人常用药携带处方；药店（Pharmacie）绿十字标识明显。</div>
+        <ul>
+          <li>周日大部分商店关门，提前规划购物</li>
+          <li>8 月很多餐厅和商店关门（暑假），提前确认</li>
+          <li>地铁验票需插票过闸，保留票直到出站</li>
+          <li>室内全面禁烟</li>
+          <li>自来水可直接饮用</li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="emergency" class="section">
+      <div class="section-header"><div class="icon">🆘</div><h2>紧急联系</h2></div>
+      <div class="card">
+        <table>
+          <tr><th>用途</th><th>号码</th></tr>
+          <tr><td>欧盟统一紧急电话</td><td><strong>112</strong></td></tr>
+          <tr><td>法国警察</td><td>17</td></tr>
+          <tr><td>法国急救 SAMU</td><td>15</td></tr>
+          <tr><td>消防</td><td>18</td></tr>
+          <tr><td>中国驻法大使馆（巴黎）</td><td>+33 1 49 52 19 50</td></tr>
+          <tr><td>中国公民紧急求助热线</td><td>+86 10 12308</td></tr>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /france -->
+
+  <!-- ===== 德国 ===== -->
+  <div id="germany" class="country-section">
+
+    <div class="section">
+      <div class="section-header"><div class="icon">📋</div><h2>出发前准备</h2></div>
+      <div class="card">
+        <div class="alert"><strong>🛂 签证：</strong>同为申根签证，法德可共用。建议从主要目的地国使馆申请。</div>
+        <ul>
+          <li><span class="tag">必带</span> 护照（有效期 ≥ 6 个月）及复印件</li>
+          <li><span class="tag">必带</span> 申根签证</li>
+          <li><span class="tag">必带</span> 公司邀请函、商务证明</li>
+          <li><span class="tag">必带</span> 旅行医疗保险（≥ 3 万欧元）</li>
+          <li><span class="tag blue">推荐</span> 欧版两脚圆插头转换器</li>
+          <li><span class="tag blue">推荐</span> 欧元现金（德国很多地方仅收现金）</li>
+          <li><span class="tag blue">推荐</span> DB Navigator App（德国铁路订票）</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><div class="icon">🚇</div><h2>交通出行</h2></div>
+      <div class="grid-2">
+        <div class="card">
+          <strong>✈️ 法兰克福机场 → 市区</strong>
+          <ul style="margin-top:10px">
+            <li>S-Bahn S8/S9 → 约 15 分钟，€5.6</li>
+            <li>出租车 → 约 25 分钟，€25-35</li>
+            <li>Uber 可用</li>
+          </ul>
+        </div>
+        <div class="card">
+          <strong>✈️ 慕尼黑机场 → 市区</strong>
+          <ul style="margin-top:10px">
+            <li>S-Bahn S1/S8 → 约 40 分钟，€13.4</li>
+            <li>Lufthansa Bus → 约 45 分钟，€11.5</li>
+            <li>出租车 → 约 45 分钟，€65-80</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <strong>🚄 德国铁路 ICE</strong>
+        <p style="margin-top:8px">用 <strong>DB Navigator</strong> App 提前购票可享 Sparpreis 优惠。</p>
+        <p>Frankfurt → Munich 约 3h15 | Berlin → Hamburg 约 1h45 | Frankfurt → Berlin 约 4h</p>
+        <div class="alert" style="margin-top:12px"><strong>⚠️</strong> DB 偶有晚点，重要会议前留 30-60 分钟缓冲。</div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <strong>🚇 城市公共交通</strong>
+        <ul style="margin-top:8px">
+          <li>U-Bahn / S-Bahn / Tram / Bus 网络完善</li>
+          <li>票务为<strong>信用制</strong>，上车前须买票并打孔，查票严格</li>
+          <li>逃票罚款 <strong>€60+</strong>，务必每次购票</li>
+          <li>推荐购买日票（Tageskarte）多次出行更划算</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><div class="icon">🏨</div><h2>住宿建议</h2></div>
+      <div class="card">
+        <ul>
+          <li><strong>法兰克福：</strong>市中心（Innenstadt）、会展区（Messe）周边</li>
+          <li><strong>慕尼黑：</strong>中央车站（Hauptbahnhof）附近、马克西米利安街区</li>
+          <li><strong>柏林：</strong>米特区（Mitte）、波茨坦广场周边</li>
+          <li><strong>价格参考：</strong>4星商务酒店 €100-220/晚</li>
+          <li><strong>⚠️ 重要：</strong>法兰克福展会期间（IAA、法兰克福书展等）酒店价格暴涨，务必提前 2-3 个月预订</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><div class="icon">🍺</div><h2>餐饮</h2></div>
+      <div class="card">
+        <ul>
+          <li><strong>午餐：</strong>12:00-13:30，常吃 Mittagstisch（午餐套餐）</li>
+          <li><strong>晚餐：</strong>18:00-20:00，比法国早</li>
+          <li><strong>小费：</strong>5-10%，直接告诉服务员总额（"Stimmt so" 表示不用找零）</li>
+          <li><strong>现金文化：</strong>很多餐厅和小店只收现金，务必随身携带欧元</li>
+          <li><strong>啤酒：</strong>商务餐桌上喝啤酒完全正常，婉拒说"Nein danke"</li>
+          <li><strong>推荐菜品：</strong>猪肘（Schweinshaxe）、白肠（Weißwurst）、炸猪排（Schnitzel）</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><div class="icon">🤝</div><h2>商务礼仪</h2></div>
+      <div class="card">
+        <ul>
+          <li><strong>打招呼：</strong>握手为主，眼神接触重要；用姓氏+头衔称呼（如 Herr Müller），非邀请不用名字</li>
+          <li><strong>守时：</strong>德国人对时间极为严格，迟到须提前通知并道歉</li>
+          <li><strong>着装：</strong>保守商务正装，低调实用</li>
+          <li><strong>沟通风格：</strong>直接表达意见，批评直说，不要误解为不友好</li>
+          <li><strong>决策方式：</strong>重视数据和细节，演示资料须充分准备</li>
+          <li><strong>名片：</strong>双手递接，稍作阅读再收起</li>
+          <li><strong>隐私意识强：</strong>不随意询问薪资、家庭等私人问题</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><div class="icon">⚠️</div><h2>注意事项</h2></div>
+      <div class="card">
+        <div class="alert danger"><strong>🚨 公交逃票：</strong>查票员便衣出没，逃票罚款 €60 起，每次务必购票打孔。</div>
+        <div class="alert"><strong>🛒 周日关店：</strong>德国周日几乎所有商店关闭（含超市），周六提前采购。</div>
+        <ul>
+          <li><strong>过马路：</strong>严格遵守红灯，即使无车也不闯（当地人很介意）</li>
+          <li><strong>安静文化：</strong>22:00 后住宅区保持安静</li>
+          <li><strong>垃圾分类：</strong>按颜色严格分类投放</li>
+          <li><strong>押金瓶（Pfand）：</strong>买饮料含押金，可在超市机器退瓶获退款</li>
+          <li><strong>网络：</strong>公共 WiFi 不普及，建议购买本地含数据 SIM</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><div class="icon">🆘</div><h2>紧急联系</h2></div>
+      <div class="card">
+        <table>
+          <tr><th>用途</th><th>号码</th></tr>
+          <tr><td>欧盟统一紧急电话</td><td><strong>112</strong></td></tr>
+          <tr><td>德国警察</td><td>110</td></tr>
+          <tr><td>德国急救 / 消防</td><td>112</td></tr>
+          <tr><td>中国驻德大使馆（柏林）</td><td>+49 30 27588531</td></tr>
+          <tr><td>中国驻法兰克福总领馆</td><td>+49 69 956 2490</td></tr>
+          <tr><td>中国驻慕尼黑总领馆</td><td>+49 89 97407577</td></tr>
+          <tr><td>中国公民紧急求助热线</td><td>+86 10 12308</td></tr>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /germany -->
+
+  <!-- ===== 通用 ===== -->
+  <div id="common" class="country-section">
+
+    <div class="section">
+      <div class="section-header"><div class="icon">💳</div><h2>货币与支付</h2></div>
+      <div class="card">
+        <table>
+          <tr><th>项目</th><th>说明</th></tr>
+          <tr><td>货币</td><td>欧元（EUR / €），法德均使用</td></tr>
+          <tr><td>信用卡</td><td>Visa / Mastercard 广泛接受；Amex 部分地方不认</td></tr>
+          <tr><td>现金建议</td><td>随身备 €100-200，德国尤其需要现金</td></tr>
+          <tr><td>取款</td><td>ATM（Geldautomat）取款，注意跨行手续费</td></tr>
+          <tr><td>微信/支付宝</td><td>覆盖有限，不可依赖</td></tr>
+          <tr><td>换汇建议</td><td>机场汇率差，建议国内换好或到市区银行/ATM</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><div class="icon">📱</div><h2>通讯与网络</h2></div>
+      <div class="card">
+        <ul>
+          <li><strong>漫游：</strong>出发前联系国内运营商开通欧洲漫游套餐</li>
+          <li><strong>本地 SIM：</strong>机场可购买 Prepaid 卡（Lebara、O2、Congstar 等）</li>
+          <li><strong>eSIM：</strong>通过 Airalo、Nomad 等 App 提前购买激活</li>
+          <li><strong>VPN：</strong>出发前在国内下载配置好</li>
+          <li><strong>WhatsApp：</strong>欧洲商务联系普遍使用，建议安装</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><div class="icon">🧳</div><h2>行李打包清单</h2></div>
+      <div class="grid-2">
+        <div class="card">
+          <strong>📄 证件类</strong>
+          <ul style="margin-top:8px">
+            <li>✅ 护照 + 复印件（单独存放）</li>
+            <li>✅ 申根签证</li>
+            <li>✅ 旅行保险单</li>
+            <li>✅ 公司证明文件 / 邀请函</li>
+            <li>✅ 酒店及机票预订单</li>
+          </ul>
+        </div>
+        <div class="card">
+          <strong>🔌 电子设备</strong>
+          <ul style="margin-top:8px">
+            <li>✅ 欧规圆脚转换插头</li>
+            <li>✅ 充电宝（≤100Wh 可带上机）</li>
+            <li>✅ 笔记本 + 充电器</li>
+            <li>✅ 手机 + 备用耳机</li>
+          </ul>
+        </div>
+        <div class="card">
+          <strong>💊 医疗健康</strong>
+          <ul style="margin-top:8px">
+            <li>✅ 常用药（感冒、肠胃、过敏）</li>
+            <li>✅ 处方药 + 英文处方</li>
+            <li>✅ 旅行保险卡 / 联系电话</li>
+          </ul>
+        </div>
+        <div class="card">
+          <strong>👔 着装</strong>
+          <ul style="margin-top:8px">
+            <li>✅ 商务正装（西装/套装）</li>
+            <li>✅ 舒适步行鞋</li>
+            <li>✅ 薄外套（天气多变）</li>
+            <li>✅ 折叠雨伞</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><div class="icon">🌤️</div><h2>气候参考</h2></div>
+      <div class="card">
+        <table>
+          <tr><th>季节</th><th>温度</th><th>穿着建议</th></tr>
+          <tr><td>春季（3-5月）</td><td>8-18°C</td><td>薄外套 + 可叠穿</td></tr>
+          <tr><td>夏季（6-8月）</td><td>18-30°C</td><td>轻薄商务装，备薄外套（室内冷气）</td></tr>
+          <tr><td>秋季（9-11月）</td><td>8-18°C</td><td>中等厚度外套，带伞</td></tr>
+          <tr><td>冬季（12-2月）</td><td>-2-8°C</td><td>厚外套、围巾、手套</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><div class="icon">📊</div><h2>法德速查对比</h2></div>
+      <div class="card">
+        <table>
+          <tr><th>项目</th><th>🇫🇷 法国</th><th>🇩🇪 德国</th></tr>
+          <tr><td>语言</td><td>法语（商务可用英语）</td><td>德语（商务英语普遍）</td></tr>
+          <tr><td>时区</td><td colspan="2">CET UTC+1（夏令时 UTC+2）</td></tr>
+          <tr><td>插座</td><td colspan="2">两脚圆头 230V</td></tr>
+          <tr><td>现金依赖</td><td>中等</td><td>较高</td></tr>
+          <tr><td>周日营业</td><td>大部分关门</td><td>几乎全关</td></tr>
+          <tr><td>守时要求</td><td>相对灵活</td><td>非常严格</td></tr>
+          <tr><td>商务风格</td><td>关系导向</td><td>数据导向</td></tr>
+          <tr><td>小费习惯</td><td colspan="2">5-10%</td></tr>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /common -->
+
+</div><!-- /container -->
+
+<footer>
+  <p>📅 更新于 2025 年 · 信息仅供参考，出行前请核实最新签证和入境政策</p>
+  <p style="margin-top:6px">如有疑问请联系所在国中国大使馆或总领馆</p>
+</footer>
+
+<script>
+  function showCountry(id, btn) {
+    document.querySelectorAll('.country-section').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
+</body>
+</html>
