@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>访谈记录看板</title>
+<style>
+:root{--blue:#1a3a6b;--light:#4a7bc8;--gold:#c9a84c;--red:#c0392b;--green:#27ae60;--gray:#f4f6f9;--text:#2c3e50;--border:#dde3ed;--hint:#7f8c9a}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:var(--gray);color:var(--text);line-height:1.7}
+header{background:linear-gradient(135deg,var(--blue),#2c5282);color:#fff;padding:28px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+header h1{font-size:1.5rem;font-weight:700}
+.header-btns{display:flex;gap:10px}
+.btn{padding:9px 20px;border:none;border-radius:8px;font-size:.9rem;font-weight:700;cursor:pointer;transition:.2s;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn-white{background:#fff;color:var(--blue)}
+.btn-white:hover{background:#e8edf5}
+.btn-green{background:var(--green);color:#fff}
+.btn-green:hover{background:#219a52}
+.btn-red{background:var(--red);color:#fff}
+.btn-red:hover{background:#a93226}
+.container{max-width:1100px;margin:0 auto;padding:24px 16px 60px}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+@media(max-width:640px){.stats{grid-template-columns:1fr 1fr}}
+.stat-card{background:#fff;border-radius:12px;padding:20px;border:1px solid var(--border);text-align:center;box-shadow:0 2px 6px rgba(0,0,0,.04)}
+.stat-num{font-size:2rem;font-weight:700;color:var(--blue)}
+.stat-label{font-size:.82rem;color:var(--hint);margin-top:4px}
+
+/* filter */
+.filter-bar{background:#fff;border-radius:12px;padding:16px 20px;border:1px solid var(--border);margin-bottom:20px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.filter-bar input,.filter-bar select{padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;color:var(--text);background:#fafbfc}
+
+/* table */
+.table-wrap{background:#fff;border-radius:12px;border:1px solid var(--border);overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th{background:var(--blue);color:#fff;padding:12px 16px;text-align:left;white-space:nowrap}
+td{padding:11px 16px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#f0f4ff}
+.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.78rem;font-weight:700}
+.badge-done{background:#d4edda;color:#155724}
+.badge-draft{background:#fff3cd;color:#856404}
+.empty{text-align:center;padding:60px 20px;color:var(--hint)}
+.empty .icon{font-size:3rem;margin-bottom:12px}
+
+/* detail modal */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;align-items:flex-start;justify-content:center;overflow-y:auto;padding:40px 16px}
+.modal-bg.open{display:flex}
+.modal{background:#fff;border-radius:14px;padding:0;max-width:800px;width:100%;margin:auto}
+.modal-head{background:var(--blue);color:#fff;padding:20px 24px;border-radius:14px 14px 0 0;display:flex;justify-content:space-between;align-items:center}
+.modal-head h3{font-size:1.1rem}
+.modal-close{background:none;border:none;color:#fff;font-size:1.4rem;cursor:pointer;line-height:1}
+.modal-body{padding:24px;max-height:70vh;overflow-y:auto}
+.meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;background:#f4f6f9;border-radius:10px;padding:16px}
+.meta-item{font-size:.85rem}
+.meta-item strong{color:var(--blue)}
+.q-block{margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:16px}
+.q-block:last-child{border-bottom:none}
+.q-text{font-weight:600;font-size:.88rem;color:var(--text);margin-bottom:6px}
+.q-ans{background:#f4f6f9;border-radius:8px;padding:10px 14px;font-size:.88rem;color:#333;white-space:pre-wrap;min-height:36px}
+.q-ans.empty-ans{color:var(--hint);font-style:italic}
+.section-title{background:var(--blue);color:#fff;padding:8px 14px;border-radius:8px;font-size:.85rem;font-weight:700;margin:16px 0 10px}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📊 访谈记录看板</h1>
+  <div class="header-btns">
+    <a href="interview.html" class="btn btn-white">➕ 新建访谈</a>
+    <button class="btn btn-green" onclick="exportCSV()">📥 导出 CSV</button>
+    <button class="btn btn-white" onclick="exportJSON()">📦 导出 JSON</button>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="stats">
+    <div class="stat-card"><div class="stat-num" id="stat-total">0</div><div class="stat-label">总访谈数</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-done">0</div><div class="stat-label">已完成提交</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-draft">0</div><div class="stat-label">草稿</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-today">0</div><div class="stat-label">今日访谈</div></div>
+  </div>
+
+  <div class="filter-bar">
+    <input type="text" id="search" placeholder="🔍 搜索受访者/访谈员..." oninput="renderTable()"/>
+    <select id="filter-status" onchange="renderTable()">
+      <option value="">全部状态</option>
+      <option value="done">已完成</option>
+      <option value="draft">草稿</option>
+    </select>
+    <select id="filter-lang" onchange="renderTable()">
+      <option value="">全部语言</option>
+      <option value="zh">中文</option>
+      <option value="en">English</option>
+      <option value="fr">Français</option>
+    </select>
+    <button class="btn btn-red" style="margin-left:auto" onclick="clearAll()">🗑 清空所有记录</button>
+  </div>
+
+  <div class="table-wrap">
+    <table id="main-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>受访者</th>
+          <th>访谈员</th>
+          <th>日期</th>
+          <th>语言</th>
+          <th>地点</th>
+          <th>状态</th>
+          <th>保存时间</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+    <div class="empty" id="empty-state" style="display:none">
+      <div class="icon">📭</div>
+      <div>暂无访谈记录</div>
+      <div style="margin-top:8px"><a href="interview.html" class="btn btn-white" style="color:var(--blue);border:1px solid var(--blue)">➕ 开始第一个访谈</a></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- 详情 Modal -->
+<div class="modal-bg" id="detail-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="modal-title">访谈详情</h3>
+      <button class="modal-close" onclick="closeDetail()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-content"></div>
+  </div>
+</div>
+
+<script>
+// ==================== 问卷标题映射 ====================
+const SECTION_TITLES = {
+  zh: ['开场破冰','行前过程','交通选择','住宿偏好','体验与活动','旅游攻略 & 分享','产品Demo'],
+  en: ['Ice Breaker','Pre-trip Planning','Transportation','Accommodation','Experiences','Travel Guides','Product Demo'],
+  fr: ['Brise-glace','Planification avant départ','Transport','Hébergement','Expériences','Guides & Partage','Démo produit']
+};
+
+const Q_LABELS = {
+  zh: {
+    s0q1:'最近一次旅行',
+    s1q1:'动机',s1q2:'信息渠道',s1q3:'目的地了解程度',s1q4:'提前规划时间',
+    s1q5:'规划工具',s1q6:'AI工具使用',s1q7:'是否分开预定',s1q8:'package产品',
+    s1q9:'预定烦恼点',s1q10:'支付方式',
+    s2q1:'法国境内交通',
+    s3q1:'住宿类型',s3q2:'住宿重要因素',s3q3:'取消政策',
+    s4q1:'提前预订活动',s4q2:'体验平台',
+    s5q1:'分享攻略',
+    s6q1:'是否购买产品',s6q2:'产品意见',s6q3:'补充信息'
+  },
+  en: {
+    s0q1:'Recent Trip',
+    s1q1:'Motivation',s1q2:'Information Channels',s1q3:'Destination Knowledge',s1q4:'Planning Timeline',
+    s1q5:'Planning Tools',s1q6:'AI Tools',s1q7:'Separate Bookings',s1q8:'Package Products',
+    s1q9:'Booking Pain Points',s1q10:'Payment Methods',
+    s2q1:'Transportation in France',s2q2:'TGV Discount Card',
+    s3q1:'Accommodation Type',s3q2:'Accommodation Priorities',s3q3:'Cancellation Policy',
+    s4q1:'Advance Activity Booking',s4q2:'Activity Platforms',
+    s5q1:'Sharing Travel Guides',
+    s6q1:'Would Purchase Product',s6q2:'Product Feedback',s6q3:'Additional Comments'
+  },
+  fr: {
+    s0q1:'Voyage récent',
+    s1q1:'Motivation',s1q2:'Sources d\'information',s1q3:'Connaissance destination',s1q4:'Délai de planification',
+    s1q5:'Outils de planification',s1q6:'Outils IA',s1q7:'Réservations séparées',s1q8:'Forfaits',
+    s1q9:'Points de friction',s1q10:'Modes de paiement',
+    s2q1:'Transport en France',s2q2:'Carte TGV',
+    s3q1:'Type hébergement',s3q2:'Priorités hébergement',s3q3:'Politique d\'annulation',
+    s4q1:'Réservation activités',s4q2:'Plateformes activités',
+    s5q1:'Partage de guides',
+    s6q1:'Achat produit',s6q2:'Feedback produit',s6q3:'Commentaires supplémentaires'
+  }
+};
+
+const SECTION_Q_MAP = [
+  ['s0q1'],
+  ['s1q1','s1q2','s1q3','s1q4','s1q5','s1q6','s1q7','s1q8','s1q9','s1q10'],
+  ['s2q1','s2q2'],
+  ['s3q1','s3q2','s3q3'],
+  ['s4q1','s4q2'],
+  ['s5q1'],
+  ['s6q1','s6q2','s6q3']
+];
+
+// ==================== 加载数据 ====================
+function loadAll() {
+  const list = JSON.parse(localStorage.getItem('interview_list') || '[]');
+  return list.map(key => {
+    const raw = localStorage.getItem(key);
+    if (!raw) return null;
+    try { return {key, ...JSON.parse(raw)}; } catch(e){ return null; }
+  }).filter(Boolean);
+}
+
+// ==================== 渲染列表 ====================
+function renderTable() {
+  const all = loadAll();
+  const search = document.getElementById('search').value.toLowerCase();
+  const filterStatus = document.getElementById('filter-status').value;
+  const filterLang = document.getElementById('filter-lang').value;
+  const today = new Date().toISOString().slice(0,10);
+
+  // stats
+  document.getElementById('stat-total').textContent = all.length;
+  document.getElementById('stat-done').textContent = all.filter(d=>d.meta?.submitted).length;
+  document.getElementById('stat-draft').textContent = all.filter(d=>!d.meta?.submitted).length;
+  document.getElementById('stat-today').textContent = all.filter(d=>d.meta?.date===today).length;
+
+  let filtered = all.filter(d => {
+    const m = d.meta || {};
+    if (search && !((m.interviewee||'').toLowerCase().includes(search) || (m.interviewer||'').toLowerCase().includes(search))) return false;
+    if (filterStatus === 'done' && !m.submitted) return false;
+    if (filterStatus === 'draft' && m.submitted) return false;
+    if (filterLang && m.lang !== filterLang) return false;
+    return true;
+  });
+
+  const tbody = document.getElementById('table-body');
+  const empty = document.getElementById('empty-state');
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  const langMap = {zh:'🇨🇳 中文', en:'🇬🇧 EN', fr:'🇫🇷 FR'};
+  tbody.innerHTML = filtered.map((d, i) => {
+    const m = d.meta || {};
+    const saved = m.savedAt ? new Date(m.savedAt).toLocaleString('zh-CN',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}) : '-';
+    const status = m.submitted
+      ? '<span class="badge badge-done">✅ 已完成</span>'
+      : '<span class="badge badge-draft">📝 草稿</span>';
+    return `<tr>
+      <td>${i+1}</td>
+      <td><strong>${m.interviewee||'-'}</strong></td>
+      <td>${m.interviewer||'-'}</td>
+      <td>${m.date||'-'}</td>
+      <td>${langMap[m.lang]||m.lang||'-'}</td>
+      <td>${m.location||'-'}</td>
+      <td>${status}</td>
+      <td style="font-size:.8rem;color:var(--hint)">${saved}</td>
+      <td>
+        <button class="btn btn-white" style="padding:5px 12px;font-size:.82rem" onclick="showDetail('${d.key}')">查看</button>
+        <button class="btn btn-red" style="padding:5px 12px;font-size:.82rem;margin-left:4px" onclick="deleteOne('${d.key}')">删除</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ==================== 详情 ====================
+function showDetail(key) {
+  const raw = localStorage.getItem(key);
+  if (!raw) return;
+  const data = JSON.parse(raw);
+  const m = data.meta || {};
+  const lang = m.lang || 'zh';
+  const labels = Q_LABELS[lang] || Q_LABELS.zh;
+  const secTitles = SECTION_TITLES[lang] || SECTION_TITLES.zh;
+  const answers = data.answers || {};
+
+  document.getElementById('modal-title').textContent = `${m.interviewee||'受访者'} · ${m.date||''}`;
+
+  let html = `
+    <div class="meta-grid">
+      <div class="meta-item"><strong>受访者：</strong>${m.interviewee||'-'}</div>
+      <div class="meta-item"><strong>访谈员：</strong>${m.interviewer||'-'}</div>
+      <div class="meta-item"><strong>日期：</strong>${m.date||'-'}</div>
+      <div class="meta-item"><strong>地点：</strong>${m.location||'-'}</div>
+      <div class="meta-item"><strong>年龄：</strong>${m.age||'-'}</div>
+      <div class="meta-item"><strong>职业：</strong>${m.job||'-'}</div>
+      <div class="meta-item"><strong>语言：</strong>${m.lang||'-'}</div>
+      <div class="meta-item"><strong>状态：</strong>${m.submitted?'✅ 已完成':'📝 草稿'}</div>
+      ${m.notes ? `<div class="meta-item" style="grid-column:1/-1"><strong>备注：</strong>${m.notes}</div>` : ''}
+    </div>`;
+
+  SECTION_Q_MAP.forEach((qids, si) => {
+    const hasAny = qids.some(id => answers[id] && answers[id].trim());
+    if (!hasAny) return;
+    html += `<div class="section-title">Section ${si+1}: ${secTitles[si]||''}</div>`;
+    qids.forEach(id => {
+      const val = answers[id] || '';
+      const label = labels[id] || id;
+      html += `
+        <div class="q-block">
+          <div class="q-text">▸ ${label}</div>
+          <div class="q-ans ${val.trim()?'':'empty-ans'}">${val.trim()||'（未填写）'}</div>
+        </div>`;
+    });
+  });
+
+  document.getElementById('modal-content').innerHTML = html;
+  document.getElementById('detail-modal').classList.add('open');
+}
+
+function closeDetail() {
+  document.getElementById('detail-modal').classList.remove('open');
+}
+
+// ==================== 删除 ====================
+function deleteOne(key) {
+  if (!confirm('确认删除此条访谈记录？')) return;
+  localStorage.removeItem(key);
+  let list = JSON.parse(localStorage.getItem('interview_list') || '[]');
+  list = list.filter(k => k !== key);
+  localStorage.setItem('interview_list', JSON.stringify(list));
+  renderTable();
+}
+
+function clearAll() {
+  if (!confirm('⚠️ 确认清空所有访谈记录？此操作不可恢复！')) return;
+  const list = JSON.parse(localStorage.getItem('interview_list') || '[]');
+  list.forEach(k => localStorage.removeItem(k));
+  localStorage.removeItem('interview_list');
+  renderTable();
+}
+
+// ==================== 导出 CSV ====================
+function exportCSV() {
+  const all = loadAll();
+  if (!all.length) { alert('暂无数据'); return; }
+
+  // 收集所有答题 ID
+  const allQIds = SECTION_Q_MAP.flat();
+  const headers = ['受访者','访谈员','日期','地点','年龄','职业','语言','状态','备注', ...allQIds];
+
+  const rows = all.map(d => {
+    const m = d.meta || {};
+    const ans = d.answers || {};
+    const base = [
+      m.interviewee||'', m.interviewer||'', m.date||'', m.location||'',
+      m.age||'', m.job||'', m.lang||'', m.submitted?'已完成':'草稿', m.notes||''
+    ];
+    const qvals = allQIds.map(id => (ans[id]||'').replace(/\n/g,' | '));
+    return [...base, ...qvals];
+  });
+
+  const csv = [headers, ...rows].map(r =>
+    r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')
+  ).join('\n');
+
+  const bom = '\uFEFF';
+  download(bom + csv, `interviews_${new Date().toISOString().slice(0,10)}.csv`, 'text/csv');
+}
+
+function exportJSON() {
+  const all = loadAll();
+  if (!all.length) { alert('暂无数据'); return; }
+  download(JSON.stringify(all, null, 2), `interviews_${new Date().toISOString().slice(0,10)}.json`, 'application/json');
+}
+
+function download(content, filename, type) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([content], {type}));
+  a.download = filename;
+  a.click();
+}
+
+// ==================== 初始化 ====================
+renderTable();
+</script>
+</body>
+</html>

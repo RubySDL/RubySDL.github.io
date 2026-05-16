@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>用户访谈问卷 | Interview Questionnaire</title>
+<style>
+:root{
+  --blue:#1a3a6b;--light:#4a7bc8;--gold:#c9a84c;--red:#c0392b;--green:#27ae60;
+  --gray:#f4f6f9;--text:#2c3e50;--border:#dde3ed;--hint:#7f8c9a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:var(--gray);color:var(--text);line-height:1.7}
+header{background:linear-gradient(135deg,var(--blue),#2c5282);color:#fff;padding:32px 24px;text-align:center}
+header h1{font-size:1.8rem;font-weight:700;margin-bottom:6px}
+header p{opacity:.85;font-size:.95rem}
+.lang-bar{background:#fff;border-bottom:2px solid var(--border);display:flex;justify-content:center;gap:0;padding:0;box-shadow:0 2px 6px rgba(0,0,0,.06);position:sticky;top:0;z-index:200}
+.lang-btn{padding:14px 24px;border:none;background:none;color:var(--blue);font-weight:700;font-size:.95rem;cursor:pointer;border-bottom:3px solid transparent;transition:.2s}
+.lang-btn.active{border-bottom-color:var(--gold);color:var(--gold)}
+.container{max-width:860px;margin:0 auto;padding:24px 16px 80px}
+
+/* meta card */
+.meta-card{background:#fff;border-radius:12px;padding:24px;border:1px solid var(--border);margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.meta-card h3{color:var(--blue);font-size:1rem;margin-bottom:14px;font-weight:700}
+.meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:540px){.meta-grid{grid-template-columns:1fr}}
+.field label{display:block;font-size:.82rem;font-weight:600;color:var(--hint);margin-bottom:4px}
+.field input,.field select,.field textarea{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:.93rem;color:var(--text);background:#fafbfc;transition:.2s;font-family:inherit}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--light);background:#fff}
+
+/* section */
+.section{margin-bottom:20px}
+.section-header{background:var(--blue);color:#fff;border-radius:10px 10px 0 0;padding:14px 20px;display:flex;align-items:center;gap:10px}
+.section-header .snum{background:rgba(255,255,255,.2);border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;flex-shrink:0}
+.section-header h2{font-size:1rem;font-weight:700}
+.section-header .time{margin-left:auto;opacity:.75;font-size:.82rem;white-space:nowrap}
+.section-body{background:#fff;border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px;overflow:hidden}
+
+/* question */
+.q-item{border-bottom:1px solid var(--border);padding:20px}
+.q-item:last-child{border-bottom:none}
+.q-main{font-weight:600;font-size:.97rem;color:var(--text);margin-bottom:10px}
+.q-hints{background:#f0f4ff;border-radius:8px;padding:12px 16px;margin-bottom:12px;font-size:.83rem;color:#4a5568;border-left:3px solid var(--light)}
+.q-hints summary{cursor:pointer;font-weight:600;color:var(--light);font-size:.83rem;user-select:none}
+.q-hints summary::marker{color:var(--light)}
+.hints-list{margin-top:8px;padding-left:16px}
+.hints-list li{margin-bottom:4px}
+.q-answer{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;font-size:.92rem;resize:vertical;min-height:90px;font-family:inherit;color:var(--text);background:#fafbfc;transition:.2s}
+.q-answer:focus{outline:none;border-color:var(--light);background:#fff}
+.q-answer::placeholder{color:#b0bec5}
+
+/* bottom bar */
+.bottom-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid var(--border);padding:12px 24px;display:flex;gap:12px;justify-content:center;z-index:100;box-shadow:0 -4px 12px rgba(0,0,0,.08)}
+.btn{padding:11px 28px;border:none;border-radius:8px;font-size:.95rem;font-weight:700;cursor:pointer;transition:.2s}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-primary:hover{background:#2c5282}
+.btn-secondary{background:#fff;color:var(--blue);border:2px solid var(--blue)}
+.btn-secondary:hover{background:var(--gray)}
+.btn-success{background:var(--green);color:#fff}
+.btn-success:hover{background:#219a52}
+
+/* toast */
+.toast{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-20px);background:#2c3e50;color:#fff;padding:12px 24px;border-radius:10px;font-size:.93rem;opacity:0;transition:.3s;z-index:999;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* modal */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;align-items:center;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{background:#fff;border-radius:14px;padding:32px;max-width:480px;width:90%;text-align:center}
+.modal h3{font-size:1.2rem;color:var(--blue);margin-bottom:12px}
+.modal p{color:var(--hint);font-size:.93rem;margin-bottom:20px;line-height:1.6}
+.modal-btns{display:flex;gap:12px;justify-content:center}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📋 用户访谈问卷</h1>
+  <p>User Interview Questionnaire · Questionnaire d'entretien utilisateur</p>
+</header>
+
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('zh')">🇨🇳 中文</button>
+  <button class="lang-btn" onclick="setLang('en')">🇬🇧 English</button>
+  <button class="lang-btn" onclick="setLang('fr')">🇫🇷 Français</button>
+</div>
+
+<div class="container">
+
+  <!-- 访谈元信息 -->
+  <div class="meta-card">
+    <h3 data-zh="📝 访谈基本信息" data-en="📝 Interview Information" data-fr="📝 Informations sur l'entretien">📝 访谈基本信息</h3>
+    <div class="meta-grid">
+      <div class="field">
+        <label data-zh="访谈员姓名" data-en="Interviewer Name" data-fr="Nom de l'intervieweur">访谈员姓名</label>
+        <input type="text" id="meta-interviewer" placeholder="请输入..."/>
+      </div>
+      <div class="field">
+        <label data-zh="受访者编号/姓名" data-en="Interviewee ID / Name" data-fr="ID / Nom de l'interviewé">受访者编号/姓名</label>
+        <input type="text" id="meta-interviewee" placeholder="U001 / 匿名"/>
+      </div>
+      <div class="field">
+        <label data-zh="访谈日期" data-en="Interview Date" data-fr="Date de l'entretien">访谈日期</label>
+        <input type="date" id="meta-date"/>
+      </div>
+      <div class="field">
+        <label data-zh="访谈地点/方式" data-en="Location / Method" data-fr="Lieu / Méthode">访谈地点/方式</label>
+        <input type="text" id="meta-location" placeholder="线下 / 线上视频 / 电话"/>
+      </div>
+      <div class="field">
+        <label data-zh="受访者年龄" data-en="Age" data-fr="Âge">受访者年龄</label>
+        <input type="text" id="meta-age" placeholder="例：28"/>
+      </div>
+      <div class="field">
+        <label data-zh="受访者职业" data-en="Occupation" data-fr="Profession">受访者职业</label>
+        <input type="text" id="meta-job" placeholder="例：产品经理"/>
+      </div>
+      <div class="field" style="grid-column:1/-1">
+        <label data-zh="备注" data-en="Notes" data-fr="Notes">备注</label>
+        <textarea id="meta-notes" rows="2" placeholder="其他补充信息..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- 问卷主体 -->
+  <div id="questionnaire"></div>
+
+</div>
+
+<!-- 底部操作栏 -->
+<div class="bottom-bar">
+  <button class="btn btn-secondary" onclick="clearForm()">🗑 清空</button>
+  <button class="btn btn-secondary" onclick="window.open('dashboard.html','_blank')">📊 查看记录</button>
+  <button class="btn btn-primary" onclick="saveInterview()">💾 保存记录</button>
+  <button class="btn btn-success" onclick="submitInterview()">✅ 提交完成</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <h3 id="modal-title">确认提交</h3>
+    <p id="modal-body">确认提交本次访谈记录？提交后将保存至本地并可在"查看记录"中查阅。</p>
+    <div class="modal-btns">
+      <button class="btn btn-secondary" onclick="closeModal()">取消</button>
+      <button class="btn btn-success" onclick="confirmSubmit()">确认提交</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ==================== 问卷数据 ====================
+const QUESTIONS = {
+  zh: [
+    {
+      id:'s0', title:'开场破冰', time:'2分钟',
+      objective:'目的：建立信任，了解背景，为后续问题做铺垫',
+      questions:[
+        {
+          id:'s0q1',
+          main:'先聊聊你最近一次旅行吧——去了哪里？去了几天？和谁一起？怎么去的？为什么要去这里？这次旅行吸引你的因素是什么？',
+          hints:[]
+        }
+      ]
+    },
+    {
+      id:'s1', title:'行前过程', time:'30分钟',
+      objective:'目的：还原真实计划路径，发现friction points',
+      questions:[
+        {
+          id:'s1q1', main:'【动机】出于什么原因决定旅游？（内在需求还是外部刺激）',
+          hints:['是什么触发了这次旅行决定？','是自己想去，还是被他人/内容种草？']
+        },
+        {
+          id:'s1q2', main:'你从哪些渠道或平台获取旅游信息？',
+          hints:[
+            '你为什么使用这个平台？获取的信息类型？对这个平台的信息如何评价？',
+            '有没有因为某个博主和朋友的分享决定去哪个地方旅行？具体哪个博主（KOC/KOL）？为什么吸引你？',
+            '什么类型的信息更吸引你，视频/图文/促销折扣/旅行书？',
+            '有哪些目前想要获取但缺乏靠谱渠道的信息？'
+          ]
+        },
+        {
+          id:'s1q3', main:'出发之前，你对目的地了解到什么程度？（完全没做功课 / 大概知道 / 详细规划）',
+          hints:['你觉得做攻略是很累的事情吗？']
+        },
+        {
+          id:'s1q4', main:'你会提前多久规划行程？会什么时候进行预定？',
+          hints:['什么场景下你会提前规划和预定行程？']
+        },
+        {
+          id:'s1q5', main:'你会使用什么工具来规划你的行程？',
+          hints:['是什么原因驱动你使用它？如何评价这个工具（优点和缺点）？']
+        },
+        {
+          id:'s1q6', main:'有没有使用过AI工具进行行程规划？',
+          hints:[
+            '有——是哪个AI工具，使用感受？你会在多大程度上采纳AI的攻略？',
+            '没有——不使用AI做攻略的原因是什么？',
+            '你希望AI规划工具解决你的什么问题？是否愿意为了它付费？愿意花多少钱？'
+          ]
+        },
+        {
+          id:'s1q7', main:'你的住宿、交通、体验是否分开预定？',
+          hints:['先订什么，后订什么？','你觉得分开预定是麻烦的吗？']
+        },
+        {
+          id:'s1q8', main:'有没有买过package的产品？',
+          hints:[
+            '买过：为什么买？买了什么，价格多少？在哪个平台买的？为什么选这个平台？是否进行了比价？',
+            '如果package更贵但依旧选择购买的原因是什么？',
+            '没买过：为什么不买？未来是否可能购买，如果买可能是因为什么？是否愿意为package支付额外溢价，可接受范围是多少？'
+          ]
+        },
+        {
+          id:'s1q9', main:'你觉得在预定的过程中，有什么比较烦人的点吗？',
+          hints:['如果有一站式的预定平台，能提供旅行的全程攻略，能否解决你的痛点？为什么？']
+        },
+        {
+          id:'s1q10', main:'你一般通过什么支付方式进行支付（信用卡/PayPal/Apple Pay/银行转账/支票）？为什么？',
+          hints:[
+            '分期和延期支付是否对你有吸引力？',
+            '旅行金额多少让您觉得需要分期？分期对您决策影响大吗？',
+            '有没有因为支付方式不支持而放弃过某个预订？请具体说是什么平台、什么产品、您本来想用什么方式付？'
+          ]
+        }
+      ]
+    },
+    {
+      id:'s2', title:'交通选择', time:'5分钟',
+      objective:'',
+      questions:[
+        {
+          id:'s2q1', main:'法国境内旅游你会选什么交通方式？',
+          hints:[
+            '为什么选它而不是别的？',
+            '这次旅行你大概用了几个平台/网站？是否进行了比价？对比了哪些平台？最后在哪个平台预订的？',
+            '最常使用的平台是什么？为什么使用它，吸引你的地方是什么？是什么因素让你对这个平台产生了忠诚？'
+          ]
+        }
+      ]
+    },
+    {
+      id:'s3', title:'住宿偏好', time:'5分钟',
+      objective:'',
+      questions:[
+        {
+          id:'s3q1', main:'你一般住什么类型的住宿？（酒店/民宿/青旅/露营地/其他）',
+          hints:['为什么偏好这种类型？有没有尝试过其他类型？','不同旅行场景下（家庭/情侣/独自）选择会不同吗？']
+        },
+        {
+          id:'s3q2', main:'你对住宿最看重的因素是什么？（价格/位置/设施/评价/取消政策）',
+          hints:['如果价格和位置冲突，你优先选哪个？','有没有因为评价（好/坏）改变过决定？']
+        },
+        {
+          id:'s3q3', main:'有没有因为某个住宿的取消政策太严格而放弃预订？',
+          hints:['具体是哪个平台/酒店的取消政策让你放弃？','可接受的取消政策是什么样的？（免费取消/24小时前/不可退）']
+        }
+      ]
+    },
+    {
+      id:'s4', title:'体验与活动', time:'5分钟',
+      objective:'',
+      questions:[
+        {
+          id:'s4q1', main:'你是否会在旅行前提前预订当地活动或体验？',
+          hints:['通常会提前多久预订？','如果到了当地临时决定，你会怎么找活动？']
+        },
+        {
+          id:'s4q2', main:'是否使用过体验活动的平台？Viator / Get Your Guide / Airbnb体验 等',
+          hints:[
+            '是——购买过什么体验活动？什么时候？价格多少？频次？满意度如何？',
+            '否——为什么没有？是否使用了其他方式进行预订？是什么？'
+          ]
+        }
+      ]
+    },
+    {
+      id:'s5', title:'旅游攻略 & 分享', time:'5分钟',
+      objective:'',
+      questions:[
+        {
+          id:'s5q1', main:'你是否愿意在网络上分享自己的旅行攻略？',
+          hints:[
+            '原因是什么？在哪些平台分享？',
+            '你愿意花多少时间去整理一篇旅行攻略？',
+            '如果现在有个平台你分享了旅行攻略被其他用户采纳，您将获得积分和激励，你会去使用吗？'
+          ]
+        }
+      ]
+    },
+    {
+      id:'s6', title:'产品交互图Demo演示及结束', time:'8分钟',
+      objective:'',
+      questions:[
+        {id:'s6q1', main:'你是否会考虑购买此产品？为什么？', hints:[]},
+        {id:'s6q2', main:'对于这个产品，是否有什么看法和意见？', hints:[]},
+        {id:'s6q3', main:'有没有我们没聊到、但你觉得对这类产品很重要的东西？', hints:[]}
+      ]
+    }
+  ],
+
+  en: [
+    {
+      id:'s0', title:'Ice Breaker', time:'2 min',
+      objective:'Objective: Build trust, understand background, lay groundwork for follow-up questions',
+      questions:[
+        {
+          id:'s0q1',
+          main:"1) Age, education, marital status, childbearing status, household income\n2) How many times do you travel per year? Where do you mainly go? Annual travel expenditure? Average cost per trip?\n3) Let's talk about your most recent trip — where did you go? For how many days? Who did you go with? How did you get there? Why did you choose this destination? What attracted you to this trip?",
+          hints:[]
+        }
+      ]
+    },
+    {
+      id:'s1', title:'Pre-trip Planning Process', time:'30 min',
+      objective:'Objective: Reconstruct the real planning path and identify friction points',
+      questions:[
+        {
+          id:'s1q1', main:'Motivation: What motivated you to decide on this trip? (Internal need or external stimulus?)',
+          hints:['What triggered the travel decision?','Was it your own desire, or were you inspired by content/friends?']
+        },
+        {
+          id:'s1q2', main:'Which channels or platforms do you use to get travel information?',
+          hints:[
+            "Why do you use this platform? What type of information do you get? How do you evaluate the information?",
+            "Have you ever decided to visit a place because of a blogger or friend's recommendation? Which blogger (KOC/KOL)? What attracted you?",
+            "What type of information appeals to you more — videos / photos / promotional discounts / travel books?",
+            "What information do you currently want but lack reliable channels for?"
+          ]
+        },
+        {
+          id:'s1q3', main:'Before departure, how well do you know your destination? (No research / Roughly know / Detailed planning)',
+          hints:['How and through which platforms do you learn about destinations?','Do you find doing travel research exhausting?']
+        },
+        {
+          id:'s1q4', main:'How far in advance do you plan your itinerary? When do you make bookings?',
+          hints:[
+            'In what scenarios do you plan and book in advance?',
+            'What tools do you use to plan your itinerary? What drives you to use them? How do you evaluate these tools?',
+            'Have you used AI tools for itinerary planning? Which tool? How was the experience? To what extent would you adopt AI-generated guides?',
+            'What problems do you hope an AI planning tool would solve? Would you pay for it? How much?'
+          ]
+        },
+        {
+          id:'s1q5', main:'Do you book your accommodation, transportation, and experiences separately?',
+          hints:['What do you book first?','Do you find booking separately troublesome?']
+        },
+        {
+          id:'s1q6', main:'Have you ever purchased a package product?',
+          hints:[
+            'Yes: Why? What did you buy, at what price? On which platform? Did you compare prices? Were packages more expensive than individual items?',
+            'If a package is more expensive but you still choose it, why?',
+            'No: Why not? Might you buy one in the future? Would you pay a premium for a package? What is the acceptable range?'
+          ]
+        },
+        {
+          id:'s1q7', main:'Do you find anything particularly annoying during the booking process?',
+          hints:['If there were a one-stop booking platform with a complete travel guide, would it solve your pain points? Why?']
+        },
+        {
+          id:'s1q8', main:'What payment methods do you generally use (Credit Card / PayPal / Apple Pay / Bank Transfer / Check)? Why?',
+          hints:[
+            'Are installment and deferred payment attractive to you?',
+            'At what travel amount would you feel the need for installment payments?',
+            'Have you ever abandoned a booking because the payment method was not supported? Please specify which platform, product, and what payment method you intended to use.'
+          ]
+        }
+      ]
+    },
+    {
+      id:'s2', title:'Transportation Choices', time:'5 min',
+      objective:'',
+      questions:[
+        {
+          id:'s2q1', main:'What transportation do you choose for travel within France?',
+          hints:[
+            'Why choose this over other options?',
+            'How many platforms did you use? Did you compare prices? On which platform did you finally book?',
+            'What is your most frequently used platform? Why? What factors have made you loyal to it?'
+          ]
+        },
+        {
+          id:'s2q2', main:'Do you have a TGV discount card?',
+          hints:[
+            'Yes: TGV purchase details (monthly/annual?), usage frequency, main routes, motivations?',
+            'b) What factors influence your purchase of €0 tickets? If you got a €0 ticket, would you go to that destination? Have you ever visited somewhere spontaneously because of it?',
+            'c) After getting a €0 ticket, do you need to book other transportation, accommodation, or attractions? Where?',
+            'd) What pain points have you encountered? How do you deal with them?',
+            'e) If a new tool compiled a list of €0 tickets for you, would you use it? If it offered other travel products too, would you consider it?',
+            'No: Why not?'
+          ]
+        }
+      ]
+    },
+    {
+      id:'s3', title:'Accommodation Preferences', time:'5 min',
+      objective:'',
+      questions:[
+        {
+          id:'s3q1', main:'What type of accommodation do you usually stay in? (Hotel / B&B / Hostel / Campsite / Other)',
+          hints:['Why do you prefer this type? Have you tried others?','Does your choice differ across travel scenarios (family / couple / solo)?']
+        },
+        {
+          id:'s3q2', main:'What factors matter most when choosing accommodation? (Price / Location / Amenities / Reviews / Cancellation Policy)',
+          hints:['If price and location conflict, which do you prioritize?','Have you ever changed your decision because of reviews?']
+        },
+        {
+          id:'s3q3', main:'Have you ever abandoned a booking because the cancellation policy was too strict?',
+          hints:["Which platform/hotel's cancellation policy made you abandon the booking?",'What kind of cancellation policy is acceptable? (Free cancellation / 24 hours prior / Non-refundable)']
+        }
+      ]
+    },
+    {
+      id:'s4', title:'Experiences & Activities', time:'5 min',
+      objective:'',
+      questions:[
+        {
+          id:'s4q1', main:'Do you book local activities or experiences in advance before traveling?',
+          hints:['How far in advance?','If you decide spontaneously upon arrival, how do you find activities?']
+        },
+        {
+          id:'s4q2', main:'Have you used experience activity platforms? Viator / Get Your Guide / Airbnb Experiences, etc.',
+          hints:[
+            'Yes — What activities? When? Price? Frequency? Satisfaction?',
+            'No — Why not? Did you use other methods?'
+          ]
+        }
+      ]
+    },
+    {
+      id:'s5', title:'Travel Guides & Sharing', time:'5 min',
+      objective:'',
+      questions:[
+        {
+          id:'s5q1', main:'Are you willing to share your travel guides online?',
+          hints:[
+            'Why? On which platforms?',
+            'If a platform offered points/incentives when others adopted your guide, would you use it?',
+            'How much time are you willing to spend compiling a travel guide?'
+          ]
+        }
+      ]
+    },
+    {
+      id:'s6', title:'Product Demo & Wrap-up', time:'8 min',
+      objective:'',
+      questions:[
+        {id:'s6q1', main:'Would you consider purchasing this product? Why?', hints:[]},
+        {id:'s6q2', main:'Do you have any opinions or feedback on this product?', hints:[]},
+        {id:'s6q3', main:"Is there anything important for this type of product that we haven't discussed?", hints:[]}
+      ]
+    }
+  ],
+
+  fr: [
+    {
+      id:'s0', title:'Brise-glace', time:'2 min',
+      objective:'Objectif : Établir la confiance, comprendre le contexte, préparer le terrain',
+      questions:[
+        {
+          id:'s0q1',
+          main:"1) Âge, niveau d'études, situation matrimoniale, revenu familial\n2) Combien de fois voyagez-vous par an ? Dépenses annuelles ? Coût moyen par voyage ?\n3) Parlons de votre voyage le plus récent — où êtes-vous allé(e) ? Pendant combien de jours ? Avec qui ? Pourquoi cette destination ?",
+          hints:[]
+        }
+      ]
+    },
+    {
+      id:'s1', title:'Processus de planification avant le départ', time:'30 min',
+      objective:'Objectif : Reconstituer le parcours réel de planification et identifier les points de friction',
+      questions:[
+        {
+          id:'s1q1', main:"Motivation : Qu'est-ce qui vous a motivé(e) à décider de ce voyage ?",
+          hints:["Besoin interne ou stimulus externe ?"]
+        },
+        {
+          id:'s1q2', main:'Par quels canaux ou plateformes obtenez-vous vos informations de voyage ?',
+          hints:[
+            "Pourquoi utilisez-vous cette plateforme ? Quel type d'informations ? Comment les évaluez-vous ?",
+            "Avez-vous déjà décidé de visiter un endroit à cause d'un blogueur (KOC/KOL) ?",
+            "Quel type d'informations vous attire — vidéos / photos / promotions / guides ?",
+            "Quelles informations souhaitez-vous mais manquez de canaux fiables ?"
+          ]
+        },
+        {
+          id:'s1q3', main:'Avant le départ, dans quelle mesure connaissez-vous votre destination ?',
+          hints:['Trouvez-vous que faire des recherches de voyage est épuisant ?']
+        },
+        {
+          id:'s1q4', main:"À quelle date avancée planifiez-vous votre itinéraire ? Quand effectuez-vous les réservations ?",
+          hints:[
+            "Dans quels scénarios planifiez-vous à l'avance ?",
+            "Quels outils utilisez-vous ? Avez-vous utilisé des outils IA pour planifier votre itinéraire ?",
+            "Quels problèmes espérez-vous qu'un outil IA résolve ? Seriez-vous prêt(e) à payer ?"
+          ]
+        },
+        {
+          id:'s1q5', main:'Réservez-vous votre hébergement, transport et expériences séparément ?',
+          hints:["Qu'est-ce que vous réservez d'abord ?","Trouvez-vous cela fastidieux ?"]
+        },
+        {
+          id:'s1q6', main:'Avez-vous déjà acheté un produit package (forfait) ?',
+          hints:[
+            "Oui : Pourquoi ? Quoi ? Prix ? Sur quelle plateforme ? Avez-vous comparé les prix ?",
+            "Si un forfait est plus cher mais que vous l'achetez quand même, pourquoi ?",
+            "Non : Pourquoi pas ? Seriez-vous prêt(e) à payer une prime supplémentaire ?"
+          ]
+        },
+        {
+          id:'s1q7', main:'Trouvez-vous quelque chose de particulièrement ennuyeux pendant le processus de réservation ?',
+          hints:["S'il existait une plateforme tout-en-un, cela résoudrait-il vos points de friction ?"]
+        },
+        {
+          id:'s1q8', main:'Quels modes de paiement utilisez-vous (Carte de crédit / PayPal / Apple Pay / Virement / Chèque) ?',
+          hints:[
+            'Le paiement fractionné vous attire-t-il ?',
+            'Avez-vous déjà abandonné une réservation parce que le mode de paiement était non supporté ?'
+          ]
+        }
+      ]
+    },
+    {
+      id:'s2', title:'Choix de transport', time:'5 min',
+      objective:'',
+      questions:[
+        {
+          id:'s2q1', main:'Quel moyen de transport choisissez-vous pour voyager en France ?',
+          hints:[
+            "Pourquoi choisir ceci plutôt qu'autre chose ?",
+            "Combien de plateformes avez-vous utilisées ? Avez-vous comparé les prix ?",
+            "Quelle plateforme utilisez-vous le plus fréquemment ? Pourquoi ?"
+          ]
+        },
+        {
+          id:'s2q2', main:'Avez-vous une carte de réduction TGV ?',
+          hints:[
+            "Oui : Détails d'achat, fréquence d'utilisation, principales lignes ?",
+            "b) Quels facteurs influencent votre achat de billets à 0€ ?",
+            "c) Après avoir obtenu un billet à 0€, devez-vous acheter d'autres produits ?",
+            "d) Quels points de friction avez-vous rencontrés ?",
+            "e) Si un nouvel outil compilait une liste de billets à 0€, l'utiliseriez-vous ?",
+            "Non : Pourquoi pas ?"
+          ]
+        }
+      ]
+    },
+    {
+      id:'s3', title:"Préférences d'hébergement", time:'5 min',
+      objective:'',
+      questions:[
+        {
+          id:'s3q1', main:'Quel type d\'hébergement choisissez-vous ? (Hôtel / B&B / Auberge / Camping / Autre)',
+          hints:['Pourquoi ce type ? Avez-vous essayé d\'autres types ?','Votre choix varie-t-il selon le contexte (famille / couple / solo) ?']
+        },
+        {
+          id:'s3q2', main:'Quels facteurs comptent le plus pour vous ? (Prix / Emplacement / Équipements / Avis / Politique d\'annulation)',
+          hints:['Si prix et emplacement s\'affrontent, lequel priorisez-vous ?','Avez-vous changé d\'avis à cause d\'avis (positifs/négatifs) ?']
+        },
+        {
+          id:'s3q3', main:'Avez-vous déjà abandonné une réservation à cause d\'une politique d\'annulation trop stricte ?',
+          hints:['Quelle plateforme/hôtel ?','Quelle politique est acceptable ? (Annulation gratuite / 24h avant / Non remboursable)']
+        }
+      ]
+    },
+    {
+      id:'s4', title:'Expériences & Activités', time:'5 min',
+      objective:'',
+      questions:[
+        {
+          id:'s4q1', main:'Réservez-vous des activités ou expériences locales à l\'avance ?',
+          hints:['Combien de temps à l\'avance ?','Si vous décidez spontanément, comment trouvez-vous des activités ?']
+        },
+        {
+          id:'s4q2', main:'Avez-vous utilisé des plateformes d\'activités ? Viator / Get Your Guide / Airbnb Expériences, etc.',
+          hints:[
+            'Oui — Quelles activités ? Quand ? Prix ? Fréquence ? Satisfaction ?',
+            'Non — Pourquoi pas ? Avez-vous utilisé d\'autres méthodes ?'
+          ]
+        }
+      ]
+    },
+    {
+      id:'s5', title:'Guides de voyage & Partage', time:'5 min',
+      objective:'',
+      questions:[
+        {
+          id:'s5q1', main:'Êtes-vous prêt(e) à partager vos guides de voyage en ligne ?',
+          hints:[
+            'Pourquoi ? Sur quelles plateformes ?',
+            "Si une plateforme offrait des points quand d'autres adoptent votre guide, l'utiliseriez-vous ?",
+            'Combien de temps êtes-vous prêt(e) à consacrer à la rédaction d\'un guide ?'
+          ]
+        }
+      ]
+    },
+    {
+      id:'s6', title:'Démonstration produit & Conclusion', time:'8 min',
+      objective:'',
+      questions:[
+        {id:'s6q1', main:'Envisageriez-vous d\'acheter ce produit ? Pourquoi ?', hints:[]},
+        {id:'s6q2', main:'Avez-vous des opinions ou des commentaires sur ce produit ?', hints:[]},
+        {id:'s6q3', main:"Y a-t-il quelque chose d'important que nous n'avons pas abordé ?", hints:[]}
+      ]
+    }
+  ]
+};
+
+// ==================== 状态 ====================
+let currentLang = 'zh';
+
+// ==================== 渲染问卷 ====================
+function renderQuestionnaire(lang) {
+  const sections = QUESTIONS[lang];
+  const container = document.getElementById('questionnaire');
+  container.innerHTML = '';
+
+  sections.forEach((sec, si) => {
+    const div = document.createElement('div');
+    div.className = 'section';
+    let objHtml = sec.objective ? `<div style="font-size:.82rem;opacity:.75;margin-top:4px">${sec.objective}</div>` : '';
+    let qs = sec.questions.map((q, qi) => {
+      const mainText = q.main.replace(/\n/g,'<br/>');
+      const hintsHtml = q.hints.length ? `
+        <details class="q-hints">
+          <summary>💡 追问提示 / Follow-up prompts</summary>
+          <ul class="hints-list">
+            ${q.hints.map(h=>`<li>${h}</li>`).join('')}
+          </ul>
+        </details>` : '';
+      return `
+        <div class="q-item">
+          <div class="q-main">${si === 0 && qi === 0 ? '' : `Q${qi+1}. `}${mainText}</div>
+          ${hintsHtml}
+          <textarea class="q-answer" id="ans-${q.id}" placeholder="记录受访者回答..." rows="4"></textarea>
+        </div>`;
+    }).join('');
+
+    div.innerHTML = `
+      <div class="section-header">
+        <div class="snum">${si+1}</div>
+        <h2>${sec.title}</h2>
+        ${sec.time ? `<div class="time">⏱ ${sec.time}</div>` : ''}
+      </div>
+      ${objHtml}
+      <div class="section-body">${qs}</div>`;
+    container.appendChild(div);
+  });
+
+  // 恢复已填写内容
+  restoreAnswers();
+}
+
+// ==================== 语言切换 ====================
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+
+  // 切换 label 文字
+  document.querySelectorAll('[data-zh]').forEach(el => {
+    el.textContent = el.dataset[lang] || el.dataset.zh;
+  });
+
+  renderQuestionnaire(lang);
+}
+
+// ==================== 本地存储 ====================
+function getStorageKey() {
+  const id = document.getElementById('meta-interviewee').value.trim() || 'draft';
+  const date = document.getElementById('meta-date').value || new Date().toISOString().slice(0,10);
+  return `interview_${date}_${id}`;
+}
+
+function collectData() {
+  const answers = {};
+  document.querySelectorAll('.q-answer').forEach(el => {
+    answers[el.id.replace('ans-','')] = el.value;
+  });
+  return {
+    meta: {
+      interviewer: document.getElementById('meta-interviewer').value,
+      interviewee: document.getElementById('meta-interviewee').value,
+      date: document.getElementById('meta-date').value,
+      location: document.getElementById('meta-location').value,
+      age: document.getElementById('meta-age').value,
+      job: document.getElementById('meta-job').value,
+      notes: document.getElementById('meta-notes').value,
+      lang: currentLang,
+      savedAt: new Date().toISOString()
+    },
+    answers
+  };
+}
+
+function restoreAnswers() {
+  const key = getStorageKey();
+  const saved = localStorage.getItem(key);
+  if (!saved) return;
+  try {
+    const data = JSON.parse(saved);
+    if (data.answers) {
+      Object.entries(data.answers).forEach(([id, val]) => {
+        const el = document.getElementById('ans-' + id);
+        if (el) el.value = val;
+      });
+    }
+  } catch(e){}
+}
+
+function saveInterview() {
+  const data = collectData();
+  const key = getStorageKey();
+  localStorage.setItem(key, JSON.stringify(data));
+
+  // 存入总列表
+  let list = JSON.parse(localStorage.getItem('interview_list') || '[]');
+  if (!list.includes(key)) list.push(key);
+  localStorage.setItem('interview_list', JSON.stringify(list));
+
+  showToast('✅ 已保存到本地');
+}
+
+function submitInterview() {
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+}
+function confirmSubmit() {
+  closeModal();
+  saveInterview();
+
+  // 标记为已完成
+  const key = getStorageKey();
+  const data = JSON.parse(localStorage.getItem(key) || '{}');
+  data.meta.submitted = true;
+  data.meta.submittedAt = new Date().toISOString();
+  localStorage.setItem(key, JSON.stringify(data));
+
+  showToast('🎉 访谈已提交！可在"查看记录"中查阅');
+}
+
+function clearForm() {
+  if (!confirm('确认清空所有填写内容？')) return;
+  document.querySelectorAll('.q-answer').forEach(el => el.value = '');
+  ['meta-interviewer','meta-interviewee','meta-date','meta-location','meta-age','meta-job','meta-notes']
+    .forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
+  showToast('🗑 已清空');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ==================== 初始化 ====================
+document.getElementById('meta-date').value = new Date().toISOString().slice(0,10);
+renderQuestionnaire('zh');
+
+// 自动保存（每30秒）
+setInterval(saveInterview, 30000);
+</script>
+</body>
+</html>
