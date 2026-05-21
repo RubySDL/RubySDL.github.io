@@ -104,6 +104,13 @@ header p{opacity:.85;font-size:.93rem}
 /* 状态徽章 */
 .status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px}
 .dot-draft{background:var(--gold)}.dot-done{background:var(--green)}
+
+.tab-bar{background:#fff;border-bottom:2px solid var(--border);display:flex;justify-content:center;flex-wrap:wrap;gap:6px;padding:12px;position:sticky;top:50px;z-index:199;box-shadow:0 2px 4px rgba(0,0,0,.04)}
+.tab-btn{padding:8px 18px;border:1.5px solid var(--border);background:#fff;color:var(--text);border-radius:20px;font-weight:600;font-size:.88rem;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:6px;font-family:inherit}
+.tab-btn:hover{border-color:var(--light);background:#f0f4ff}
+.tab-btn.active{background:var(--blue);color:#fff;border-color:var(--blue);box-shadow:0 2px 8px rgba(26,58,107,.2)}
+.tab-emoji{font-size:1rem}
+.tab-content{display:block}
 </style>
 </head>
 <body>
@@ -122,6 +129,14 @@ header p{opacity:.85;font-size:.93rem}
   <div class="lang-sep" style="margin-left:20px"></div>
   <button class="lang-btn" onclick="window.open('dashboard.html','_blank')" style="color:var(--green)">📊 查看记录</button>
 </div>
+<div class="tab-bar">
+  <button class="tab-btn active" data-tab="basic" onclick="setTab('basic', null, this)"><span class="tab-emoji">📋</span> <span class="tab-text" data-key="basic">基础问卷</span></button>
+  <button class="tab-btn" data-tab="deep" data-persona="general" onclick="setTab('deep', 'general', this)"><span class="tab-emoji">🧭</span> <span class="tab-text" data-key="general">通用</span></button>
+  <button class="tab-btn" data-tab="deep" data-persona="discount" onclick="setTab('deep', 'discount', this)"><span class="tab-emoji">🎫</span> <span class="tab-text" data-key="discount">折扣卡</span></button>
+  <button class="tab-btn" data-tab="deep" data-persona="beach" onclick="setTab('deep', 'beach', this)"><span class="tab-emoji">🏖️</span> <span class="tab-text" data-key="beach">海滨</span></button>
+  <button class="tab-btn" data-tab="deep" data-persona="camping" onclick="setTab('deep', 'camping', this)"><span class="tab-emoji">⛺</span> <span class="tab-text" data-key="camping">露营</span></button>
+</div>
+
 
 <div class="container">
 
@@ -144,7 +159,8 @@ header p{opacity:.85;font-size:.93rem}
     </div>
   </div>
 
-  <!-- ===== 基础问卷（PDF） ===== -->
+  <div id="tab-basic" class="tab-content">
+<!-- ===== 基础问卷（PDF） ===== -->
   <div class="divider-title">📝 基础问卷（Questionnaire de base）</div>
   <div style="background:#fff8e1;border-left:4px solid var(--gold);border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:.87rem;color:#7a5f00">
     💡 可在访谈前/后根据用户填写的纸质问卷或 Google 表单结果录入此处
@@ -283,10 +299,13 @@ header p{opacity:.85;font-size:.93rem}
     </div>
   </div>
 
-  <!-- ===== 深度访谈 ===== -->
+  </div>
+<div id="tab-deep" class="tab-content" style="display:none">
+<!-- ===== 深度访谈 ===== -->
   <div class="divider-title">🎙 深度访谈记录（Entretien approfondi）</div>
 
   <div id="questionnaire"></div>
+</div>
 
 </div>
 
@@ -312,128 +331,2420 @@ header p{opacity:.85;font-size:.93rem}
 
 <script>
 // ==================== 深度访谈数据 ====================
-const QUESTIONS = {
-  zh:[
-    {id:'s0',title:'开场破冰',time:'2分钟',obj:'目的：建立信任，了解背景，为后续问题做铺垫',qs:[
-      {id:'s0q1',main:'先聊聊你最近一次旅行吧——去了哪里？去了几天？和谁一起？怎么去的？为什么要去这里？这次旅行吸引你的因素是什么？',hints:[]}
-    ]},
-    {id:'s1',title:'行前过程',time:'30分钟',obj:'目的：还原真实计划路径，发现 friction points',qs:[
-      {id:'s1q1',main:'【动机】出于什么原因决定旅游？（内在需求还是外部刺激）',hints:['是什么触发了这次旅行决定？','是自己想去，还是被他人/内容种草？']},
-      {id:'s1q2',main:'你从哪些渠道或平台获取旅游信息？',hints:['你为什么使用这个平台？获取的信息类型？如何评价？','有没有因为某个博主和朋友的分享决定去哪里旅行？具体哪个博主（KOC/KOL）？为什么吸引你？','什么类型的信息更吸引你：视频/图文/促销折扣/旅行书？','有哪些目前想获取但缺乏靠谱渠道的信息？']},
-      {id:'s1q3',main:'出发之前，你对目的地了解到什么程度？（完全没做功课 / 大概知道 / 详细规划）',hints:['你觉得做攻略是很累的事情吗？']},
-      {id:'s1q4',main:'你会提前多久规划行程？会什么时候进行预定？',hints:['什么场景下你会提前规划和预定行程？']},
-      {id:'s1q5',main:'你会使用什么工具来规划你的行程？',hints:['是什么原因驱动你使用它？如何评价这个工具（优点和缺点）？']},
-      {id:'s1q6',main:'有没有使用过 AI 工具进行行程规划？',hints:['有——是哪个AI工具？使用感受？你会在多大程度上采纳AI的攻略？','没有——不使用AI做攻略的原因是什么？','你希望AI规划工具解决什么问题？是否愿意付费？愿意花多少钱？']},
-      {id:'s1q7',main:'你的住宿、交通、体验是否分开预定？',hints:['先订什么，后订什么？','你觉得分开预定是麻烦的吗？']},
-      {id:'s1q8',main:'有没有买过 package 的产品？',hints:['买过：为什么买？买了什么，价格多少？在哪个平台买的？是否进行了比价？','如果package更贵但依旧选择购买的原因是什么？','没买过：为什么不买？未来是否可能购买？是否愿意为package支付额外溢价，可接受范围是多少？']},
-      {id:'s1q9',main:'你觉得在预定的过程中，有什么比较烦人的点吗？',hints:['如果有一站式的预定平台，能提供旅行全程攻略，能否解决你的痛点？为什么？']},
-      {id:'s1q10',main:'你一般通过什么支付方式进行支付（信用卡/PayPal/Apple Pay/银行转账/支票）？为什么？',hints:['分期和延期支付是否对你有吸引力？','旅行金额多少让你觉得需要分期？分期对决策影响大吗？','有没有因为支付方式不支持而放弃过某个预订？请具体说明。']}
-    ]},
-    {id:'s2',title:'交通选择',time:'5分钟',obj:'',qs:[
-      {id:'s2q1',main:'法国境内旅游你会选什么交通方式？',hints:['为什么选它而不是别的？','这次旅行用了几个平台？是否比价？最后在哪个平台预订的？','最常使用的平台是什么？为什么？是什么因素让你对这个平台产生了忠诚？']},
-      {id:'s2q2',main:'是否有 TGV 折扣卡？',hints:['有：购买详情（月卡/年卡？）、使用频率、主要路线？','0€票有没有影响过你的目的地选择？有没有因为0€票临时决定去某地？','拿到0€票后还需要买什么配套产品？在哪里订？','使用过程中遇到了什么痛点？','如果有工具帮你整合0€票列表+配套产品，你会用吗？','没有：为什么没有购买？']}
-    ]},
-    {id:'s3',title:'住宿偏好',time:'5分钟',obj:'',qs:[
-      {id:'s3q1',main:'你一般住什么类型的住宿？（酒店/民宿/青旅/露营地/其他）',hints:['为什么偏好这种类型？有没有尝试过其他类型？','不同旅行场景下（家庭/情侣/独自）选择会不同吗？']},
-      {id:'s3q2',main:'你对住宿最看重的因素是什么？（价格/位置/设施/评价/取消政策）',hints:['如果价格和位置冲突，你优先选哪个？','有没有因为评价（好/坏）改变过决定？']},
-      {id:'s3q3',main:'有没有因为某个住宿的取消政策太严格而放弃预订？',hints:['具体是哪个平台/酒店的取消政策让你放弃？','可接受的取消政策是什么样的？（免费取消/24小时前/不可退）']}
-    ]},
-    {id:'s4',title:'体验与活动',time:'5分钟',obj:'',qs:[
-      {id:'s4q1',main:'你是否会在旅行前提前预订当地活动或体验？',hints:['通常会提前多久预订？','如果到了当地临时决定，你会怎么找活动？']},
-      {id:'s4q2',main:'是否使用过体验活动平台？Viator / Get Your Guide / Airbnb 体验等',hints:['是——购买过什么体验活动？什么时候？价格多少？频次？满意度？','否——为什么没有？是否用了其他方式预订？']}
-    ]},
-    {id:'s5',title:'旅游攻略 & 分享',time:'5分钟',obj:'',qs:[
-      {id:'s5q1',main:'你是否愿意在网络上分享自己的旅行攻略？',hints:['原因是什么？在哪些平台分享？','你愿意花多少时间整理一篇旅行攻略？','如果平台会在你的攻略被采纳时给你积分和激励，你会去使用吗？']}
-    ]},
-    {id:'s6',title:'产品 Demo & 结束',time:'8分钟',obj:'',qs:[
-      {id:'s6q1',main:'你是否会考虑购买此产品？为什么？',hints:[]},
-      {id:'s6q2',main:'对于这个产品，是否有什么看法和意见？',hints:[]},
-      {id:'s6q3',main:'有没有我们没聊到、但你觉得对这类产品很重要的东西？',hints:[]}
-    ]}
-  ],
-  en:[
-    {id:'s0',title:'Ice Breaker',time:'2 min',obj:"Objective: Build trust, understand background",qs:[
-      {id:'s0q1',main:"1) Age, education, marital status, children, household income\n2) How many times per year do you travel? Main destinations? Annual spend? Average per trip?\n3) Tell me about your most recent trip — where, how long, who with, how you got there, why you chose it?",hints:[]}
-    ]},
-    {id:'s1',title:'Pre-trip Planning',time:'30 min',obj:'Objective: Reconstruct the real planning path and identify friction points',qs:[
-      {id:'s1q1',main:'Motivation: What motivated you to decide on this trip?',hints:['Internal need or external stimulus?','Was it your own desire or inspired by content/friends?']},
-      {id:'s1q2',main:'Which channels or platforms do you use to get travel information?',hints:['Why this platform? What type of info? How do you evaluate it?','Have you ever decided to visit a place because of a blogger (KOC/KOL)?','What type of info appeals more — videos / photos / discounts / travel books?','What info do you want but lack reliable sources for?']},
-      {id:'s1q3',main:'Before departure, how well did you know your destination?',hints:['How and through which platforms do you learn about destinations?','Do you find travel research exhausting?']},
-      {id:'s1q4',main:'How far in advance do you plan? When do you book?',hints:['In what scenarios do you plan and book in advance?']},
-      {id:'s1q5',main:'What tools do you use to plan your itinerary?',hints:['What drives you to use them? Pros and cons?']},
-      {id:'s1q6',main:'Have you used AI tools for itinerary planning?',hints:['Yes — which tool? Experience? How much do you rely on AI suggestions?','No — why not?','What problems do you hope AI planning solves? Would you pay for it? How much?']},
-      {id:'s1q7',main:'Do you book accommodation, transport, and activities separately?',hints:['What do you book first?','Do you find separate booking troublesome?']},
-      {id:'s1q8',main:'Have you ever purchased a package product?',hints:['Yes: why? What? Price? Platform? Did you compare prices?','If a package is more expensive but you still buy it, why?','No: why not? Might you in the future? Acceptable premium for package?']},
-      {id:'s1q9',main:'Is there anything particularly annoying during the booking process?',hints:['Would a one-stop platform with a full travel guide solve your pain points?']},
-      {id:'s1q10',main:'What payment methods do you use? (Credit card / PayPal / Apple Pay / Bank transfer / Check)',hints:['Are installment payments attractive?','At what travel cost would you want installment payments?','Have you ever abandoned a booking due to unsupported payment method?']}
-    ]},
-    {id:'s2',title:'Transportation',time:'5 min',obj:'',qs:[
-      {id:'s2q1',main:'What transport do you choose for travel within France?',hints:['Why this over other options?','How many platforms did you use? Did you compare? Where did you book?','Most-used platform and why? What keeps you loyal?']},
-      {id:'s2q2',main:'Do you have a TGV discount card?',hints:['Yes: purchase details, frequency, main routes?','Do €0 tickets influence your destination choice? Have you travelled spontaneously because of one?','After getting a €0 ticket, what else do you book? Where?','Pain points in current usage?','Would you use a tool that compiled €0 tickets + related products?','No: why not?']}
-    ]},
-    {id:'s3',title:'Accommodation',time:'5 min',obj:'',qs:[
-      {id:'s3q1',main:'What type of accommodation do you usually stay in?',hints:['Why this type? Tried others?','Does choice differ by travel scenario (family / couple / solo)?']},
-      {id:'s3q2',main:'What factors matter most? (Price / Location / Amenities / Reviews / Cancellation)',hints:['If price vs. location conflict, which wins?','Have reviews ever changed your decision?']},
-      {id:'s3q3',main:'Have you abandoned a booking due to strict cancellation policy?',hints:["Which platform/hotel's policy made you give up?",'What cancellation policy is acceptable?']}
-    ]},
-    {id:'s4',title:'Experiences & Activities',time:'5 min',obj:'',qs:[
-      {id:'s4q1',main:'Do you book local activities in advance?',hints:['How far in advance?','If you decide on arrival, how do you find activities?']},
-      {id:'s4q2',main:'Have you used activity platforms? Viator / Get Your Guide / Airbnb Experiences',hints:['Yes — what, when, price, frequency, satisfaction?','No — why not? Alternative method?']}
-    ]},
-    {id:'s5',title:'Guides & Sharing',time:'5 min',obj:'',qs:[
-      {id:'s5q1',main:'Are you willing to share travel guides online?',hints:['Why? Which platforms?','How much time would you spend writing a guide?','If a platform rewarded you with points when your guide is adopted, would you use it?']}
-    ]},
-    {id:'s6',title:'Product Demo & Wrap-up',time:'8 min',obj:'',qs:[
-      {id:'s6q1',main:'Would you consider purchasing this product? Why?',hints:[]},
-      {id:'s6q2',main:'Any opinions or feedback on this product?',hints:[]},
-      {id:'s6q3',main:"Anything important we haven't covered?",hints:[]}
-    ]}
-  ],
-  fr:[
-    {id:'s0',title:'Brise-glace',time:'2 min',obj:'Objectif : Établir la confiance, comprendre le contexte',qs:[
-      {id:'s0q1',main:"1) Âge, études, situation familiale, enfants, revenu\n2) Combien de voyages par an ? Destinations ? Budget annuel ? Budget moyen ?\n3) Parlez-moi de votre dernier voyage — où, durée, avec qui, comment, pourquoi ?",hints:[]}
-    ]},
-    {id:'s1',title:'Processus de planification',time:'30 min',obj:'Objectif : Reconstituer le parcours réel et identifier les points de friction',qs:[
-      {id:'s1q1',main:"Motivation : Qu'est-ce qui vous a motivé(e) à décider de ce voyage ?",hints:["Besoin interne ou stimulus externe ?","Votre propre envie ou inspiré(e) par du contenu/amis ?"]},
-      {id:'s1q2',main:"Par quels canaux ou plateformes obtenez-vous vos informations de voyage ?",hints:["Pourquoi cette plateforme ? Type d'infos ? Évaluation ?","Un blogueur (KOC/KOL) vous a-t-il influencé(e) ?","Quel type d'info vous attire le plus — vidéos / photos / promos / guides ?","Quelles infos manquez-vous de sources fiables ?"]},
-      {id:'s1q3',main:"Avant le départ, dans quelle mesure connaissiez-vous votre destination ?",hints:["Comment apprenez-vous à connaître une destination ?","Trouvez-vous la recherche de voyage épuisante ?"]},
-      {id:'s1q4',main:"À combien de temps à l'avance planifiez-vous ? Quand réservez-vous ?",hints:["Dans quels scénarios planifiez-vous à l'avance ?"]},
-      {id:'s1q5',main:"Quels outils utilisez-vous pour planifier votre itinéraire ?",hints:["Qu'est-ce qui vous pousse à les utiliser ? Avantages et inconvénients ?"]},
-      {id:'s1q6',main:"Avez-vous utilisé des outils IA pour planifier votre itinéraire ?",hints:["Oui — lequel ? Expérience ? Dans quelle mesure adoptez-vous ses suggestions ?","Non — pourquoi ?","Quels problèmes espérez-vous qu'un outil IA résolve ? Paieriez-vous pour ça ?"]},
-      {id:'s1q7',main:"Réservez-vous hébergement, transport et expériences séparément ?",hints:["Qu'est-ce que vous réservez en premier ?","Trouvez-vous cela fastidieux ?"]},
-      {id:'s1q8',main:"Avez-vous déjà acheté un forfait ?",hints:["Oui : pourquoi ? Quoi ? Prix ? Plateforme ? Comparaison de prix ?","Si un forfait est plus cher, pourquoi l'achetez-vous quand même ?","Non : pourquoi pas ? Prime acceptable pour un forfait ?"]},
-      {id:'s1q9',main:"Y a-t-il quelque chose de particulièrement ennuyeux lors de la réservation ?",hints:["Une plateforme tout-en-un résoudrait-elle vos points de friction ?"]},
-      {id:'s1q10',main:"Quels modes de paiement utilisez-vous ? (CB / PayPal / Apple Pay / Virement / Chèque)",hints:["Le paiement fractionné vous attire-t-il ?","À quel montant auriez-vous besoin d'un paiement fractionné ?","Avez-vous abandonné une réservation à cause d'un mode de paiement non supporté ?"]}
-    ]},
-    {id:'s2',title:'Choix de transport',time:'5 min',obj:'',qs:[
-      {id:'s2q1',main:"Quel transport choisissez-vous pour voyager en France ?",hints:["Pourquoi ce choix ?","Combien de plateformes ? Comparaison de prix ? Plateforme finale ?","Plateforme la plus utilisée et pourquoi ?"]},
-      {id:'s2q2',main:"Avez-vous une carte de réduction TGV ?",hints:["Oui : détails d'achat, fréquence, lignes principales ?","Les billets à 0€ influencent-ils votre choix de destination ?","Après un billet à 0€, que réservez-vous en plus ?","Points de friction actuels ?","Utiliseriez-vous un outil compilant billets 0€ + produits associés ?","Non : pourquoi pas ?"]}
-    ]},
-    {id:'s3',title:"Préférences d'hébergement",time:'5 min',obj:'',qs:[
-      {id:'s3q1',main:"Quel type d'hébergement choisissez-vous habituellement ?",hints:["Pourquoi ce type ? Avez-vous essayé d'autres ?","Votre choix varie-t-il selon le contexte (famille / couple / solo) ?"]},
-      {id:'s3q2',main:"Quels facteurs comptent le plus ? (Prix / Emplacement / Équipements / Avis / Annulation)",hints:["Si prix et emplacement s'opposent, lequel prime ?","Les avis ont-ils déjà changé votre décision ?"]},
-      {id:'s3q3',main:"Avez-vous abandonné une réservation à cause d'une politique d'annulation trop stricte ?",hints:["Quelle plateforme/hôtel ?","Quelle politique d'annulation est acceptable ?"]}
-    ]},
-    {id:'s4',title:'Expériences & Activités',time:'5 min',obj:'',qs:[
-      {id:'s4q1',main:"Réservez-vous des activités locales à l'avance ?",hints:["Combien de temps à l'avance ?","Si vous décidez sur place, comment trouvez-vous des activités ?"]},
-      {id:'s4q2',main:"Avez-vous utilisé des plateformes d'activités ? Viator / Get Your Guide / Airbnb Expériences",hints:["Oui — quoi, quand, prix, fréquence, satisfaction ?","Non — pourquoi ? Méthode alternative ?"]}
-    ]},
-    {id:'s5',title:'Guides & Partage',time:'5 min',obj:'',qs:[
-      {id:'s5q1',main:"Êtes-vous prêt(e) à partager vos guides de voyage en ligne ?",hints:["Pourquoi ? Sur quelles plateformes ?","Combien de temps y consacreriez-vous ?","Si une plateforme vous récompensait quand votre guide est adopté, l'utiliseriez-vous ?"]}
-    ]},
-    {id:'s6',title:'Démo produit & Conclusion',time:'8 min',obj:'',qs:[
-      {id:'s6q1',main:"Envisageriez-vous d'acheter ce produit ? Pourquoi ?",hints:[]},
-      {id:'s6q2',main:"Avez-vous des opinions ou commentaires sur ce produit ?",hints:[]},
-      {id:'s6q3',main:"Y a-t-il quelque chose d'important que nous n'avons pas abordé ?",hints:[]}
-    ]}
-  ]
+// Auto-generated from LimeSurvey JSON files. Do not edit by hand.
+const QUESTIONS_BY_PERSONA = {
+  "general": {
+    "fr": [
+      {
+        "id": "s0",
+        "title": "1. Brise-glace",
+        "time": "2 min",
+        "obj": "Objectif : établir la confiance, comprendre le contexte, préparer le terrain pour la suite.",
+        "qs": [
+          {
+            "id": "s0q1",
+            "main": "Parlez-moi de votre dernier voyage : où êtes-vous allé(e), combien de temps, avec qui, comment vous y êtes rendu(e), pourquoi cette destination, et qu'est-ce qui vous a le plus attiré(e) ?",
+            "hints": []
+          }
+        ]
+      },
+      {
+        "id": "s1",
+        "title": "2. Processus avant le départ",
+        "time": "30 min",
+        "obj": "Objectif : reconstituer le parcours réel de planification et identifier les points de friction.",
+        "qs": [
+          {
+            "id": "s1q1",
+            "main": "[Motivation] Qu'est-ce qui vous a poussé(e) à partir en voyage ? (besoin personnel ou déclencheur extérieur)",
+            "hints": []
+          },
+          {
+            "id": "s1q2",
+            "main": "Par quels canaux ou plateformes obtenez-vous vos informations de voyage ?",
+            "hints": [
+              "1. Pourquoi cette plateforme en particulier ? Quel type d'information y cherchez-vous ? Comment évaluez-vous la qualité de ces informations ?",
+              "2. Vous est-il déjà arrivé de décider d'une destination grâce au partage d'un blogueur ou d'un ami ? Lequel précisément (KOC / KOL) ? Pourquoi vous a-t-il convaincu(e) ?",
+              "3. Quel format vous attire le plus : vidéo, photo + texte, promotion / réduction, guide de voyage ?",
+              "4. Y a-t-il des informations que vous aimeriez trouver mais pour lesquelles vous manquez de sources fiables ?"
+            ]
+          },
+          {
+            "id": "s1q3",
+            "main": "Avant le départ, dans quelle mesure connaissiez-vous la destination ? (aucune recherche / quelques informations générales / planification détaillée)",
+            "hints": [
+              "1. Préparer un itinéraire vous semble-t-il une tâche fatigante ?"
+            ]
+          },
+          {
+            "id": "s1q4",
+            "main": "Combien de temps à l'avance planifiez-vous votre voyage ? À quel moment commencez-vous à réserver ?",
+            "hints": [
+              "1. Dans quelles situations planifiez-vous et réservez-vous à l'avance ?"
+            ]
+          },
+          {
+            "id": "s1q5",
+            "main": "Quels outils utilisez-vous pour planifier votre itinéraire ?",
+            "hints": [
+              "1. Qu'est-ce qui vous pousse à l'utiliser ? Comment évaluez-vous cet outil (avantages et inconvénients) ?"
+            ]
+          },
+          {
+            "id": "s1q6",
+            "main": "Avez-vous déjà utilisé des outils d'intelligence artificielle pour planifier un voyage ?",
+            "hints": [
+              "1. L'avez-vous déjà utilisé ?",
+              "(1) Oui : quel outil ? Quelle a été votre expérience ? Dans quelle mesure suivez-vous les suggestions de l'IA ?",
+              "Si vous avez utilisé plusieurs plateformes avec IA, comparez leurs avantages et inconvénients.",
+              "(2) Non : pourquoi ne pas utiliser l'IA pour préparer un voyage ?",
+              "2. Quels problèmes attendez-vous qu'un outil de planification IA résolve ? Seriez-vous prêt(e) à payer ? À quel prix ?",
+              "3. Entre un outil IA tiers indépendant et la même fonction proposée par une grande OTA, lequel préféreriez-vous utiliser ? Pourquoi ?"
+            ]
+          },
+          {
+            "id": "s1q7",
+            "main": "Réservez-vous séparément l'hébergement, le transport et les activités ?",
+            "hints": [
+              "1. Que réservez-vous en premier, et ensuite ? Pourquoi cet ordre ? Est-ce une habitude ou cela varie selon les voyages ?",
+              "2. Trouvez-vous fastidieux de réserver chaque élément séparément ?"
+            ]
+          },
+          {
+            "id": "s1q8",
+            "main": "Quelles étapes du processus de réservation trouvez-vous les plus pénibles ?",
+            "hints": [
+              "Si une plateforme tout-en-un proposait l'organisation complète du voyage, répondrait-elle à vos difficultés ? Pourquoi ?"
+            ]
+          },
+          {
+            "id": "s1q9",
+            "main": "Avez-vous déjà acheté une offre packagée (vol + hôtel, séjour tout compris, etc.) ?",
+            "hints": [
+              "1. Si oui :",
+              "(1) Pourquoi l'avoir achetée ? Qu'est-ce qui était inclus ? À quel prix ?",
+              "(2) Sur quelle plateforme ? Pourquoi cette plateforme-là ?",
+              "(3) Comparez-vous les prix avant d'acheter un forfait ? Le décomposez-vous en achats séparés pour le comparer ?",
+              "(4) Dans quels cas accepteriez-vous qu'un forfait coûte plus cher que la somme des éléments achetés séparément ?",
+              "2. Si non :",
+              "(1) Pourquoi pas ?",
+              "(2) Pourriez-vous en acheter un à l'avenir ? Pour quelles raisons ?",
+              "(3) Seriez-vous prêt(e) à payer un supplément pour un forfait ? Dans quelle fourchette ?"
+            ]
+          },
+          {
+            "id": "s1q10",
+            "main": "Quels modes de paiement utilisez-vous habituellement ? (carte bancaire, PayPal, Apple Pay, virement, chèque) Pourquoi ?",
+            "hints": [
+              "1. Les paiements en plusieurs fois ou différés sont-ils attractifs pour vous ?",
+              "2. À partir de quel montant de voyage estimez-vous avoir besoin d'un paiement fractionné ? Cette option a-t-elle un impact important sur votre décision ?",
+              "3. Avez-vous déjà abandonné une réservation parce que le mode de paiement souhaité n'était pas accepté ? Précisez la plateforme, le produit et le mode de paiement que vous vouliez utiliser."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s2",
+        "title": "3. Choix du transport",
+        "time": "5 min",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s2q1",
+            "main": "Pour un voyage en France, quel moyen de transport choisissez-vous habituellement ?",
+            "hints": [
+              "1. Quels critères avez-vous comparés ? (prix, heure de départ, heure d'arrivée, durée du trajet, etc.)",
+              "2. Pourquoi avoir finalement choisi cette plateforme pour réserver ?"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s3",
+        "title": "4. Préférences d'hébergement",
+        "time": "5 min",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s3q1",
+            "main": "Quel type d'hébergement choisissez-vous habituellement ? (hôtel, location entre particuliers, auberge de jeunesse, camping, autre)",
+            "hints": [
+              "1. Pourquoi cette préférence ? Avez-vous déjà essayé d'autres types ?",
+              "2. Votre choix change-t-il selon le contexte du voyage (en famille, en couple, en solo) ?"
+            ]
+          },
+          {
+            "id": "s3q2",
+            "main": "Quels critères comptent le plus pour vous lors du choix d'un hébergement ? (prix, emplacement, équipements, avis, conditions d'annulation)",
+            "hints": [
+              "1. Où réservez-vous vos hébergements ? Comparez-vous les plateformes ? Sur quels critères ? Sur quelle plateforme avez-vous finalement réservé ? Pourquoi celle-là ?"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s4",
+        "title": "5. Expériences et activités",
+        "time": "5 min",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s4q1",
+            "main": "Réservez-vous des activités ou des expériences locales avant le départ ?",
+            "hints": [
+              "1. Combien de temps à l'avance réservez-vous en général ?",
+              "2. Si vous décidez sur place, comment trouvez-vous les activités ?"
+            ]
+          },
+          {
+            "id": "s4q2",
+            "main": "Avez-vous déjà utilisé des plateformes d'activités ? Par exemple Viator, GetYourGuide, Airbnb Experiences ?",
+            "hints": [
+              "1. Si oui : quelles expériences avez-vous achetées ? Quand ? À quel prix ? À quelle fréquence ? Étiez-vous satisfait(e) ?",
+              "2. Si non : pourquoi pas ? Avez-vous réservé autrement ? Comment ?"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s5",
+        "title": "6. Guides et partage",
+        "time": "5 min",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s5q1",
+            "main": "Seriez-vous prêt(e) à partager vos propres récits ou guides de voyage en ligne ?",
+            "hints": [
+              "1. Pour quelles raisons ? Sur quelles plateformes les partageriez-vous ?",
+              "2. Combien de temps seriez-vous prêt(e) à consacrer à la rédaction d'un guide ?",
+              "3. Si une plateforme vous accordait des points et des récompenses lorsque votre guide est utilisé par d'autres voyageurs, l'utiliseriez-vous ?"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s6",
+        "title": "7. Démo produit et conclusion",
+        "time": "8 min",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s6q1",
+            "main": "Envisageriez-vous d'acheter ce produit ? Pourquoi ?",
+            "hints": []
+          },
+          {
+            "id": "s6q2",
+            "main": "Quelles sont vos impressions ou remarques sur ce produit ?",
+            "hints": []
+          },
+          {
+            "id": "s6q3",
+            "main": "Y a-t-il un sujet que nous n'avons pas abordé et que vous jugez important pour ce type de produit ?",
+            "hints": []
+          }
+        ]
+      }
+    ],
+    "en": [
+      {
+        "id": "s0",
+        "title": "1. Ice-breaker",
+        "time": "2 min",
+        "obj": "Objective: build trust, understand the context, set up the rest of the interview.",
+        "qs": [
+          {
+            "id": "s0q1",
+            "main": "Tell me about your most recent trip: where did you go, how long, with whom, how did you get there, why this destination, and what attracted you the most?",
+            "hints": []
+          }
+        ]
+      },
+      {
+        "id": "s1",
+        "title": "2. Pre-trip planning",
+        "time": "30 min",
+        "obj": "Objective: reconstruct the real planning journey and identify friction points.",
+        "qs": [
+          {
+            "id": "s1q1",
+            "main": "[Motivation] What made you decide to take this trip? (personal need or external trigger)",
+            "hints": []
+          },
+          {
+            "id": "s1q2",
+            "main": "Which channels or platforms do you use to get travel information?",
+            "hints": [
+              "1. Why this platform in particular? What type of information do you look for there? How do you rate the quality of the content?",
+              "2. Have you ever decided on a destination because of a blogger or a friend's recommendation? Which one specifically (KOC/KOL)? What appealed to you?",
+              "3. Which format appeals most to you: video, photo+text, promotion/discount, travel books?",
+              "4. What information would you like but currently lack reliable sources for?"
+            ]
+          },
+          {
+            "id": "s1q3",
+            "main": "Before leaving, how well did you know the destination? (no research / rough idea / detailed plan)",
+            "hints": [
+              "1. Do you find planning an itinerary tiring?"
+            ]
+          },
+          {
+            "id": "s1q4",
+            "main": "How far in advance do you plan your trip? When do you start booking?",
+            "hints": [
+              "1. In what situations do you plan and book in advance?"
+            ]
+          },
+          {
+            "id": "s1q5",
+            "main": "What tools do you use to plan your itinerary?",
+            "hints": [
+              "1. What drives you to use it? How would you rate this tool (pros and cons)?"
+            ]
+          },
+          {
+            "id": "s1q6",
+            "main": "Have you ever used AI tools to plan a trip?",
+            "hints": [
+              "1. Have you used one?",
+              "(1) Yes: which tool? How was the experience? To what extent do you follow the AI's suggestions?",
+              "If you've used several platforms with AI planning, compare their pros and cons.",
+              "(2) No: why don't you use AI to plan trips?",
+              "2. What problems do you expect an AI planning tool to solve? Would you pay for it? How much?",
+              "3. Between an independent third-party AI tool and a well-known OTA offering the same feature, which would you prefer? Why?"
+            ]
+          },
+          {
+            "id": "s1q7",
+            "main": "Do you book accommodation, transport, and activities separately?",
+            "hints": [
+              "1. What do you book first, then next? Why this order? Is it a habit, or does it vary?",
+              "2. Do you find it tedious to book each element separately?"
+            ]
+          },
+          {
+            "id": "s1q8",
+            "main": "Which steps in the booking process do you find most annoying?",
+            "hints": [
+              "If an all-in-one booking platform offered a complete travel guide, would it solve your pain points? Why?"
+            ]
+          },
+          {
+            "id": "s1q9",
+            "main": "Have you ever purchased a packaged offer (flight + hotel, all-inclusive stay, etc.)?",
+            "hints": [
+              "1. If yes:",
+              "(1) Why did you buy it? What was included? At what price?",
+              "(2) On which platform? Why this platform?",
+              "(3) Do you compare prices before buying a package? Do you break it into separate purchases to compare?",
+              "(4) Under what circumstances would you accept a package costing more than the sum of separate purchases?",
+              "2. If no:",
+              "(1) Why not?",
+              "(2) Might you buy one in the future? For what reasons?",
+              "(3) Would you be willing to pay extra for a package? In what price range?"
+            ]
+          },
+          {
+            "id": "s1q10",
+            "main": "What payment methods do you usually use? (credit card, PayPal, Apple Pay, bank transfer, check) Why?",
+            "hints": [
+              "1. Are installment or deferred payments appealing to you?",
+              "2. From what trip amount do you feel installment payments become necessary? Does this option strongly impact your decision?",
+              "3. Have you ever abandoned a booking because your preferred payment method wasn't accepted? Specify the platform, the product, and the method you wanted to use."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s2",
+        "title": "3. Transport choice",
+        "time": "5 min",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s2q1",
+            "main": "For a trip within France, what mode of transport do you usually choose?",
+            "hints": [
+              "1. Which factors did you compare? (price, departure time, arrival time, journey length, etc.)",
+              "2. Why did you ultimately choose that platform to book?"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s3",
+        "title": "4. Accommodation preferences",
+        "time": "5 min",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s3q1",
+            "main": "What type of accommodation do you usually choose? (hotel, short-term rental, hostel, campsite, other)",
+            "hints": [
+              "1. Why this preference? Have you tried other types?",
+              "2. Does your choice change depending on the trip context (family, couple, solo)?"
+            ]
+          },
+          {
+            "id": "s3q2",
+            "main": "What criteria matter most when choosing an accommodation? (price, location, amenities, reviews, cancellation policy)",
+            "hints": [
+              "1. Where do you book accommodations? Do you compare platforms? On which criteria? On which platform did you finally book? Why that one?"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s4",
+        "title": "5. Experiences & activities",
+        "time": "5 min",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s4q1",
+            "main": "Do you book local activities or experiences before leaving?",
+            "hints": [
+              "1. How far in advance do you usually book?",
+              "2. If you decide on-site, how do you find activities?"
+            ]
+          },
+          {
+            "id": "s4q2",
+            "main": "Have you used activity platforms? Such as Viator, GetYourGuide, Airbnb Experiences?",
+            "hints": [
+              "1. If yes: which experiences did you buy? When? At what price? How often? Were you satisfied?",
+              "2. If no: why not? Did you book another way? How?"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s5",
+        "title": "6. Guides & sharing",
+        "time": "5 min",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s5q1",
+            "main": "Would you be willing to share your own travel guides or stories online?",
+            "hints": [
+              "1. For what reasons? On which platforms would you share?",
+              "2. How much time would you spend writing a travel guide?",
+              "3. If a platform gave you points and rewards when your guide is used by other travelers, would you use it?"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s6",
+        "title": "7. Product demo & wrap-up",
+        "time": "8 min",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s6q1",
+            "main": "Would you consider buying this product? Why?",
+            "hints": []
+          },
+          {
+            "id": "s6q2",
+            "main": "What are your impressions or feedback on this product?",
+            "hints": []
+          },
+          {
+            "id": "s6q3",
+            "main": "Is there something we didn't cover that you think is important for this type of product?",
+            "hints": []
+          }
+        ]
+      }
+    ],
+    "zh": [
+      {
+        "id": "s0",
+        "title": "1. 开场破冰（2 分钟）",
+        "time": "",
+        "obj": "目的：建立信任，了解背景，为后续问题做铺垫。",
+        "qs": [
+          {
+            "id": "s0q1",
+            "main": "先聊聊您最近一次旅行吧——去了哪里？去了几天？和谁一起？怎么去的？为什么选这里？这次旅行最吸引您的因素是什么？",
+            "hints": []
+          }
+        ]
+      },
+      {
+        "id": "s1",
+        "title": "2. 行前过程（30 分钟）",
+        "time": "",
+        "obj": "目的：还原真实计划路径，发现 friction points。",
+        "qs": [
+          {
+            "id": "s1q1",
+            "main": "【动机】出于什么原因决定旅游？（内在需求还是外部刺激）",
+            "hints": []
+          },
+          {
+            "id": "s1q2",
+            "main": "您从哪些渠道或平台获取旅游信息？",
+            "hints": [
+              "1. 为什么使用这个平台？获取的是什么类型的信息？您怎么评价该平台的信息？",
+              "2. 有没有因为某位博主或朋友的分享而决定去某地旅行？具体是哪位博主（KOC/KOL）？为什么吸引您？",
+              "3. 什么类型的信息更吸引您：视频 / 图文 / 促销折扣 / 旅行书？",
+              "4. 有哪些信息您目前想获取但缺乏可靠渠道？"
+            ]
+          },
+          {
+            "id": "s1q3",
+            "main": "出发之前，您对目的地了解到什么程度？（完全没做功课 / 大概知道 / 详细规划）",
+            "hints": [
+              "1. 您觉得做攻略是一件很累的事吗？"
+            ]
+          },
+          {
+            "id": "s1q4",
+            "main": "您会提前多久规划行程？什么时候开始进行预订？",
+            "hints": [
+              "1. 什么场景下您会提前规划和预订行程？"
+            ]
+          },
+          {
+            "id": "s1q5",
+            "main": "您会使用什么工具来规划行程？",
+            "hints": [
+              "1. 是什么原因驱动您使用它？您怎么评价这个工具（优点和缺点）？"
+            ]
+          },
+          {
+            "id": "s1q6",
+            "main": "您有没有使用过 AI 工具来规划行程？",
+            "hints": [
+              "1. 是否用过",
+              "(1) 用过——是哪个 AI 工具？使用感受如何？您会在多大程度上采纳 AI 的建议？",
+              "如果用过多个带 AI 规划功能的平台，请聊聊各自的体验和优缺点。",
+              "(2) 没用过——不使用 AI 做攻略的原因是什么？",
+              "2. 您希望 AI 规划工具帮您解决什么问题？是否愿意付费？愿意付多少？",
+              "3. 独立的第三方 AI 规划工具 vs 知名 OTA 平台推出类似功能，您更愿意使用哪个？为什么？"
+            ]
+          },
+          {
+            "id": "s1q7",
+            "main": "您的住宿、交通、体验活动是分开预订的吗？",
+            "hints": [
+              "1. 先订什么，后订什么？为什么是这样的顺序？是偶然，还是每次都这样？",
+              "2. 您觉得分开预订是麻烦的事吗？"
+            ]
+          },
+          {
+            "id": "s1q8",
+            "main": "您觉得在预订过程中，有哪些比较烦人的环节？",
+            "hints": [
+              "如果有一个一站式预订平台，能提供旅行全程攻略，能解决您的痛点吗？为什么？"
+            ]
+          },
+          {
+            "id": "s1q9",
+            "main": "您有没有买过 package（打包产品）？",
+            "hints": [
+              "1. 买过",
+              "(1) 为什么买？买了什么？价格多少？",
+              "(2) 在哪个平台买的？为什么选这个平台？",
+              "(3) 购买 package 时会不会比价？会拆成单项消费再比价吗？",
+              "(4) 什么情况下可以接受 package 有溢价（比单独买更贵）？",
+              "2. 没买过",
+              "(1) 为什么不买？",
+              "(2) 未来是否可能购买？如果买可能是因为什么原因？",
+              "(3) 是否愿意为 package 支付额外溢价？可接受的范围是多少？"
+            ]
+          },
+          {
+            "id": "s1q10",
+            "main": "您一般通过什么支付方式付款？（信用卡 / PayPal / Apple Pay / 银行转账 / 支票）为什么？",
+            "hints": [
+              "1. 分期和延期支付是否对您有吸引力？",
+              "2. 旅行金额到多少您会觉得需要分期？分期对决策影响大吗？",
+              "3. 有没有因为支付方式不支持而放弃过某个预订？请具体说是什么平台、什么产品、您本来想用什么方式付？"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s2",
+        "title": "3. 交通选择（5 分钟）",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s2q1",
+            "main": "在法国境内旅行时，您一般选择什么交通方式？",
+            "hints": [
+              "1. 您比较了哪些因素？（价格、出发时间、到达时间、行程时长等）",
+              "2. 为什么最后选择了那个平台进行预订？"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s3",
+        "title": "4. 住宿偏好（5 分钟）",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s3q1",
+            "main": "您一般住什么类型的住宿？（酒店 / 民宿 / 青旅 / 露营地 / 其他）",
+            "hints": [
+              "1. 为什么偏好这种类型？有没有尝试过其他类型？",
+              "2. 不同旅行场景下（家庭 / 情侣 / 独自）选择会不同吗？"
+            ]
+          },
+          {
+            "id": "s3q2",
+            "main": "您选择住宿时最看重哪些因素？（价格 / 位置 / 设施 / 评价 / 取消政策）",
+            "hints": [
+              "1. 您在哪里订住宿？会比较吗？比较了哪些因素？最后在哪个平台预订？为什么选它？"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s4",
+        "title": "5. 体验与活动（5 分钟）",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s4q1",
+            "main": "您会在旅行前提前预订当地活动或体验吗？",
+            "hints": [
+              "1. 通常会提前多久预订？",
+              "2. 如果到了当地才临时决定，您会怎么找活动？"
+            ]
+          },
+          {
+            "id": "s4q2",
+            "main": "您是否使用过体验活动平台？例如 Viator / GetYourGuide / Airbnb Experiences 等",
+            "hints": [
+              "1. 有——购买过什么体验？什么时候？价格多少？频次？满意度如何？",
+              "2. 没有——为什么没有？是否用了其他方式预订？是什么？"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s5",
+        "title": "6. 旅游攻略与分享（5 分钟）",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s5q1",
+            "main": "您是否愿意在网上分享自己的旅行攻略？",
+            "hints": [
+              "1. 原因是什么？在哪些平台分享？",
+              "2. 您愿意花多少时间去整理一篇旅行攻略？",
+              "3. 如果有一个平台，当您分享的攻略被其他用户采纳时您能获得积分和激励，您会去使用吗？"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s6",
+        "title": "7. 产品 Demo 演示与结束（8 分钟）",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s6q1",
+            "main": "您是否会考虑购买此产品？为什么？",
+            "hints": []
+          },
+          {
+            "id": "s6q2",
+            "main": "您对这个产品有什么看法或意见？",
+            "hints": []
+          },
+          {
+            "id": "s6q3",
+            "main": "有没有我们没聊到、但您觉得对这类产品很重要的东西？",
+            "hints": []
+          }
+        ]
+      }
+    ]
+  },
+  "discount": {
+    "fr": [
+      {
+        "id": "s0",
+        "title": "1. Mise en confiance",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s0q1",
+            "main": "Pourriez-vous vous présenter brièvement : votre métier ou vos études, la ville où vous habitez, et la fréquence à laquelle vous vous déplacez au quotidien ?",
+            "hints": []
+          },
+          {
+            "id": "s0q2",
+            "main": "Quel est votre mode de transport le plus fréquent au quotidien ? Le train occupe-t-il une place importante dans votre vie ? Est-ce surtout pour les trajets domicile-travail, les déplacements professionnels ou les loisirs ?",
+            "hints": []
+          }
+        ]
+      },
+      {
+        "id": "s1",
+        "title": "2. Motivation d'achat et attentes initiales",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s1q1",
+            "main": "Comment avez-vous commencé à utiliser la TGV Max ou la Carte Avantage ?",
+            "hints": [
+              "▷ Recommandation d'un proche, publicité, ou découverte par vous-même ?",
+              "▷ Si vous l'avez découverte par vous-même, était-ce en ligne ou hors-ligne ? Par quel canal précisément ?"
+            ]
+          },
+          {
+            "id": "s1q2",
+            "main": "Pourquoi avoir choisi cette carte ? Avez-vous comparé d'autres options ?",
+            "hints": [
+              "▷ Existe-t-il à votre sens des alternatives à la TGV Max ou à la Carte Avantage (autres abonnements ou réductions SNCF, ou bien d'autres modes de transport) ?",
+              "▷ Qu'est-ce qui vous a finalement décidé(e) à choisir cette carte plutôt qu'une autre option ? L'économie, la liberté de déplacement, ou autre chose ?",
+              "▷ Une fois la carte utilisée, y a-t-il des aspects qui se sont révélés différents de ce que vous attendiez ?"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s2",
+        "title": "3. Utilisation au quotidien",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s2q1",
+            "main": "À quelle fréquence utilisez-vous la carte ? Quand avez-vous pris le train pour la dernière fois, et pour aller où ? Était-ce un déplacement professionnel ou un court séjour ?",
+            "hints": []
+          },
+          {
+            "id": "s2q2",
+            "main": "Préférez-vous planifier vos voyages à l'avance, ou partir sur un coup de tête ? La carte est-elle adaptée à votre façon de voyager ?",
+            "hints": [
+              "▷ Combien de temps à l'avance réservez-vous vos billets en général ?"
+            ]
+          },
+          {
+            "id": "s2q3",
+            "main": "Entre le moment où vous décidez de partir et celui où le billet est effectivement réservé, combien de temps cela prend-il en général ?",
+            "hints": [
+              "▷ Le processus de réservation se passe-t-il sans accroc ?",
+              "▷ Vous arrive-t-il souvent de constater que le train que vous vouliez est complet, ou que les places ont été toutes prises ?"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s3",
+        "title": "4. Points de friction",
+        "time": "cœur du sujet",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s3q1",
+            "main": "Depuis que vous utilisez cette carte, quelle a été l'expérience la plus frustrante ou la plus décevante ?",
+            "hints": [
+              "▷ Quelle étape a posé problème : la réservation, le placement, l'échange, ou autre chose ?"
+            ]
+          },
+          {
+            "id": "s3q2",
+            "main": "Y a-t-il des destinations ou des lignes où vous aimeriez aller, mais où la TGV Max ou la Carte Avantage est difficile à utiliser ?",
+            "hints": [
+              "▷ Est-ce parce qu'il n'y a pas de couverture TGV, ou parce que les places réservables sont trop peu nombreuses ?"
+            ]
+          },
+          {
+            "id": "s3q3",
+            "main": "Trouvez-vous l'application ou le site SNCF Connect agréable à utiliser ? Y a-t-il des fonctions ou des étapes qui vous agacent ?",
+            "hints": [
+              "▷ Quelle étape pose le plus de problèmes : la recherche, les filtres, le paiement ?",
+              "▷ Comment se passent les annulations et les échanges de billets ? Avez-vous rencontré des difficultés ?",
+              "▷ Vous est-il déjà arrivé d'abandonner parce que ce n'était « pas la peine » ou « trop compliqué » ? Dans quel contexte ?"
+            ]
+          },
+          {
+            "id": "s3q4",
+            "main": "En dehors de l'achat du billet, comment vous y prenez-vous pour l'hébergement, les activités et les transports locaux ? Y a-t-il des aspects peu pratiques ?",
+            "hints": [
+              "▷ Sur quelles plateformes réservez-vous hébergement et activités ? Vous est-il déjà arrivé de vous dire « si seulement on pouvait tout réserver d'un coup » ?"
+            ]
+          },
+          {
+            "id": "s3q5",
+            "main": "Dans quel ordre faites-vous vos réservations ? Achetez-vous d'abord le billet avec la TGV Max / Carte Avantage, puis l'hébergement, ou suivez-vous un autre ordre ? Est-ce le même que pour vos voyages habituels (sans la carte) ?",
+            "hints": [
+              "▷ Repérer les moments où une recommandation croisée (« cross-sell ») pourrait s'insérer."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s4",
+        "title": "5. Comparaison avec d'autres modes de transport",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s4q1",
+            "main": "Pour une même destination, comparez-vous le train à la voiture, au bus ou à l'avion ? La TGV Max est-elle suffisamment compétitive ?",
+            "hints": [
+              "▷ Dans quels cas renoncez-vous au train pour choisir un autre mode ?",
+              "▷ Quels critères comparez-vous principalement ? Par exemple : prix, heure de départ, heure d'arrivée, gare de départ, gare d'arrivée, durée du trajet, expérience d'achat du billet, etc."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s5",
+        "title": "6. Attentes pour un produit idéal",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s5q1",
+            "main": "Si vous deviez concevoir l'abonnement « idéal » pour voyager en train en France, quelles fonctionnalités ou caractéristiques devrait-il offrir ?",
+            "hints": [
+              "▷ Grille tarifaire ? Flexibilité ? Couverture géographique ?"
+            ]
+          },
+          {
+            "id": "s5q2",
+            "main": "Souhaiteriez-vous un produit qui filtre automatiquement les billets effectivement disponibles avec votre carte de réduction ?",
+            "hints": []
+          }
+        ]
+      }
+    ],
+    "en": [
+      {
+        "id": "s0",
+        "title": "1. Warm-up",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s0q1",
+            "main": "Could you briefly introduce yourself: your job or studies, the city you live in, and how often you travel day-to-day?",
+            "hints": []
+          },
+          {
+            "id": "s0q2",
+            "main": "What is your most frequent mode of transport day-to-day? Is the train a regular part of your life? Is it mainly for commuting, business trips, or leisure?",
+            "hints": []
+          }
+        ]
+      },
+      {
+        "id": "s1",
+        "title": "2. Purchase motivation & initial expectations",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s1q1",
+            "main": "How did you start using TGV Max or Carte Avantage?",
+            "hints": [
+              "▷ Recommendation from a friend, advertising, or did you discover it on your own?",
+              "▷ If you discovered it yourself, was it online or offline? Through which channel exactly?"
+            ]
+          },
+          {
+            "id": "s1q2",
+            "main": "Why did you choose this card? Did you compare other options?",
+            "hints": [
+              "▷ Are there alternatives to TGV Max or Carte Avantage in your view (other rail subscriptions / discount schemes, or other modes of transport)?",
+              "▷ What ultimately made you pick this card over the alternatives? Saving money, travel freedom, or something else?",
+              "▷ After actually using it, did you find anything different from what you expected?"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s2",
+        "title": "3. Day-to-day usage",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s2q1",
+            "main": "How often do you use the card? When was your most recent train trip, and where to? Was it business travel or a short leisure trip?",
+            "hints": []
+          },
+          {
+            "id": "s2q2",
+            "main": "Do you prefer to plan trips well in advance, or travel on a whim? Does the card fit your travel habits?",
+            "hints": [
+              "▷ How far in advance do you usually book your tickets?"
+            ]
+          },
+          {
+            "id": "s2q3",
+            "main": "From the moment you decide to leave to actually getting the ticket booked, how long does it usually take?",
+            "hints": [
+              "▷ Does the booking process go smoothly?",
+              "▷ Do you often find the train you wanted is sold out, or all the seats are taken?"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s3",
+        "title": "4. Pain points",
+        "time": "core",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s3q1",
+            "main": "So far, what has been your most frustrating or disappointing experience using this card?",
+            "hints": [
+              "▷ Which step caused the issue: booking, seat assignment, exchange, or something else?"
+            ]
+          },
+          {
+            "id": "s3q2",
+            "main": "Are there any destinations or routes you'd like to visit, but where TGV Max or Carte Avantage is hard to use?",
+            "hints": [
+              "▷ Is it because there's no TGV coverage, or because the bookable allocation is too small?"
+            ]
+          },
+          {
+            "id": "s3q3",
+            "main": "Do you find the SNCF Connect app or website easy to use? Are there any features or steps that annoy you?",
+            "hints": [
+              "▷ Which step gives you the most trouble: search, filters, payment?",
+              "▷ How are refunds and exchanges? Have you run into problems?",
+              "▷ Have you ever given up because it was \"not worth it\" or \"too much hassle\"? In what context?"
+            ]
+          },
+          {
+            "id": "s3q4",
+            "main": "Apart from buying the ticket, how do you handle accommodation, activities, and local transport? Is anything inconvenient?",
+            "hints": [
+              "▷ Which platforms do you use for accommodation and activities? Have you ever thought \"if only I could book everything in one place\"?"
+            ]
+          },
+          {
+            "id": "s3q5",
+            "main": "In what order do you book? Do you first buy the train ticket with TGV Max / Carte Avantage, then accommodation, or in another order? Is it the same as for your usual trips (without the card)?",
+            "hints": [
+              "▷ Identify natural moments where a cross-sell suggestion could fit."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s4",
+        "title": "5. Comparison with other modes",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s4q1",
+            "main": "For the same destination, do you compare train with car, bus, or plane? Is TGV Max competitive enough?",
+            "hints": [
+              "▷ In what situations do you give up the train for another mode?",
+              "▷ Which criteria do you mainly compare? For example: price, departure time, arrival time, departure station, arrival station, journey duration, ticket purchase experience, etc."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s5",
+        "title": "6. Ideal product expectations",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s5q1",
+            "main": "If you were to design the \"perfect\" rail travel subscription for France, what features or characteristics should it offer?",
+            "hints": [
+              "▷ Pricing structure? Flexibility? Geographic coverage?"
+            ]
+          },
+          {
+            "id": "s5q2",
+            "main": "Would you want a product that automatically filters the tickets actually available with your discount card?",
+            "hints": []
+          }
+        ]
+      }
+    ],
+    "zh": [
+      {
+        "id": "s0",
+        "title": "1. 开场暖场",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s0q1",
+            "main": "先请您简单介绍一下自己——工作或学业、住在哪个城市、平时出行多不多？",
+            "hints": []
+          },
+          {
+            "id": "s0q2",
+            "main": "您平时最常用的交通方式是什么？火车在您生活里算常客吗？主要是通勤、出差还是旅游？",
+            "hints": []
+          }
+        ]
+      },
+      {
+        "id": "s1",
+        "title": "2. 购买动机与初期期待",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s1q1",
+            "main": "您是怎么开始用 TGV Max / Carte Avantage 的？",
+            "hints": [
+              "▷ 是朋友推荐、广告，还是自己主动发现的？",
+              "▷ 如果是自己主动发现的，是线上还是线下？具体什么渠道？"
+            ]
+          },
+          {
+            "id": "s1q2",
+            "main": "为什么选择这张卡？有没有做过其他选项的比较？",
+            "hints": [
+              "▷ 有没有 TGV Max / Carte Avantage 的替代选择，比如其他火车套餐 / 打折方案，或其他交通类型？",
+              "▷ 最终是什么让您选了这张卡而不是别的？是为了省钱、出行自由，还是其他原因？",
+              "▷ 实际使用后，有没有发现和预期不一样的地方？"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s2",
+        "title": "3. 日常使用体验",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s2q1",
+            "main": "您一般多久用一次？最近一次乘车是什么时候、去哪里？出差还是短途旅游？",
+            "hints": []
+          },
+          {
+            "id": "s2q2",
+            "main": "您更倾向于提前计划行程，还是想走就走？这张卡支持您的习惯吗？",
+            "hints": [
+              "▷ 您通常提前多久订票？"
+            ]
+          },
+          {
+            "id": "s2q3",
+            "main": "每次用的时候，从想出发到最终订到票，通常要花多少时间？",
+            "hints": [
+              "▷ 订票过程顺畅吗？",
+              "▷ 有没有经常遇到\"想订的车次没票\"或座位被抢光的情况？"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s3",
+        "title": "4. 痛点深挖（核心）",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s3q1",
+            "main": "到目前为止，用这张卡过程中，让您最抓狂或最失望的一次经历是什么？",
+            "hints": [
+              "▷ 是哪个环节出了问题——订票、座位、改签，还是别的？"
+            ]
+          },
+          {
+            "id": "s3q2",
+            "main": "有没有哪些目的地或线路您很想去，但 TGV Max / Carte Avantage 很难用上？",
+            "hints": [
+              "▷ 是因为没有高铁覆盖，还是名额太少？"
+            ]
+          },
+          {
+            "id": "s3q3",
+            "main": "您觉得 SNCF 的 App 或网站用起来方便吗？有没有让您烦躁的功能或流程？",
+            "hints": [
+              "▷ 搜索、筛选、支付，哪个环节最卡？",
+              "▷ 退票、改签的体验怎么样？遇到过麻烦吗？",
+              "▷ 有没有因为\"不值得\"或\"太麻烦\"而放弃使用的情况？那是什么情境？"
+            ]
+          },
+          {
+            "id": "s3q4",
+            "main": "除了买票这个环节，住宿、活动、当地交通这些您怎么解决的？有没有感到不顺手？",
+            "hints": [
+              "▷ 用什么平台订住宿和活动？有没有觉得\"要是能一起订就好了\"？"
+            ]
+          },
+          {
+            "id": "s3q5",
+            "main": "预订顺序是怎样的？是先用 TGV Max / Carte Avantage 买好火车票，再订住宿，还是别的顺序？和通常旅游出行（不使用这张卡时）是否一致？",
+            "hints": [
+              "▷ 寻找引导交叉的切入点和环节"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s4",
+        "title": "5. 与其他出行方式比较",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s4q1",
+            "main": "同样的目的地，您会比较火车和自驾、大巴或飞机吗？TGV Max 够竞争力吗？",
+            "hints": [
+              "▷ 哪些情况下您会放弃用火车，选别的方式？",
+              "▷ 主要比较哪些指标？例如价格、出发时间、到达时间、出发站、到达站、行程时长、购票体验等。"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s5",
+        "title": "6. 理想产品期待",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s5q1",
+            "main": "如果由您来设计一个\"完美版\"的法国铁路出行订阅产品，它应该具备哪些功能或特性？",
+            "hints": [
+              "▷ 价格体系？灵活性？覆盖范围？"
+            ]
+          },
+          {
+            "id": "s5q2",
+            "main": "是否会期待一个产品能直接帮您筛选出可用的折扣车票？",
+            "hints": []
+          }
+        ]
+      }
+    ]
+  },
+  "beach": {
+    "fr": [
+      {
+        "id": "s0",
+        "title": "1. Mise en confiance",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s0q1",
+            "main": "Quelles destinations balnéaires avez-vous visitées au cours de la dernière année ? Avec qui y êtes-vous allé(e) ?",
+            "hints": []
+          },
+          {
+            "id": "s0q2",
+            "main": "Combien de séjours à la mer faites-vous environ par an ?",
+            "hints": []
+          },
+          {
+            "id": "s0q3",
+            "main": "Qu'est-ce qui vous plaît le plus dans un voyage à la mer : échapper à la ville, prendre le soleil, les activités nautiques, ou autre chose ?",
+            "hints": []
+          }
+        ]
+      },
+      {
+        "id": "s1",
+        "title": "2. Cercle social et communautés",
+        "time": "",
+        "obj": "Consommation d'information, communautés et comparaison des plateformes.",
+        "qs": [
+          {
+            "id": "s1q1",
+            "main": "[2.1 Consommation d'information] Quels contenus liés au tourisme balnéaire consultez-vous régulièrement ? Sur quelles plateformes principalement ?",
+            "hints": [
+              "▷ Instagram, TikTok, YouTube, groupes Facebook, Reddit, forums ? D'autres ?",
+              "▷ Quel format préférez-vous : photo + texte, vidéo courte, vlog, direct ?",
+              "▷ Y a-t-il des créateurs ou des comptes que vous suivez régulièrement ? Que publient-ils principalement ?",
+              "▷ Vous est-il déjà arrivé de réserver un voyage à la suite d'une recommandation vue sur ces plateformes ?"
+            ]
+          },
+          {
+            "id": "s1q2",
+            "main": "Voyagez-vous habituellement seul(e), avec des amis, en famille, ou avec des personnes rencontrées via votre passion commune ?",
+            "hints": [
+              "▷ Si vous voyagez avec des personnes rencontrées via cette passion, où les avez-vous connues ? Pourquoi avoir choisi de partir avec elles ?",
+              "▷ Lors d'un premier voyage avec ces personnes, aviez-vous des appréhensions ?"
+            ]
+          },
+          {
+            "id": "s1q3",
+            "main": "[2.2 Communautés privées] Avez-vous rejoint des groupes ou des communautés liés aux voyages balnéaires ?",
+            "hints": [
+              "▷ Groupes Facebook, WhatsApp, forums, Discord ?",
+              "▷ Comment les avez-vous rejoints : recherche, recommandation d'amis ?",
+              "▷ Que partagent les membres principalement : photos, itinéraires, voyages groupés, promotions ?",
+              "▷ Quelle est l'activité du groupe ? Y a-t-il une différence entre haute et basse saison ?"
+            ]
+          },
+          {
+            "id": "s1q4",
+            "main": "Partagez-vous spontanément vos propres expériences de voyage dans ces communautés ?",
+            "hints": [
+              "▷ Dans quels cas le faites-vous : expérience particulièrement bonne ou particulièrement mauvaise ?",
+              "▷ Sur quelle plateforme partagez-vous principalement ?"
+            ]
+          },
+          {
+            "id": "s1q5",
+            "main": "[2.3 Comparaison des plateformes] Quelles sont les plateformes que vous utilisez pour réserver des activités ou des hébergements en bord de mer ? Quel rôle joue chacune et en quoi diffèrent-elles ?",
+            "hints": [
+              "▷ Quelle plateforme offre l'information la plus fiable et la plus utile pour préparer un voyage ?",
+              "▷ Laquelle se prête le mieux à trouver des compagnons de voyage ou à échanger ?",
+              "▷ Quand vous planifiez sérieusement un séjour en bord de mer, quelle plateforme consultez-vous systématiquement ?"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s2",
+        "title": "3. Décision et parcours de réservation",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s2q1",
+            "main": "[3.1 Déclencheur et décision] Comment avez-vous décidé de partir lors de votre dernier voyage à la mer ? Combien de temps s'est écoulé entre l'envie de partir et la confirmation du départ ?",
+            "hints": [
+              "▷ S'agissait-il d'une initiative personnelle, ou avez-vous été influencé(e) par un contenu ou un proche ?",
+              "▷ Sur quoi hésitiez-vous ? Avez-vous failli renoncer ?"
+            ]
+          },
+          {
+            "id": "s2q2",
+            "main": "Avez-vous d'abord choisi la destination, ou les dates ? D'où vient cet ordre ?",
+            "hints": []
+          },
+          {
+            "id": "s2q3",
+            "main": "[3.2 Reconstitution du parcours] Une fois la décision prise, qu'avez-vous réservé en premier : le transport, l'hébergement, ou avez-vous d'abord cherché les activités ?",
+            "hints": [
+              "▷ Entre le transport et l'hébergement, lequel réservez-vous en premier ? Quel délai entre les deux ?",
+              "▷ Si vous voyagez à plusieurs, planifiez-vous ensemble, ou chacun(e) prend en charge une partie ?"
+            ]
+          },
+          {
+            "id": "s2q4",
+            "main": "Sur quelle plateforme avez-vous réservé l'hébergement ? Pourquoi celle-ci plutôt qu'une autre ?",
+            "hints": [
+              "▷ Booking.com, Airbnb, Hotels.com, site officiel direct ?",
+              "▷ Comparez les avantages et inconvénients de ces plateformes (fonction de recherche, prix, système d'avis, politique d'annulation)."
+            ]
+          },
+          {
+            "id": "s2q5",
+            "main": "Quand avez-vous réservé les activités sur place (sports nautiques, sorties en mer, billets pour les sites) ?",
+            "hints": [
+              "▷ À l'avance ou une fois sur place ?",
+              "▷ Où réservez-vous : plateforme, site officiel, inscription sur place ?",
+              "▷ Vous est-il déjà arrivé de ne pas pouvoir réserver ? De quel type d'activité s'agissait-il ? À quoi attribuez-vous cette indisponibilité ?",
+              "▷ Quels sont vos avis, frustrations ou points de friction concernant les plateformes ou canaux de réservation d'offres groupées ?"
+            ]
+          },
+          {
+            "id": "s2q6",
+            "main": "Quels canaux connaissez-vous pour réserver hébergements et activités au bord de la mer ? Pour quel usage chacun ?",
+            "hints": [
+              "▷ Plateformes OTA, sites officiels, recommandations communautaires : quels sont les avantages et inconvénients de chacun ?",
+              "▷ Avez-vous déjà eu une mauvaise surprise ou, au contraire, une excellente expérience sur l'un de ces canaux ?"
+            ]
+          },
+          {
+            "id": "s2q7",
+            "main": "Avez-vous déjà acheté un forfait incluant transport + hébergement ? Comment l'avez-vous trouvé ?",
+            "hints": [
+              "▷ Si oui : comparez-vous le prix des forfaits ? De quelle manière ? Par rapport à des réservations séparées, dans quels cas accepteriez-vous un forfait, et quelles sont vos exigences sur le prix par rapport à la somme des éléments séparés ?",
+              "▷ Si non : est-ce par méconnaissance, ou parce que vous trouvez les forfaits peu intéressants ou peu flexibles ?"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s3",
+        "title": "4. Points de friction",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s3q1",
+            "main": "[4.1 Goulots d'étranglement] Dans tout le processus de réservation, quelle étape vous prend le plus de temps ou vous agace le plus ?",
+            "hints": [
+              "(Laissez le participant s'exprimer librement, puis posez les sous-questions suivantes.)",
+              "▷ Avez-vous déjà vécu un « écart énorme entre la photo et la réalité » ou une « chambre vue mer d'où la mer n'est pas visible » ?",
+              "▷ Ne pas trouver l'hébergement souhaité en haute saison : est-ce un problème majeur pour vous ? Comment vous adaptez-vous ?",
+              "▷ Stationnement et transports depuis le centre-ville jusqu'à la plage : avez-vous rencontré des difficultés ?"
+            ]
+          },
+          {
+            "id": "s3q2",
+            "main": "[4.2 Lacunes sur place] Sur place, y a-t-il eu des activités ou expériences que vous auriez voulu faire mais n'avez pas pu trouver à temps ?",
+            "hints": [
+              "▷ Manquait-il l'information, ou aviez-vous trouvé l'activité mais elle était indisponible ?"
+            ]
+          },
+          {
+            "id": "s3q3",
+            "main": "Si vous pouviez changer une seule chose dans l'expérience d'un voyage balnéaire en France, ce serait quoi ?",
+            "hints": []
+          }
+        ]
+      },
+      {
+        "id": "s4",
+        "title": "5. Produit idéal et marketing",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s4q1",
+            "main": "[5.1 Expérience idéale] Avez-vous déjà acheté un forfait par le passé ?",
+            "hints": [
+              "▷ Si oui :",
+              "(1) Le forfait était-il plus cher ou moins cher ? S'il était plus cher, qu'est-ce qui vous a séduit(e) ? Quelle est votre sensibilité au prix d'un forfait (jusqu'à combien plus cher êtes-vous prêt(e) à payer) ?",
+              "(2) S'il était moins cher, de combien environ ?",
+              "(3) L'économie est-elle un argument central pour vous, ou seulement un parmi d'autres dans votre décision ? À quoi d'autre faites-vous attention ?",
+              "▷ Si non, pour quelles raisons ?"
+            ]
+          },
+          {
+            "id": "s4q2",
+            "main": "[5.2 Influence marketing] Quel type de contenu pourrait réellement vous donner envie d'une destination nouvelle, au point d'y réserver un séjour ?",
+            "hints": [
+              "▷ Une recommandation personnelle d'un proche, une vidéo, une promotion à durée limitée affichée en pop-up ?",
+              "▷ Avez-vous déjà modifié vos plans à cause d'une promotion (offre limitée, tarif early bird) ?",
+              "▷ Au sein de votre communauté, qui a le plus d'influence sur vous : les créateurs, vos amis du milieu, ou les avis très positifs d'inconnus ?"
+            ]
+          }
+        ]
+      }
+    ],
+    "en": [
+      {
+        "id": "s0",
+        "title": "1. Warm-up",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s0q1",
+            "main": "Which seaside destinations have you visited in the past year? With whom did you go?",
+            "hints": []
+          },
+          {
+            "id": "s0q2",
+            "main": "Roughly how many beach trips do you make per year?",
+            "hints": []
+          },
+          {
+            "id": "s0q3",
+            "main": "What appeals most to you about a beach trip: escaping the city, sunbathing, water activities, or something else?",
+            "hints": []
+          }
+        ]
+      },
+      {
+        "id": "s1",
+        "title": "2. Community & social circles",
+        "time": "",
+        "obj": "Information consumption, communities, and platform comparison.",
+        "qs": [
+          {
+            "id": "s1q1",
+            "main": "[2.1 Information consumption] Which beach-travel content do you regularly consume? Mainly on which platforms?",
+            "hints": [
+              "▷ Instagram, TikTok, YouTube, Facebook groups, Reddit, forums? Anything else?",
+              "▷ Which format do you prefer: photo + text, short video, vlog, live stream?",
+              "▷ Are there creators or accounts you regularly follow? What do they mainly post?",
+              "▷ Have you ever booked a trip after seeing a recommendation on these platforms?"
+            ]
+          },
+          {
+            "id": "s1q2",
+            "main": "Do you usually travel alone, with friends, family, or people you met through a shared interest?",
+            "hints": [
+              "▷ If you travel with people met through a shared interest, where did you meet them? Why travel with them?",
+              "▷ For your first trip together, did you have any concerns?"
+            ]
+          },
+          {
+            "id": "s1q3",
+            "main": "[2.2 Private communities] Have you joined any groups or communities focused on beach travel?",
+            "hints": [
+              "▷ Facebook, WhatsApp, forums, Discord?",
+              "▷ How did you join: search, friend recommendation?",
+              "▷ What do members mostly share: photos, routes, group bookings, deals?",
+              "▷ How active is the group? Any difference between high and low season?"
+            ]
+          },
+          {
+            "id": "s1q4",
+            "main": "Do you actively share your own travel experiences in these communities?",
+            "hints": [
+              "▷ In what cases: especially good or especially bad experience?",
+              "▷ On which platform do you mostly share?"
+            ]
+          },
+          {
+            "id": "s1q5",
+            "main": "[2.3 Platform comparison] Which platforms do you use to book seaside activities or accommodation? What role does each play and how do they differ?",
+            "hints": [
+              "▷ Which platform has the highest-quality information and is best for planning?",
+              "▷ Which is best for finding travel companions or interacting?",
+              "▷ When you're seriously planning a beach trip, which platform do you always go to?"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s2",
+        "title": "3. Decision-making & booking journey",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s2q1",
+            "main": "[3.1 Trigger & decision] How did you decide on your most recent beach trip? How long passed between wanting to go and confirming the trip?",
+            "hints": [
+              "▷ Was it your own initiative, or were you nudged by content or a friend?",
+              "▷ What were you hesitating about? Did you almost give up?"
+            ]
+          },
+          {
+            "id": "s2q2",
+            "main": "Did you first decide on the destination or the dates? Where does this order come from?",
+            "hints": []
+          },
+          {
+            "id": "s2q3",
+            "main": "[3.2 Booking path reconstruction] Once the decision was made, what did you book first: transport, accommodation, or did you first look at activities?",
+            "hints": [
+              "▷ Between transport and accommodation, which do you book first? How much time between them?",
+              "▷ If traveling with others, do you plan together, or split responsibilities?"
+            ]
+          },
+          {
+            "id": "s2q4",
+            "main": "On which platform did you book accommodation? Why this one rather than another?",
+            "hints": [
+              "▷ Booking.com, Airbnb, Hotels.com, direct official site?",
+              "▷ Compare the pros and cons of these platforms (search function, price, review system, cancellation policy)."
+            ]
+          },
+          {
+            "id": "s2q5",
+            "main": "When did you book on-site activities (water sports, boat trips, attraction tickets)?",
+            "hints": [
+              "▷ In advance or once you arrive?",
+              "▷ Where do you book: platform, official site, on-site sign-up?",
+              "▷ Have you ever been unable to book? What kind of activity was it, and in what context? Why do you think it wasn't available?",
+              "▷ What are your views, frustrations, or pain points about the platforms or channels that sell bundled offers?"
+            ]
+          },
+          {
+            "id": "s2q6",
+            "main": "Which channels do you know for booking seaside accommodation or activities? What do you use each for?",
+            "hints": [
+              "▷ OTAs vs official websites vs community recommendations: what are the pros and cons of each?",
+              "▷ Have you ever had a bad surprise, or conversely a great experience, on any one of them?"
+            ]
+          },
+          {
+            "id": "s2q7",
+            "main": "Have you ever bought a package combining transport + accommodation? How was the experience?",
+            "hints": [
+              "▷ If yes: do you compare package prices? How? Compared with booking separately, when would you accept a package, and what are your price expectations relative to separate bookings?",
+              "▷ If no: is it because you don't know about them, or because you find them not worth it or not flexible enough?"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s3",
+        "title": "4. Pain points",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s3q1",
+            "main": "[4.1 Booking bottlenecks] In the whole booking process, which step takes the most time or annoys you the most?",
+            "hints": [
+              "(Let the participant speak freely first, then ask the follow-ups.)",
+              "▷ Have you ever experienced \"huge gap between photo and reality\" or \"a sea-view room that doesn't actually see the sea\"?",
+              "▷ Not being able to book your preferred accommodation in high season: is this a major problem? What's your coping strategy?",
+              "▷ Parking and transit from the city center to the beach: have you had any difficulties there?"
+            ]
+          },
+          {
+            "id": "s3q2",
+            "main": "[4.2 On-site gaps] On-site, were there any activities or experiences you really wanted but couldn't find in time?",
+            "hints": [
+              "▷ Was the information missing, or had you found it but it was unavailable?"
+            ]
+          },
+          {
+            "id": "s3q3",
+            "main": "If you could change one thing about the French seaside travel experience, what would it be?",
+            "hints": []
+          }
+        ]
+      },
+      {
+        "id": "s4",
+        "title": "5. Ideal product & marketing reach",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s4q1",
+            "main": "[5.1 Ideal experience] Have you ever bought a package in the past?",
+            "hints": [
+              "▷ If yes:",
+              "(1) Was the package more expensive or cheaper? If more expensive, what attracted you? How price-sensitive are you for packages (how much extra are you willing to pay)?",
+              "(2) If cheaper, by roughly how much?",
+              "(3) Is the price advantage a central factor for you, or one among others in your decision? What else do you pay attention to?",
+              "▷ If no, for what reasons?"
+            ]
+          },
+          {
+            "id": "s4q2",
+            "main": "[5.2 Marketing influence] What kind of content would actually make you fall for a new destination and book a trip?",
+            "hints": [
+              "▷ A personal recommendation from a friend, a video, a limited-time deal pop-up?",
+              "▷ Have you ever changed plans because of a promotion (limited offer, early bird price)?",
+              "▷ Within your community, who influences you most: creators, friends in the scene, or strangers' very positive reviews?"
+            ]
+          }
+        ]
+      }
+    ],
+    "zh": [
+      {
+        "id": "s0",
+        "title": "1. 热身",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s0q1",
+            "main": "最近一年去过哪些海滨目的地？和谁一起去的？",
+            "hints": []
+          },
+          {
+            "id": "s0q2",
+            "main": "一年大概去多少次海滨旅游？",
+            "hints": []
+          },
+          {
+            "id": "s0q3",
+            "main": "您喜欢海滨旅行的哪一点——是逃离城市、晒太阳、水上活动，还是别的什么？",
+            "hints": []
+          }
+        ]
+      },
+      {
+        "id": "s1",
+        "title": "2. 圈层社交",
+        "time": "",
+        "obj": "日常信息消费、私域社群与平台差异比较。",
+        "qs": [
+          {
+            "id": "s1q1",
+            "main": "【2.1 日常信息消费】平时会看哪些和海滨旅行相关的内容？主要在哪些平台？",
+            "hints": [
+              "▷ Instagram、TikTok、YouTube、Facebook 群、Reddit、论坛？还有别的吗？",
+              "▷ 更喜欢什么内容形式——图文、短视频、Vlog、直播？",
+              "▷ 有没有固定关注的博主或账号？他们主要发什么内容？",
+              "▷ 有没有一次被推荐后就真的订了行程的经历？"
+            ]
+          },
+          {
+            "id": "s1q2",
+            "main": "您一般是独自出行，还是和朋友、家人，或者结识的陌生同好一起？",
+            "hints": [
+              "▷ 如果是结识的陌生同好，是在哪里认识的？为什么选择和陌生同好一起出行？",
+              "▷ 第一次和陌生同好一起出行，有没有顾虑？"
+            ]
+          },
+          {
+            "id": "s1q3",
+            "main": "【2.2 圈层聚集与私域社群】有没有加入跟海滨旅行相关的群组或社群？",
+            "hints": [
+              "▷ Facebook 群、WhatsApp 群、论坛、Discord？",
+              "▷ 怎么加进去的——主动搜索、朋友推荐？",
+              "▷ 群里大家主要聊什么——晒图、问路线、拼团、转发优惠？",
+              "▷ 群的活跃程度怎么样？旺季和淡季有区别吗？"
+            ]
+          },
+          {
+            "id": "s1q4",
+            "main": "您会在社群里主动分享自己的旅行经历吗？",
+            "hints": [
+              "▷ 什么情况下会主动写——是特别好还是特别糟糕？",
+              "▷ 主要分享在哪个平台？"
+            ]
+          },
+          {
+            "id": "s1q5",
+            "main": "【2.3 平台差异比较】有哪些预订海滨玩乐活动或住宿的平台？这些平台分别扮演什么角色？有什么不同？",
+            "hints": [
+              "▷ 哪个平台信息质量更高，适合找攻略？",
+              "▷ 哪个更适合找同伴或互动？",
+              "▷ 认真规划海边旅行时，一定会去哪个平台？"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s2",
+        "title": "3. 出行决策与预订路径",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s2q1",
+            "main": "【3.1 触发与决策】最近一次海滨旅行，是怎么决定去的？从\"想去\"到\"确定出发\"花了多久？",
+            "hints": [
+              "▷ 是您自己主动计划，还是被内容 / 朋友种草？",
+              "▷ 主要在犹豫什么？有没有差点放弃？"
+            ]
+          },
+          {
+            "id": "s2q2",
+            "main": "是先确定目的地，还是先确定出行时间？这个顺序是怎么来的？",
+            "hints": []
+          },
+          {
+            "id": "s2q3",
+            "main": "【3.2 预订路径还原】决定去海滨之后，第一件事是订什么——交通、住宿，还是先查活动？",
+            "hints": [
+              "▷ 交通和住宿，哪个先订？间隔多长时间？",
+              "▷ 如果是和同伴一起，是同步规划，还是各自分工？"
+            ]
+          },
+          {
+            "id": "s2q4",
+            "main": "住宿是在哪个平台订的？为什么选这个平台而不是另一个？",
+            "hints": [
+              "▷ Booking.com、Airbnb、Hotels.com、直接官网？",
+              "▷ 评价一下这几个平台的使用优缺点（如搜索功能、价格、评价体系、退改政策）。"
+            ]
+          },
+          {
+            "id": "s2q5",
+            "main": "当地体验活动（水上运动、出海、景点门票）是什么时候订的？",
+            "hints": [
+              "▷ 提前订还是到了再说？",
+              "▷ 在哪里订——平台、官网，还是现场报名？",
+              "▷ 有没有出现订不到的情况？主要是什么项目或当时的背景？您推测订不到的原因是什么？",
+              "▷ 对预订打包产品的平台或渠道有什么评价、不满或使用痛点？"
+            ]
+          },
+          {
+            "id": "s2q6",
+            "main": "您知道哪些可以订海边住宿或活动的渠道？分别用来做什么？",
+            "hints": [
+              "▷ OTA 平台 vs 直接官网 vs 社群推荐——各自优劣是什么？",
+              "▷ 有没有在某个渠道踩雷或意外惊喜的经历？"
+            ]
+          },
+          {
+            "id": "s2q7",
+            "main": "有没有用过把交通+住宿打包的产品？体验怎么样？",
+            "hints": [
+              "▷ 如果用过，是否会对打包产品比价？怎么比？相比分开订，什么情况下愿意接受打包，价格和分开订比有什么要求？",
+              "▷ 如果没用过，是不知道还是觉得不值 / 不灵活？"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s3",
+        "title": "4. 痛点深挖",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s3q1",
+            "main": "【4.1 预订卡点】整个预订过程中，最费时间、最让您烦躁的环节是什么？",
+            "hints": [
+              "（先让用户自己聊，分享完后再追问以下问题）",
+              "▷ 有没有\"照片和实物差距巨大\"或\"海景房根本看不到海\"的踩雷经历？",
+              "▷ 旺季抢不到心仪住宿——这个问题严重吗？您的应对策略是什么？",
+              "▷ 停车、从市区去海边的接驳交通——这块有没有给您添过麻烦？"
+            ]
+          },
+          {
+            "id": "s3q2",
+            "main": "【4.2 在地体验缺口】在目的地，有没有很想做但当时找不到的活动或体验？",
+            "hints": [
+              "▷ 是找不到信息，还是找到了但订不到？"
+            ]
+          },
+          {
+            "id": "s3q3",
+            "main": "如果您能改变法国海滨旅行体验里的一件事，您会改什么？",
+            "hints": []
+          }
+        ]
+      },
+      {
+        "id": "s4",
+        "title": "5. 理想产品与营销触达",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s4q1",
+            "main": "【5.1 理想体验】之前有没有买过打包产品？",
+            "hints": [
+              "▷ 如果买过：",
+              "(1) 价格更贵还是更便宜？贵的话是被什么吸引的？对打包价格的敏感程度如何（可接受贵多少）？",
+              "(2) 便宜的话，便宜了多少？",
+              "(3) 价格便宜这个好处点是不是您重点关注的，或者在决策中有多重要？除此之外，您还关注什么方面？",
+              "▷ 没买过的话，是为什么呢？"
+            ]
+          },
+          {
+            "id": "s4q2",
+            "main": "【5.2 营销影响路径】什么样的内容会让您对一个新目的地真的心动并订下来？",
+            "hints": [
+              "▷ 朋友亲身推荐？一条视频？限时优惠弹窗？",
+              "▷ 有没有因为活动促销（限时折扣、早鸟价）而改变原来计划的经历？",
+              "▷ 在圈层里，谁的推荐对您影响最大——博主、圈内朋友，还是陌生网友的高评价？"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "camping": {
+    "fr": [
+      {
+        "id": "s0",
+        "title": "1. Mise en confiance",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s0q1",
+            "main": "Dans quels campings êtes-vous allé(e) au cours de la dernière année ? Avec qui y êtes-vous parti(e) ?",
+            "hints": []
+          },
+          {
+            "id": "s0q2",
+            "main": "Combien de séjours en camping faites-vous environ par an ?",
+            "hints": []
+          },
+          {
+            "id": "s0q3",
+            "main": "Qu'est-ce qui vous attire le plus dans le camping : la nature, la liberté, la dimension sociale, ou un véritable mode de vie ?",
+            "hints": []
+          }
+        ]
+      },
+      {
+        "id": "s1",
+        "title": "2. Cercle social et communautés",
+        "time": "",
+        "obj": "Consommation d'information, communautés et comparaison des plateformes.",
+        "qs": [
+          {
+            "id": "s1q1",
+            "main": "[2.1 Consommation d'information] Quels contenus liés au camping consultez-vous régulièrement ? Sur quelles plateformes principalement ?",
+            "hints": [
+              "▷ Instagram, YouTube, TikTok, groupes Facebook, Reddit, forums ? D'autres ?",
+              "▷ Quel format préférez-vous : guide en photo + texte, vidéo courte, vlog, direct depuis un camping ?",
+              "▷ Y a-t-il des créateurs ou des comptes camping que vous suivez régulièrement ? Que publient-ils principalement ?",
+              "▷ Vous est-il déjà arrivé de réserver un voyage à la suite d'une recommandation vue sur ces plateformes ?"
+            ]
+          },
+          {
+            "id": "s1q2",
+            "main": "[2.2 Communautés privées] Avez-vous rejoint des groupes ou communautés liés au camping ?",
+            "hints": [
+              "▷ Groupes Facebook, WhatsApp, forums camping, groupes membres officiels d'un camping ?",
+              "▷ Comment les avez-vous rejoints : recherche, recommandation d'amis, QR code sur place dans un camping ?",
+              "▷ Que font les membres principalement : partager des avis, des photos, recommander des destinations, organiser des départs groupés, relayer des codes promo ?",
+              "▷ L'activité de ces groupes varie-t-elle entre haute et basse saison ?",
+              "▷ Avez-vous déjà découvert un camping ou une promotion « connus uniquement des initiés » dans ces communautés ? Un exemple ?"
+            ]
+          },
+          {
+            "id": "s1q3",
+            "main": "Avez-vous des compagnons de camping réguliers, ou la composition du groupe change-t-elle à chaque fois ?",
+            "hints": [
+              "▷ Si ce sont des personnes rencontrées via votre passion commune, où les avez-vous connues ?",
+              "▷ Comment la confiance s'est-elle installée ? Lors de votre premier départ ensemble, aviez-vous des appréhensions ?"
+            ]
+          },
+          {
+            "id": "s1q4",
+            "main": "Partagez-vous spontanément vos expériences de camping dans les communautés (avis, guides, recommandations, pièges à éviter) ?",
+            "hints": [
+              "▷ Dans quels cas le faites-vous : expérience particulièrement bonne ou particulièrement mauvaise ?",
+              "▷ Où publiez-vous principalement : avis Google, Camping.info, Tripadvisor, ou dans des groupes privés ?"
+            ]
+          },
+          {
+            "id": "s1q5",
+            "main": "[2.3 Comparaison des plateformes] Quel rôle joue chacune de ces plateformes, et en quoi diffèrent-elles ?",
+            "hints": [
+              "▷ Quelle plateforme propose l'information la plus fiable et la plus utile ?",
+              "▷ Laquelle se prête le mieux à trouver des compagnons ou à échanger ?",
+              "▷ Que pensez-vous des communautés officielles propres aux campings, par rapport aux plateformes tierces ?"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s2",
+        "title": "3. Décision et parcours de réservation",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s2q1",
+            "main": "[3.1 Déclencheur et décision] Comment avez-vous décidé de votre dernier séjour en camping ? Avez-vous d'abord choisi le camping, ou les dates ? D'où vient cet ordre : contrainte de haute saison, ou habitude personnelle ?",
+            "hints": [
+              "▷ Combien de temps s'est écoulé entre l'envie de partir en camping et le choix d'un camping précis ? Sur quoi hésitiez-vous principalement ?"
+            ]
+          },
+          {
+            "id": "s2q2",
+            "main": "[3.2 Recherche et comparaison] Comment avez-vous trouvé le camping où vous êtes allé(e) cette fois-ci ? Quelles plateformes ou quels canaux avez-vous utilisés ?",
+            "hints": [
+              "▷ Camping.info, Campings.com, site officiel Huttopia, recherche Google, recommandation d'amis, demande dans une communauté ?",
+              "▷ Combien de campings avez-vous comparés, et comment avez-vous tranché ?"
+            ]
+          },
+          {
+            "id": "s2q3",
+            "main": "Lors du choix d'un camping, quelles informations sont les plus déterminantes pour vous ? L'emplacement précis de la parcelle : prêtez-vous attention à sa zone dans le camping, à son orientation, à l'environnement proche ?",
+            "hints": [
+              "▷ Emplacement, notation des équipements, avis des utilisateurs, type de parcelle, prix : lequel placeriez-vous en premier ?",
+              "▷ Disposez-vous d'une carte visuelle des emplacements ? À défaut, comment faites-vous : acceptez-vous une parcelle au hasard, ou appelez-vous pour confirmer ?"
+            ]
+          },
+          {
+            "id": "s2q4",
+            "main": "Vous est-il déjà arrivé de renoncer à réserver un camping faute d'informations en ligne ou parce que vous ne pouviez pas voir la parcelle exacte ?",
+            "hints": [
+              "▷ Comment avez-vous résolu la situation : changer de camping, ou appeler directement pour vous renseigner ?"
+            ]
+          },
+          {
+            "id": "s2q5",
+            "main": "[3.3 Reconstitution du parcours] Une fois le camping choisi, sur quelle plateforme avez-vous finalisé la réservation ? Pourquoi ce canal-là ?",
+            "hints": [
+              "▷ Site officiel du camping, Camping.info, plateforme OTA, ou téléphone ?",
+              "▷ Les prix sont-ils identiques sur les différentes plateformes pour un même camping ? Sinon, comment choisissez-vous ?"
+            ]
+          },
+          {
+            "id": "s2q6",
+            "main": "Quand avez-vous réservé le transport : avant le camping, après, ou en parallèle ?",
+            "hints": [
+              "▷ Train, voiture personnelle, covoiturage : quelle plateforme avez-vous utilisée cette fois ? Si vous êtes passé(e) par plusieurs plateformes, pour quelle raison ? Avez-vous trouvé ces va-et-vient gênants ?"
+            ]
+          },
+          {
+            "id": "s2q7",
+            "main": "Les activités sur place (randonnée, vélo, kayak) sont-elles réservées à l'avance, ou organisées une fois arrivé(e) ?",
+            "hints": [
+              "▷ Par quel canal réservez-vous : accueil du camping, plateforme tierce, inscription sur place ?",
+              "▷ Vous est-il déjà arrivé de vouloir réserver à l'avance sans trouver où, ou de constater une fois sur place que tout était complet ?"
+            ]
+          },
+          {
+            "id": "s2q8",
+            "main": "Avez-vous déjà réservé un forfait combinant camping + transport + activités ?",
+            "hints": [
+              "▷ Si non : est-ce par méconnaissance, ou parce que vous trouvez ces forfaits trop chers ou trop rigides ?"
+            ]
+          },
+          {
+            "id": "s2q9",
+            "main": "[3.4 Comparaison des canaux] Quelles plateformes connaissez-vous pour réserver un camping en France ? Pour quel usage chacune ?",
+            "hints": [
+              "▷ Site officiel du camping, Camping.info, Booking.com, appel téléphonique direct : quelles différences pour chacun ?",
+              "▷ Quel canal permet de mieux visualiser à quoi ressemble le camping ? Lequel est le plus souple pour les annulations ou les modifications ?"
+            ]
+          },
+          {
+            "id": "s2q10",
+            "main": "Comparée à la réservation d'un hôtel, comment trouvez-vous l'expérience de réservation en ligne pour les campings français ? Y a-t-il un écart, et où se situe-t-il ?",
+            "hints": []
+          }
+        ]
+      },
+      {
+        "id": "s3",
+        "title": "4. Points de friction",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s3q1",
+            "main": "[4.1 Goulots d'étranglement] Dans tout le processus de réservation d'un camping, qu'est-ce qui vous prend le plus de temps ou vous agace le plus ?",
+            "hints": []
+          },
+          {
+            "id": "s3q2",
+            "main": "Avez-vous déjà vécu un « décalage total entre la réalité du camping et ce qui était annoncé » ?",
+            "hints": [
+              "▷ Était-ce l'emplacement de la parcelle, l'environnement, l'état réel des équipements, ou autre chose ?",
+              "▷ Quelle information posait problème ? Comment avez-vous géré la situation par la suite ?"
+            ]
+          },
+          {
+            "id": "s3q3",
+            "main": "[4.2 Sur place et au retour] Au cours de l'ensemble de vos expériences de camping, quelle a été la plus décevante ? Racontez à quelle étape le problème est apparu.",
+            "hints": [
+              "(Adapter les relances à la réponse du participant.)",
+              "▷ Pendant votre séjour, y a-t-il eu des services ou des activités que vous auriez voulu réserver mais dont vous n'avez pas trouvé l'entrée ?",
+              "▷ Avez-vous déjà dû annuler ou écourter un séjour à cause de la météo ? Êtes-vous satisfait(e) de la réaction du camping ?"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s4",
+        "title": "5. Produit idéal et marketing",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s4q1",
+            "main": "[5.1 Expérience idéale] Si une plateforme vous permettait de voir directement sur une carte la position, les photos, l'orientation et les équipements proches de chaque parcelle, puis de la réserver en un clic, l'utiliseriez-vous ?",
+            "hints": [
+              "(Laissez le participant détailler librement les fonctionnalités ou ressources qu'il souhaiterait.)",
+              "▷ Selon vous, quelles fonctionnalités ou ressources idéales devrait offrir une plateforme de réservation de camping ?"
+            ]
+          },
+          {
+            "id": "s4q2",
+            "main": "Si cette même plateforme proposait en complément la réservation d'itinéraires de randonnée, de location de voiture, de kayak, etc., cela vous intéresserait-il ?",
+            "hints": [
+              "▷ Combien seriez-vous prêt(e) à payer en plus, par rapport à la réservation de chaque élément séparément ?"
+            ]
+          },
+          {
+            "id": "s4q3",
+            "main": "[5.2 Marketing communautaire et bouche-à-oreille] Si un camping inconnu apparaît devant vous, quel type de contenu pourrait réellement vous séduire au point de le réserver ?",
+            "hints": [
+              "▷ Une recommandation personnelle d'un proche, un vlog de qualité, une promotion à durée limitée, des photos officielles authentiques du camping ?",
+              "▷ Dans le milieu du camping, qui a le plus d'influence sur vous : vos amis du milieu, les créateurs, les avis très positifs d'inconnus, ou les contenus officiels du camping lui-même ?"
+            ]
+          },
+          {
+            "id": "s4q4",
+            "main": "Vous est-il déjà arrivé de renoncer à réserver un camping à cause d'un avis négatif ? Que disait précisément cet avis ?",
+            "hints": []
+          },
+          {
+            "id": "s4q5",
+            "main": "Si un camping proposait un programme de fidélité (points, avantages clients réguliers), seriez-vous davantage enclin(e) à y retourner ?",
+            "hints": []
+          }
+        ]
+      }
+    ],
+    "en": [
+      {
+        "id": "s0",
+        "title": "1. Warm-up",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s0q1",
+            "main": "Which campsites have you been to in the past year? With whom did you go?",
+            "hints": []
+          },
+          {
+            "id": "s0q2",
+            "main": "Roughly how many camping trips do you take per year?",
+            "hints": []
+          },
+          {
+            "id": "s0q3",
+            "main": "What attracts you most to camping: nature, freedom, the social dimension, or a way of life?",
+            "hints": []
+          }
+        ]
+      },
+      {
+        "id": "s1",
+        "title": "2. Community & social circles",
+        "time": "",
+        "obj": "Information consumption, communities, and platform comparison.",
+        "qs": [
+          {
+            "id": "s1q1",
+            "main": "[2.1 Information consumption] Which camping-related content do you regularly browse? Mainly on which platforms?",
+            "hints": [
+              "▷ Instagram, YouTube, TikTok, Facebook groups, Reddit, forums? Anything else?",
+              "▷ Which format do you prefer: photo + text guide, short video, vlog, live stream from a campsite?",
+              "▷ Are there camping creators or accounts you follow regularly? What do they mainly post?",
+              "▷ Have you ever booked a trip after seeing a recommendation on these platforms?"
+            ]
+          },
+          {
+            "id": "s1q2",
+            "main": "[2.2 Private communities] Have you joined any groups or communities focused on camping?",
+            "hints": [
+              "▷ Facebook groups, WhatsApp groups, camping forums, official campsite member groups?",
+              "▷ How did you join: search, friend recommendation, QR code scanned on-site at a campsite?",
+              "▷ What do members mostly do: share reviews, photos, recommend destinations, organize group trips, share promo codes?",
+              "▷ Does activity in these groups vary between high and low season?",
+              "▷ Have you discovered any campsites or deals \"only insiders know about\" in these communities? An example?"
+            ]
+          },
+          {
+            "id": "s1q3",
+            "main": "Do you have regular camping companions, or does the group change every time?",
+            "hints": [
+              "▷ If you met them through a shared interest, where did you connect?",
+              "▷ How did trust develop? For your first trip together, did you have any concerns?"
+            ]
+          },
+          {
+            "id": "s1q4",
+            "main": "Do you actively share your camping experiences in communities (reviews, guides, recommendations, things to avoid)?",
+            "hints": [
+              "▷ In what cases: especially good or especially bad experience?",
+              "▷ Where do you mainly post: Google reviews, Camping.info, Tripadvisor, or in private groups?"
+            ]
+          },
+          {
+            "id": "s1q5",
+            "main": "[2.3 Platform comparison] What role does each platform play, and how do they differ?",
+            "hints": [
+              "▷ Which platform has the most reliable and useful information?",
+              "▷ Which is best for finding companions or interacting?",
+              "▷ How do campsites' own official communities compare with third-party platforms?"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s2",
+        "title": "3. Decision-making & booking journey",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s2q1",
+            "main": "[3.1 Trigger & decision] How did you decide on your most recent camping trip? Did you choose the campsite or the dates first? Where does that order come from: pressure of high season, or your habit?",
+            "hints": [
+              "▷ How long passed between wanting to go camping and choosing a specific campsite? What were you mainly weighing?"
+            ]
+          },
+          {
+            "id": "s2q2",
+            "main": "[3.2 Search & comparison] How did you find the campsite you went to this time? Which platforms or channels did you use?",
+            "hints": [
+              "▷ Camping.info, Campings.com, Huttopia official website, Google search, friend recommendation, asking in a community?",
+              "▷ How many candidate campsites did you compare, and how did you make the final decision?"
+            ]
+          },
+          {
+            "id": "s2q3",
+            "main": "When choosing a campsite, which information matters most to you? The exact pitch location: do you care about the area within the campsite, the orientation, the surroundings?",
+            "hints": [
+              "▷ Location, amenities rating, user reviews, pitch type, price: which would you rank first?",
+              "▷ Can you see a visual map of pitches? If not, what do you do: accept a random one, or call to confirm?"
+            ]
+          },
+          {
+            "id": "s2q4",
+            "main": "Have you ever given up on booking a campsite because of too little online information or not being able to see the exact pitch?",
+            "hints": [
+              "▷ How did you handle it: switch campsites, or call directly to ask?"
+            ]
+          },
+          {
+            "id": "s2q5",
+            "main": "[3.3 Booking behavior reconstruction] Once the campsite was chosen, on which platform did you complete the booking? Why this channel?",
+            "hints": [
+              "▷ Campsite's own website, Camping.info, OTA platform, or phone?",
+              "▷ Are prices the same across platforms for the same campsite? If not, how do you choose?"
+            ]
+          },
+          {
+            "id": "s2q6",
+            "main": "When did you book transport: before the campsite, after, or in parallel?",
+            "hints": [
+              "▷ Train, own car, ride-share: which platform did you use this time? If you switched between several, why? Did you find this switching inconvenient?"
+            ]
+          },
+          {
+            "id": "s2q7",
+            "main": "On-site activities (hiking, cycling, kayaking): are they booked in advance, or arranged once you arrive?",
+            "hints": [
+              "▷ Through which channel do you book: campsite reception, third-party platform, on-site sign-up?",
+              "▷ Have you ever wanted to book in advance but couldn't find where, or found everything sold out on arrival?"
+            ]
+          },
+          {
+            "id": "s2q8",
+            "main": "Have you ever booked a package combining campsite + transport + activities?",
+            "hints": [
+              "▷ If not: is it because you don't know about them, or because you find them too expensive / too rigid?"
+            ]
+          },
+          {
+            "id": "s2q9",
+            "main": "[3.4 Channel comparison] Which platforms do you know for booking a campsite in France? What do you use each for?",
+            "hints": [
+              "▷ Campsite's own website, Camping.info, Booking.com, calling directly: what's the difference between each?",
+              "▷ Which channel lets you best visualize what the campsite looks like? Which is most flexible for cancellation or changes?"
+            ]
+          },
+          {
+            "id": "s2q10",
+            "main": "Compared with booking a hotel, how do you find the online booking experience for French campsites? Is there a gap, and where?",
+            "hints": []
+          }
+        ]
+      },
+      {
+        "id": "s3",
+        "title": "4. Pain points",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s3q1",
+            "main": "[4.1 Booking bottlenecks] In the whole campsite booking process, what takes the most time or frustrates you the most?",
+            "hints": []
+          },
+          {
+            "id": "s3q2",
+            "main": "Have you had any \"the campsite was completely different from what was advertised\" disappointments?",
+            "hints": [
+              "▷ Was it the pitch location, the surroundings, the actual state of the amenities, or something else?",
+              "▷ Which information was wrong? How did you handle it afterward?"
+            ]
+          },
+          {
+            "id": "s3q3",
+            "main": "[4.2 On-site and after] Across all your camping experiences, what was the most disappointing one? Tell me which step the problem appeared at.",
+            "hints": [
+              "(Adapt follow-ups to the participant's answer.)",
+              "▷ During your stay, were there any services or activities you wanted to book but couldn't find access to?",
+              "▷ Have you ever had to cancel or cut short a stay because of weather? Were you satisfied with the campsite's response?"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s4",
+        "title": "5. Ideal product & marketing reach",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s4q1",
+            "main": "[5.1 Ideal experience] If a platform let you see each pitch directly on a map (location, photos, orientation, nearby amenities) and book it in one click, would you use it?",
+            "hints": [
+              "(Let the participant open up about which features or resources they'd want.)",
+              "▷ What features or resources should an ideal campsite-booking platform offer, in your view?"
+            ]
+          },
+          {
+            "id": "s4q2",
+            "main": "If the same platform also offered booking for nearby hiking routes, car rental, kayaking, etc., would you be interested?",
+            "hints": [
+              "▷ How much extra would you be willing to pay, compared with booking each item separately?"
+            ]
+          },
+          {
+            "id": "s4q3",
+            "main": "[5.2 Community marketing & word-of-mouth] If a campsite you've never been to appears in front of you, what kind of content would actually convince you to book it?",
+            "hints": [
+              "▷ A personal recommendation from a friend, a high-quality vlog, a limited-time promotion, authentic official photos from the campsite?",
+              "▷ In the camping community, who influences you most: friends in the scene, creators, strangers' very positive reviews, or the campsite's own content?"
+            ]
+          },
+          {
+            "id": "s4q4",
+            "main": "Have you ever given up on booking a campsite because of a negative review? What did that review specifically say?",
+            "hints": []
+          },
+          {
+            "id": "s4q5",
+            "main": "If a campsite offered a loyalty program (points, perks for returning customers), would you be more inclined to come back?",
+            "hints": []
+          }
+        ]
+      }
+    ],
+    "zh": [
+      {
+        "id": "s0",
+        "title": "1. 热身",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s0q1",
+            "main": "最近一年去过哪些营地？和谁一起去的？",
+            "hints": []
+          },
+          {
+            "id": "s0q2",
+            "main": "一年大概会有多少次露营？",
+            "hints": []
+          },
+          {
+            "id": "s0q3",
+            "main": "露营对您来说最吸引您的是什么——自然、自由、社交，还是一种生活方式？",
+            "hints": []
+          }
+        ]
+      },
+      {
+        "id": "s1",
+        "title": "2. 圈层社交",
+        "time": "",
+        "obj": "日常信息消费、私域社群与平台差异比较。",
+        "qs": [
+          {
+            "id": "s1q1",
+            "main": "【2.1 日常信息消费】平时会浏览哪些和露营相关的内容？主要在哪些平台？",
+            "hints": [
+              "▷ Instagram、YouTube、TikTok、Facebook 群、Reddit、论坛？还有别的吗？",
+              "▷ 更喜欢什么内容形式——图文攻略、短视频、Vlog、直播看营地？",
+              "▷ 有没有固定关注的露营博主或账号？他们主要发什么内容？",
+              "▷ 有没有一次被推荐后就真的订了行程的经历？"
+            ]
+          },
+          {
+            "id": "s1q2",
+            "main": "【2.2 圈层聚集与私域社群】有没有加入跟露营相关的群组或社群？",
+            "hints": [
+              "▷ Facebook 群、WhatsApp 群、露营论坛、营地官方会员群？",
+              "▷ 怎么加进去的——主动搜索、朋友推荐，还是营地现场扫码入群？",
+              "▷ 群里大家主要做什么——分享评价、晒图、推荐目的地、组织拼团、转发优惠码？",
+              "▷ 这些群旺季和淡季活跃程度有差别吗？",
+              "▷ 有没有在圈子里发现\"只有圈内人才知道\"的营地或优惠？能举个例子吗？"
+            ]
+          },
+          {
+            "id": "s1q3",
+            "main": "您有固定的\"露营搭子\"吗？还是每次组合不同？",
+            "hints": [
+              "▷ 如果是结识的陌生同好，在哪里认识的？",
+              "▷ 如何建立信任？第一次一起去有没有顾虑？"
+            ]
+          },
+          {
+            "id": "s1q4",
+            "main": "您会主动在社群里分享营地体验吗——发评价、写攻略、推荐或避坑？",
+            "hints": [
+              "▷ 什么情况下会主动写——是特别好，还是特别糟糕？",
+              "▷ 主要写在哪里——Google 评价、Camping.info、Tripadvisor，还是群里？"
+            ]
+          },
+          {
+            "id": "s1q5",
+            "main": "【2.3 平台差异比较】这些平台各自扮演什么角色？有什么不同？",
+            "hints": [
+              "▷ 哪个平台信息最可靠、最实用？",
+              "▷ 哪个最适合找同伴或互动？",
+              "▷ 营地自己的官方社群和第三方平台相比，感觉怎么样？"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s2",
+        "title": "3. 出行决策与预订路径",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s2q1",
+            "main": "【3.1 触发与决策】最近一次露营，是怎么决定去的？是先确定营地，还是先定好日期？这个顺序是怎么来的——旺季逼的，还是您的习惯？",
+            "hints": [
+              "▷ 从\"想去露营\"到\"确定了哪个营地\"，大概花了多久？主要在权衡什么？"
+            ]
+          },
+          {
+            "id": "s2q2",
+            "main": "【3.2 营地搜索与比较】您是怎么找到这次去的营地的？用了哪些平台或渠道？",
+            "hints": [
+              "▷ Camping.info、Campings.com、Huttopia 官网、Google 搜索、朋友推荐、社群里问？",
+              "▷ 看了几个候选营地，最后是怎么做决定的？"
+            ]
+          },
+          {
+            "id": "s2q3",
+            "main": "在选营地时，哪些信息最关键？营位的具体位置——您在乎营位在营地的哪个区域、朝向、周边环境吗？",
+            "hints": [
+              "▷ 位置、设施评分、用户评价、营位类型、价格，哪个排第一？",
+              "▷ 能看到营位可视化地图吗？如果没有，您怎么办——随机接受，还是打电话确认？"
+            ]
+          },
+          {
+            "id": "s2q4",
+            "main": "有没有因为\"网上信息太少\"或\"看不到具体营位\"而放弃预订某个营地的经历？",
+            "hints": [
+              "▷ 最后怎么处理的——换一家，还是直接电话咨询？"
+            ]
+          },
+          {
+            "id": "s2q5",
+            "main": "【3.3 预订行为还原】决定好营地后，在哪个平台完成的预订？为什么选这个渠道？",
+            "hints": [
+              "▷ 营地官网、Camping.info、OTA 平台，还是电话？",
+              "▷ 同一营地不同平台价格一样吗？不一样的话怎么选？"
+            ]
+          },
+          {
+            "id": "s2q6",
+            "main": "预订交通是什么时候订的——营地确定之前、之后，还是同步进行？",
+            "hints": [
+              "▷ 火车、自驾、拼车——这次用的什么平台？如果切换了多个平台，是为什么？会觉得切换不方便吗？"
+            ]
+          },
+          {
+            "id": "s2q7",
+            "main": "当地体验活动（徒步、骑行、皮划艇）是提前订还是到了再安排？",
+            "hints": [
+              "▷ 通过什么渠道订的——营地前台、第三方平台、现场报名？",
+              "▷ 有没有提前想预约但找不到入口，或者到了才发现已满的情况？"
+            ]
+          },
+          {
+            "id": "s2q8",
+            "main": "有没有把营地+交通+活动打包预订的经历？",
+            "hints": [
+              "▷ 如果没有，是不知道这类产品，还是觉得太贵 / 太不灵活？"
+            ]
+          },
+          {
+            "id": "s2q9",
+            "main": "【3.4 渠道比较】您知道哪些可以订法国营地的平台？分别怎么用？",
+            "hints": [
+              "▷ 营地官网 vs Camping.info vs Booking.com vs 直接打电话——各有什么差别？",
+              "▷ 哪个渠道更容易看清楚营地是什么样的？哪个退改更方便？"
+            ]
+          },
+          {
+            "id": "s2q10",
+            "main": "您觉得法国营地的线上预订体验，和订酒店相比有差距吗？差距在哪里？",
+            "hints": []
+          }
+        ]
+      },
+      {
+        "id": "s3",
+        "title": "4. 痛点深挖",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s3q1",
+            "main": "【4.1 预订核心卡点】整个营地预订过程中，最让您费时间或最抓狂的是什么？",
+            "hints": []
+          },
+          {
+            "id": "s3q2",
+            "main": "有没有\"到了营地发现和预期完全不同\"的踩雷经历？",
+            "hints": [
+              "▷ 是营位位置、周边环境、设施实际状况，还是别的什么？",
+              "▷ 是哪个信息出了问题？事后怎么处理的？"
+            ]
+          },
+          {
+            "id": "s3q3",
+            "main": "【4.2 在营和离营体验】整个露营体验中，最让您失望的一次是什么？讲一下哪个环节出了问题。",
+            "hints": [
+              "（根据用户实际回答进行追问）",
+              "▷ 在营地期间，有没有很想用但找不到的服务或活动预约入口？",
+              "▷ 天气突变要临时取消或提前离营，您处理过吗？营地的应对让您满意吗？"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s4",
+        "title": "5. 理想产品与营销触达",
+        "time": "",
+        "obj": "",
+        "qs": [
+          {
+            "id": "s4q1",
+            "main": "【5.1 理想预订体验】如果一个平台能让您在地图上直接看到每个营位的位置、照片、朝向、周边设施，然后直接预订——您愿意用吗？",
+            "hints": [
+              "（让用户开放性聊聊希望有的功能、资源）",
+              "▷ 您希望预订营地的平台能提供什么样的功能或者是资源？"
+            ]
+          },
+          {
+            "id": "s4q2",
+            "main": "如果同一平台还能搭配周边徒步路线、租车、皮划艇等活动预约——您感兴趣吗？",
+            "hints": [
+              "▷ 愿意比自己分开订多付多少？"
+            ]
+          },
+          {
+            "id": "s4q3",
+            "main": "【5.2 圈层营销与口碑传播】如果一个您没去过的营地出现在面前，什么样的内容会让您真的心动并订下来？",
+            "hints": [
+              "▷ 朋友亲身推荐？一条高质量 Vlog？限时优惠？营地官方的真实照片？",
+              "▷ 在露营圈里，谁的推荐对您影响最大——圈内朋友、博主、陌生网友的高评价，还是营地自己的内容？"
+            ]
+          },
+          {
+            "id": "s4q4",
+            "main": "您有没有因为某条\"差评\"而放弃预订某个营地？那条差评是什么内容？",
+            "hints": []
+          },
+          {
+            "id": "s4q5",
+            "main": "如果一个营地有会员积分或老客优惠，您会因此更愿意复购吗？",
+            "hints": []
+          }
+        ]
+      }
+    ]
+  }
 };
+
+let currentPersona = 'general';
+function getQuestions(lang){
+  return (QUESTIONS_BY_PERSONA[currentPersona] || QUESTIONS_BY_PERSONA.general)[lang];
+}
+
 
 let currentLang = 'zh';
 
 // ===== 渲染深度访谈 =====
 function renderQuestionnaire(lang) {
-  const secs = QUESTIONS[lang];
+  const secs = getQuestions(lang);
   const container = document.getElementById('questionnaire');
   container.innerHTML = '';
   secs.forEach((sec, si) => {
@@ -465,11 +2776,40 @@ function renderQuestionnaire(lang) {
   updateProgress();
 }
 
+const TAB_LABELS = {
+  zh: {basic:'基础问卷', general:'通用', discount:'折扣卡', beach:'海滨', camping:'露营'},
+  en: {basic:'Base questionnaire', general:'General', discount:'SNCF Card', beach:'Beach', camping:'Camping'},
+  fr: {basic:'Questionnaire de base', general:'Général', discount:'Carte SNCF', beach:'Plage', camping:'Camping'}
+};
+function refreshTabLabels(){
+  const map = TAB_LABELS[currentLang] || TAB_LABELS.zh;
+  document.querySelectorAll('.tab-text').forEach(el => {
+    const k = el.dataset.key;
+    if (map[k]) el.textContent = map[k];
+  });
+}
+function setTab(tabName, persona, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (tabName === 'basic') {
+    document.getElementById('tab-basic').style.display = '';
+    document.getElementById('tab-deep').style.display = 'none';
+  } else {
+    document.getElementById('tab-basic').style.display = 'none';
+    document.getElementById('tab-deep').style.display = '';
+    if (persona) {
+      currentPersona = persona;
+      renderQuestionnaire(currentLang);
+    }
+  }
+}
+
 // ===== 语言切换 =====
 function setLang(lang, btn) {
   currentLang = lang;
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+  refreshTabLabels();
   renderQuestionnaire(lang);
 }
 
@@ -622,6 +2962,7 @@ function showToast(msg) {
 
 // ===== 初始化 =====
 document.getElementById('meta-date').value = new Date().toISOString().slice(0,10);
+refreshTabLabels();
 renderQuestionnaire('zh');
 // 检查URL参数（从看板点进来可恢复）
 const urlKey = new URLSearchParams(location.search).get('key');
