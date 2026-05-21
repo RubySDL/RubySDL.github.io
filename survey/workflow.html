@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C端用户旅游调研工作流（欧洲）</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+            line-height: 1.8;
+            color: #2c3e50;
+            background: #f8f9fa;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            padding: 3rem;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 1.8rem;
+            color: #1a73e8;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #e8f0fe;
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            color: #1a73e8;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            padding-left: 0.8rem;
+            border-left: 4px solid #1a73e8;
+        }
+
+        h3 {
+            font-size: 1.05rem;
+            color: #34495e;
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        p {
+            margin-bottom: 0.8rem;
+        }
+
+        .label {
+            display: inline-block;
+            font-weight: 600;
+            color: #555;
+            min-width: 80px;
+        }
+
+        ul {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.4rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: #1a73e8;
+            color: #fff;
+            padding: 0.7rem 1rem;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        td {
+            padding: 0.6rem 1rem;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        tr:hover td {
+            background: #f0f7ff;
+        }
+
+        .flow-box {
+            background: #f4f7fb;
+            border: 1px solid #d4e3f5;
+            border-radius: 8px;
+            padding: 1.2rem 1.5rem;
+            margin: 1rem 0;
+            font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+            font-size: 0.9rem;
+            line-height: 2;
+            white-space: pre-line;
+        }
+
+        .output-box {
+            background: #fff8e1;
+            border: 1px solid #ffe082;
+            border-radius: 8px;
+            padding: 1.2rem 1.5rem;
+            margin: 1rem 0;
+            font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+            font-size: 0.9rem;
+            line-height: 2;
+            white-space: pre-line;
+        }
+
+        .highlight {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 1rem 1.2rem;
+            margin: 1.2rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .pending {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 1rem 1.2rem;
+            margin: 1.2rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .pending h3 {
+            color: #e65100;
+            margin-top: 0;
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: #1a73e8;
+            color: #fff;
+            border-radius: 50%;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            padding: 0.8rem 1rem;
+            background: #fafbfc;
+            border-radius: 8px;
+            border: 1px solid #eaecef;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content strong {
+            color: #1a73e8;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.15rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-left: 0.5rem;
+        }
+
+        .badge-blue {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .badge-green {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .badge-orange {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #eee;
+            color: #999;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>C端用户旅游调研工作流</h1>
+        <p class="subtitle">欧洲市场 · 用户访谈调研方案</p>
+
+        <!-- 阶段一 -->
+        <h2>一、基础问卷收集</h2>
+        <p><span class="label">目的：</span>收集用户基本信息，供后续人工判断用户类型</p>
+        <p><span class="label">执行方式：</span></p>
+        <ul>
+            <li><strong>纸质问卷</strong> → 组员手动录入 LimeSurvey</li>
+            <li><strong>线上链接</strong> → 用户自主填写 LimeSurvey</li>
+        </ul>
+        <div class="highlight">
+            <strong>产出：</strong>每位受访者一条 LimeSurvey 提交记录（含唯一提交 ID）
+        </div>
+
+        <!-- 阶段二 -->
+        <h2>二、深度访谈执行</h2>
+
+        <h3>2.1 人工判断用户类型</h3>
+        <p>根据基础问卷内容，由组员判断受访者属于以下哪类：</p>
+        <ul>
+            <li>折扣票用户</li>
+            <li>海滨圈层用户</li>
+            <li>露营圈层用户</li>
+            <li>以上都不是（通用用户）</li>
+        </ul>
+
+        <h3>2.2 组合访谈大纲</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>用户类型</th>
+                    <th>使用的访谈大纲</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>折扣票用户</td>
+                    <td>通用访谈大纲 <strong>+</strong> 折扣票专项大纲</td>
+                </tr>
+                <tr>
+                    <td>海滨圈层用户</td>
+                    <td>通用访谈大纲 <strong>+</strong> 海滨圈层专项大纲</td>
+                </tr>
+                <tr>
+                    <td>露营圈层用户</td>
+                    <td>通用访谈大纲 <strong>+</strong> 露营圈层专项大纲</td>
+                </tr>
+                <tr>
+                    <td>通用用户</td>
+                    <td>仅通用访谈大纲</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>2.3 执行访谈并录音</h3>
+        <ul>
+            <li><span class="label">访谈语言：</span>法语 / 英语 / 中文（视受访者情况）</li>
+            <li><span class="label">录音设备：</span>iPhone / 录音笔</li>
+            <li><span class="label">文件命名：</span><code>用户ID_日期_类型.m4a</code></li>
+        </ul>
+
+        <!-- 阶段三 -->
+        <h2>三、访谈内容整理（AI 辅助）</h2>
+
+        <h3>3.1 录音转文字</h3>
+        <div class="step-item">
+            <span class="step-number">1</span>
+            <div class="step-content">
+                <strong>语音识别</strong><span class="badge badge-blue">Whisper</span>
+                <br>输入录音文件（.m4a / .wav），识别法/英/中多语种，输出原始语言文字稿
+            </div>
+        </div>
+
+        <h3>3.2 翻译 + 结构化整理</h3>
+        <div class="step-item">
+            <span class="step-number">2</span>
+            <div class="step-content">
+                <strong>翻译为中文</strong><span class="badge badge-green">Claude</span>
+                <br>将非中文内容统一翻译为中文
+            </div>
+        </div>
+        <div class="step-item">
+            <span class="step-number">3</span>
+            <div class="step-content">
+                <strong>按大纲结构化</strong><span class="badge badge-green">Claude</span>
+                <br>将访谈内容按大纲问题逐条匹配，提取每个问题对应的回答
+            </div>
+        </div>
+
+        <div class="flow-box">录音文件 → Whisper 转写 → 原始文字稿 → Claude 翻译为中文 → 按大纲问题逐条匹配 → 结构化问答输出</div>
+
+        <!-- 阶段四 -->
+        <h2>四、最终产出</h2>
+        <p>每位受访者整理为一份完整记录：</p>
+
+        <div class="output-box">用户访谈结果（用户ID: xxx）
+├─ 基础问卷部分
+│   └─ LimeSurvey 提交 ID（或展开问卷各题填写内容）
+│
+└─ 深度访谈部分
+    ├─ 通用访谈大纲
+    │   ├─ Q1: [问题] → A1: [回答]
+    │   ├─ Q2: [问题] → A2: [回答]
+    │   └─ ...
+    └─ 专项访谈大纲（如适用）
+        ├─ Q1: [问题] → A1: [回答]
+        ├─ Q2: [问题] → A2: [回答]
+        └─ ...</div>
+
+        <p><span class="label">存储方式：</span>回填至 LimeSurvey 或导出为独立文档</p>
+
+        <!-- 工具链 -->
+        <h2>五、工具链总结</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>环节</th>
+                    <th>工具</th>
+                    <th>备注</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>基础问卷</td>
+                    <td>LimeSurvey</td>
+                    <td>收集 + 存储</td>
+                </tr>
+                <tr>
+                    <td>访谈录音</td>
+                    <td>iPhone / 录音笔</td>
+                    <td>现场执行</td>
+                </tr>
+                <tr>
+                    <td>语音转文字</td>
+                    <td>OpenAI Whisper</td>
+                    <td>多语种 ASR（法/英/中）</td>
+                </tr>
+                <tr>
+                    <td>翻译 + 结构化</td>
+                    <td>Claude</td>
+                    <td>文本整理归类</td>
+                </tr>
+                <tr>
+                    <td>结果存储</td>
+                    <td>LimeSurvey / 文档</td>
+                    <td>最终归档</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- 待确认 -->
+        <div class="pending">
+            <h3>六、待确认事项</h3>
+            <ol>
+                <li>四份访谈大纲的具体题目内容</li>
+                <li>最终产出的格式偏好（LimeSurvey 内管理 vs 独立文档/表格）</li>
+                <li>录音文件的存储位置和归档方式</li>
+            </ol>
+        </div>
+
+        <footer>
+            C端用户旅游调研工作流 · 2026年5月
+        </footer>
+    </div>
+</body>
+</html>
