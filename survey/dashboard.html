@@ -98,6 +98,8 @@ tr:hover td{background:#f0f4ff}
     <a href="interview.html" class="btn btn-white">➕ 新建访谈</a>
     <button class="btn btn-gold" onclick="exportCSV()">📥 导出 CSV</button>
     <button class="btn btn-green" onclick="exportJSON()">📦 导出 JSON</button>
+    <button class="btn btn-white" onclick="document.getElementById('importFile').click()" style="border:1.5px solid #fff">📤 导入 JSON</button>
+    <input type="file" id="importFile" accept=".json,application/json" style="display:none" onchange="importJSON(this.files[0])"/>
     <button class="btn btn-red" onclick="clearAll()">🗑 清空</button>
   </div>
 </header>
@@ -467,6 +469,58 @@ function exportJSON() {
   const all = loadAll();
   if (!all.length) { alert('暂无数据'); return; }
   download(JSON.stringify(all,null,2), `interviews_${new Date().toISOString().slice(0,10)}.json`, 'application/json');
+}
+
+function importJSON(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    let data;
+    try {
+      data = JSON.parse(e.target.result);
+    } catch (err) {
+      alert('JSON 解析失败：\n' + err.message);
+      return;
+    }
+    if (!Array.isArray(data)) {
+      alert('导入失败：文件必须是 JSON 数组（应当与「导出 JSON」生成的格式一致）');
+      return;
+    }
+
+    const existingList = JSON.parse(localStorage.getItem('interview_list') || '[]');
+    const existingSet = new Set(existingList);
+    const conflicts = data.filter(r => r && typeof r === 'object' && r.key && existingSet.has(r.key)).length;
+
+    let mode = 'merge';
+    if (conflicts > 0) {
+      const choice = confirm(
+        `检测到 ${conflicts} 条已存在的访谈记录（按 key 匹配）。\n\n` +
+        `点「确定」= 覆盖已有记录\n` +
+        `点「取消」= 跳过已有记录，仅导入新增的`
+      );
+      mode = choice ? 'overwrite' : 'skip-existing';
+    }
+
+    let added = 0, updated = 0, skipped = 0, invalid = 0;
+    const newSet = new Set(existingList);
+    data.forEach(r => {
+      if (!r || typeof r !== 'object' || !r.key) { invalid++; return; }
+      const key = r.key;
+      const exists = existingSet.has(key);
+      if (exists && mode === 'skip-existing') { skipped++; return; }
+      const rec = Object.assign({}, r);
+      delete rec.key; // strip the synthetic key from the stored payload
+      localStorage.setItem(key, JSON.stringify(rec));
+      newSet.add(key);
+      if (exists) updated++; else added++;
+    });
+
+    localStorage.setItem('interview_list', JSON.stringify([...newSet]));
+    document.getElementById('importFile').value = '';
+    alert(`导入完成\n新增：${added}\n覆盖：${updated}\n跳过：${skipped}\n无效条目：${invalid}`);
+    renderTable();
+  };
+  reader.readAsText(file, 'utf-8');
 }
 
 function download(content,filename,type) {
