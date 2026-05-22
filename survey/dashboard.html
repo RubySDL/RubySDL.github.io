@@ -96,8 +96,6 @@ tr:hover td{background:#f0f4ff}
   <h1>📊 访谈记录看板</h1>
   <div class="header-btns">
     <a href="interview.html" class="btn btn-white">➕ 新建访谈</a>
-    <button class="btn btn-gold" onclick="exportCSV()">📥 导出 CSV</button>
-    <button class="btn btn-green" onclick="exportJSON()">📦 导出 JSON</button>
     <button class="btn btn-white" onclick="document.getElementById('importFile').click()" style="border:1.5px solid #fff">📤 导入 JSON</button>
     <input type="file" id="importFile" accept=".json,application/json" style="display:none" onchange="importJSON(this.files[0])"/>
     <button class="btn btn-red" onclick="clearAll()">🗑 清空</button>
@@ -215,13 +213,34 @@ const Q_LABELS = {
 };
 
 // ===== 数据加载 =====
+let _remoteCases = [];   // cases fetched from GitHub
+
 function loadAll() {
+  // Local data from localStorage
   const list = JSON.parse(localStorage.getItem('interview_list')||'[]');
-  return list.map(k => {
+  const localMap = new Map();
+  list.forEach(k => {
     const raw = localStorage.getItem(k);
-    if (!raw) return null;
-    try { return {key:k,...JSON.parse(raw)}; } catch(e){return null;}
-  }).filter(Boolean);
+    if (!raw) return;
+    try { localMap.set(k, {key:k,...JSON.parse(raw)}); } catch(e){}
+  });
+  // Merge: local overrides remote for same key
+  const merged = new Map();
+  _remoteCases.forEach(r => { if (r && r.key) merged.set(r.key, {...r, _src:'github'}); });
+  localMap.forEach((v,k) => merged.set(k, {...v, _src:'local'}));
+  return [...merged.values()];
+}
+
+async function fetchRemoteCases() {
+  try {
+    const resp = await fetch('cases.json?t=' + Date.now());
+    if (!resp.ok) throw new Error(resp.status);
+    _remoteCases = await resp.json();
+  } catch(e) {
+    console.warn('Failed to load remote cases:', e);
+    _remoteCases = [];
+  }
+  renderTable();
 }
 
 // ===== Tab切换 =====
@@ -282,6 +301,7 @@ function renderTable() {
       <td>${age}</td>
       <td>${freq}</td>
       <td>${status}</td>
+      <td>${d._src==='github'?'<span class="badge" style="background:#e3f2fd;color:#1565c0;font-size:.7rem">☁️ 云端</span>':'<span class="badge" style="background:#f3e5f5;color:#7b1fa2;font-size:.7rem">💾 本地</span>'}</td>
       <td style="white-space:nowrap">
         <button class="btn btn-white" style="padding:5px 10px;font-size:.78rem" onclick="showDetail('${d.key}')">查看</button>
         <a href="interview.html?key=${d.key}" class="btn btn-white" style="padding:5px 10px;font-size:.78rem;margin-left:4px">编辑</a>
@@ -432,45 +452,6 @@ function clearAll() {
   renderTable();
 }
 
-// ===== 导出 =====
-function exportCSV() {
-  const all = loadAll();
-  if (!all.length) { alert('暂无数据'); return; }
-  const allQIds = ['s0q1','s1q1','s1q2','s1q3','s1q4','s1q5','s1q6','s1q7','s1q8','s1q9','s1q10','s2q1','s2q2','s3q1','s3q2','s3q3','s4q1','s4q2','s5q1','s6q1','s6q2','s6q3'];
-  const headers = [
-    '受访者','访谈员','日期','地点','状态','语言',
-    'Q1年龄','Q2学历','Q3婚姻','Q4子女','Q5收入','Q6旅行频率','Q7目的地','Q8年预算','Q9次预算',
-    'Q10风格','Q10排序1','Q10排序2','Q10排序3',
-    ...allQIds.map(id=>Q_LABELS[id]||id)
-  ];
-  const rows = all.map(d => {
-    const m=d.meta||{}, b=d.base||{}, ans=d.answers||{};
-    const base = [
-      m.interviewee||'', m.interviewer||'', m.date||'', m.location||'',
-      m.submitted?'已完成':'草稿', m.lang||'',
-      b.q1?AGE_MAP[b.q1]||b.q1:'', b.q2?EDU_MAP[b.q2]||b.q2:'',
-      b.q3?FAM_MAP[b.q3]||b.q3:'', b.q4?CHILD_MAP[b.q4]||b.q4:'',
-      b.q5?INC_MAP[b.q5]||b.q5:'', b.q6?FREQ_MAP[b.q6]||b.q6:'',
-      b.q7?(b.q7.split(',').map(v=>DEST_MAP[v]||v).join('|')):'',
-      b.q8?BUDA_MAP[b.q8]||b.q8:'', b.q9?BUDP_MAP[b.q9]||b.q9:'',
-      b.q10?(b.q10.split(',').map(v=>STYLE_MAP[v]||v).join('|')):'',
-      b.q10_rank1?STYLE_MAP[b.q10_rank1]||b.q10_rank1:'',
-      b.q10_rank2?STYLE_MAP[b.q10_rank2]||b.q10_rank2:'',
-      b.q10_rank3?STYLE_MAP[b.q10_rank3]||b.q10_rank3:'',
-    ];
-    const qvals = allQIds.map(id=>(ans[id]||'').replace(/\n/g,' | '));
-    return [...base,...qvals];
-  });
-  const csv = [headers,...rows].map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
-  download('\uFEFF'+csv, `interviews_${new Date().toISOString().slice(0,10)}.csv`, 'text/csv');
-}
-
-function exportJSON() {
-  const all = loadAll();
-  if (!all.length) { alert('暂无数据'); return; }
-  download(JSON.stringify(all,null,2), `interviews_${new Date().toISOString().slice(0,10)}.json`, 'application/json');
-}
-
 function importJSON(file) {
   if (!file) return;
   const reader = new FileReader();
@@ -483,7 +464,7 @@ function importJSON(file) {
       return;
     }
     if (!Array.isArray(data)) {
-      alert('导入失败：文件必须是 JSON 数组（应当与「导出 JSON」生成的格式一致）');
+      alert('导入失败：文件必须是 JSON 数组（每条记录需含 key 字段）');
       return;
     }
 
@@ -530,7 +511,7 @@ function download(content,filename,type) {
 }
 
 // ===== Init =====
-renderTable();
+fetchRemoteCases();  // loads remote cases then calls renderTable
 </script>
 </body>
 </html>
