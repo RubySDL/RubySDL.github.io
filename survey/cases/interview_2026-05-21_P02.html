@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>受访者P02 — 访谈案例</title>
+<style>
+:root{--blue:#1a3a6b;--light:#4a7bc8;--gold:#c9a84c;--bg:#f5f6fa;--text:#2c3e50;--border:#dde3ed;--hint:#8895a7;--card:#fff;--radius:12px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.8;-webkit-font-smoothing:antialiased}
+a{color:var(--light);text-decoration:none}a:hover{text-decoration:underline}
+.topbar{background:linear-gradient(135deg,var(--blue),#2c5282);color:#fff;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.15)}
+.topbar h1{font-size:1rem;font-weight:600;opacity:.9}
+.topbar a{color:#fff;font-size:.85rem;opacity:.8}.topbar a:hover{opacity:1;text-decoration:none}
+.wrap{max-width:860px;margin:0 auto;padding:28px 18px 60px}
+
+/* Case nav */
+.case-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px}
+.nav-link{padding:6px 14px;border-radius:20px;font-size:.8rem;font-weight:600;border:1.5px solid var(--border);background:var(--card);color:var(--hint);transition:.2s}
+.nav-link:hover{border-color:var(--light);color:var(--light);text-decoration:none}
+.nav-link.current{background:var(--blue);color:#fff;border-color:var(--blue)}
+
+/* Header card */
+.hero{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:28px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.hero-name{font-size:1.5rem;font-weight:800;color:var(--blue);margin-bottom:4px}
+.hero-date{font-size:.88rem;color:var(--hint);margin-bottom:14px}
+.meta-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px 24px;font-size:.85rem;margin-bottom:14px}
+.meta-row .label{font-size:.72rem;color:var(--hint);letter-spacing:.3px;text-transform:uppercase}
+.meta-row .value{font-weight:600}
+.hero-notes{padding:10px 14px;background:#f8f9fc;border-radius:8px;font-size:.84rem;color:var(--hint);border-left:3px solid var(--gold);margin-top:10px}
+.tag-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+.tag{padding:4px 12px;border-radius:20px;font-size:.74rem;font-weight:600;background:#eef2ff;color:var(--light)}
+
+/* Section titles */
+h2{font-size:1.15rem;font-weight:700;color:var(--blue);margin:28px 0 16px;padding-bottom:8px;border-bottom:2px solid var(--border)}
+
+/* Base grid */
+.base-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:600px){.base-grid{grid-template-columns:1fr}}
+.base-item{background:var(--card);border-radius:10px;border:1px solid var(--border);padding:14px 16px}
+.q-code{font-size:.7rem;color:var(--hint);letter-spacing:.5px;font-weight:700}
+.q-title{font-size:.82rem;font-weight:600;margin-bottom:4px}
+.q-val{font-size:.95rem;font-weight:700;color:var(--light)}
+.empty{color:var(--hint);font-weight:400;font-style:italic;font-size:.85rem}
+
+/* Interview sections */
+.section{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);margin-bottom:16px;overflow:hidden}
+.section-head{padding:14px 18px;font-size:.92rem;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:10px;border-left:4px solid var(--light);background:#fafbfe}
+.snum{width:26px;height:26px;border-radius:50%;color:#fff;font-size:.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.qa{padding:16px 18px 16px 22px;border-bottom:1px solid var(--border)}
+.qa:last-child{border-bottom:none}
+.qa-q{font-size:.83rem;font-weight:700;color:var(--blue);margin-bottom:6px}
+.qa-a{font-size:.9rem;line-height:1.9;color:var(--text);padding:10px 14px;background:#f8f9fc;border-radius:8px;border-left:3px solid var(--gold);white-space:pre-wrap;word-break:break-word}
+.qa-a.empty{color:var(--hint);font-style:italic;background:transparent;border-left-color:var(--border)}
+.no-data{text-align:center;padding:40px;color:var(--hint);font-size:.9rem}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <h1>📊 访谈案例</h1>
+  <a href="../dashboard.html">← 返回看板</a>
+</div>
+<div class="wrap">
+  <div class="case-nav"><a class="nav-link" href="interview_2026-05-21_P01.html">受访者P01</a><span class="nav-link current">受访者P02</span></div>
+
+  <div class="hero">
+    <div class="hero-name">受访者P02</div>
+    <div class="hero-date">2026-05-21 · 🇬🇧 English</div>
+    <div class="meta-row">
+      <div><div class="label">访谈员</div><div class="value">—</div></div>
+      <div><div class="label">地点</div><div class="value">线上视频会议</div></div>
+      <div><div class="label">状态</div><div class="value">✅ 已完成</div></div>
+    </div>
+    <div class="hero-notes">居住在二线城市，在巴黎工作。两份工作+在读学生，美食相关专业。持SNCF Carte Avantage。英法双语。通过在线招募。</div>
+    <div class="tag-row"><span class="tag">美食/手工艺</span><span class="tag">文化/历史/艺术</span><span class="tag">徒步/自然</span></div>
+  </div>
+
+  <h2>📝 基础问卷</h2>
+  <div class="base-grid">
+<div class="base-item"><div class="q-code">Q1</div><div class="q-title">年龄段</div><div class="q-val">25–34</div></div>
+<div class="base-item"><div class="q-code">Q2</div><div class="q-title">学历</div><div class="q-val"><span class="empty">未填写</span></div></div>
+<div class="base-item"><div class="q-code">Q3</div><div class="q-title">婚姻状况</div><div class="q-val">Marié(e)</div></div>
+<div class="base-item"><div class="q-code">Q4</div><div class="q-title">子女</div><div class="q-val"><span class="empty">未填写</span></div></div>
+<div class="base-item"><div class="q-code">Q5</div><div class="q-title">家庭月收入</div><div class="q-val"><span class="empty">未填写</span></div></div>
+<div class="base-item"><div class="q-code">Q6</div><div class="q-title">年旅行频率</div><div class="q-val">6次+</div></div>
+<div class="base-item"><div class="q-code">Q7</div><div class="q-title">主要目的地</div><div class="q-val">法国、欧洲其他、亚洲、其他远途</div></div>
+<div class="base-item"><div class="q-code">Q8</div><div class="q-title">年度旅行预算</div><div class="q-val"><span class="empty">未填写</span></div></div>
+<div class="base-item"><div class="q-code">Q9</div><div class="q-title">单次旅行预算</div><div class="q-val"><span class="empty">未填写</span></div></div>
+<div class="base-item"><div class="q-code">Q10</div><div class="q-title">旅行风格偏好</div><div class="q-val">美食/手工艺、文化/历史/艺术、徒步/自然</div></div>
+<div class="base-item"><div class="q-code">Q10★</div><div class="q-title">风格排序</div><div class="q-val">1️⃣ 美食/手工艺 → 2️⃣ 文化/历史/艺术 → 3️⃣ 徒步/自然</div></div>
+
+  </div>
+
+  <h2>🎙 深度访谈</h2>
+<div class="section"><div class="section-head" style="border-left-color:#4a7bc8"><span class="snum" style="background:#4a7bc8">1</span>开场破冰</div>
+<div class="qa"><div class="qa-q">最近一次旅行</div><div class="qa-a">住在二线城市并在当地上学，工作在Paris，有两份工作。大多独自旅行。去过法国南部和瑞士。2023年去韩国，2024年去泰国，两个月后再去泰国。父母住在巴黎近郊。火车是最常用交通，只有跨洲才坐飞机。正在改变习惯——尽可能选火车不选飞机。火车主要用于商务出行（二线城市-巴黎通勤）。</div></div>
+</div>
+<div class="section"><div class="section-head" style="border-left-color:#c9a84c"><span class="snum" style="background:#c9a84c">2</span>行前过程</div>
+<div class="qa"><div class="qa-q">旅行动机</div><div class="qa-a">旅行动机混合：商务通勤（二线城市-巴黎）+ 文化探索（城市探索/美食节/节庆活动）。以目的地最大活动/节庆为旅行锚点，围绕它安排其他活动和交通住宿。美食学专业驱动强烈的美食旅行兴趣。</div></div>
+<div class="qa"><div class="qa-q">信息渠道</div><div class="qa-a">主要用Instagram（算法推荐，&#x27;算法很了解我&#x27;）。不使用Google搜索旅行信息。和朋友（包括网友、Twitter互关）共同维护城市推荐PDF（咖啡馆/餐厅/博物馆）。使用The Fork找餐厅。不使用GetYourGuide。知道Airbnb Experiences但不买——认为太普通或太贵。</div></div>
+<div class="qa"><div class="qa-q">目的地了解程度</div><div class="qa-a">提前计划型。喜欢一切安排妥当。以目的地大型活动为旅行锚点，先确定主要事件日期，再填充小活动和交通住宿。</div></div>
+<div class="qa"><div class="qa-q">提前规划时间</div><div class="qa-a">至少提前两周买票，可以更早但不能更晚。少于两周只在雇主帮买时发生。订票一直顺利因为不需要慌。规划和预订几乎同步。自由职业/学生身份有一定灵活性。</div></div>
+<div class="qa"><div class="qa-q">规划工具</div><div class="qa-a">手机笔记 + 和朋友共享的城市推荐PDF（涵盖咖啡馆/餐厅/博物馆）。不使用专门的行程规划工具。</div></div>
+<div class="qa"><div class="qa-q">AI 工具使用</div><div class="qa-a">从未使用过AI规划行程。不愿意尝试——担心AI只推荐旅游景点老套路。兴趣爱好比较小众，认为AI难以满足。除非AI能先学习个人偏好做个性化推荐。即使Booking/Airbnb有AI功能也可能不用。</div></div>
+<div class="qa"><div class="qa-q">分开预订 vs 打包</div><div class="qa-a">法国国内全部分开预订。亚洲旅行（泰国/韩国）则用旅行社全包——因为语言障碍。预订顺序：1）国际交通票→2）第一城市住宿→3）大型活动/节庆锚点→4）每城市小活动→5）城市间内部交通→6）各城市住宿。像做环线circuit。</div></div>
+<div class="qa"><div class="qa-q">Package 产品态度</div><div class="qa-a">法国从未买过package。泰国和韩国用旅行社全包（因语言障碍）。语言障碍是选择打包vs分开的关键分水岭：法语国家自己安排更划算，非法语国家交给专业人士。</div></div>
+<div class="qa"><div class="qa-q">预订痛点</div><div class="qa-a">SNCF App痛点：1）某些列车显示&#x27;不可预订&#x27;但无原因说明（满员时会标注，但有些车莫名不能选）。2）车站关闭/线路施工信息不显示在App中（如月初Gare de Lyon关闭但没有通知，无人知道如何去Dijon）。3）有时只显示车票不显示价格。4）餐车/吧台经常被取消但Carte Avantage宣传有餐车折扣——无法使用的福利。</div></div>
+<div class="qa"><div class="qa-q">支付方式</div><div class="qa-a">信用卡为主。使用银行App生成一次性虚拟信用卡用于在线支付——防止盗刷。不确定法国有什么本地支付方式。</div></div>
+</div>
+<div class="section"><div class="section-head" style="border-left-color:#27ae60"><span class="snum" style="background:#27ae60">3</span>交通选择</div>
+<div class="qa"><div class="qa-q">法国境内交通</div><div class="qa-a">火车（SNCF）为主。二线城市-巴黎通勤线路。只有跨洲才飞机。正在改变习惯偏好火车。去捷克时混合火车和飞机（因德国火车晚点风险和需要四段换乘）。东欧也用夜间巴士（Prague-Ostrava 7€巴士vs12€火车）。主要比较：车站位置&gt;价格&gt;时间。</div></div>
+<div class="qa"><div class="qa-q">TGV 折扣卡</div><div class="qa-a">持有Carte Avantage（家庭/婚姻版），40€促销购入（原价49€）。通过SNCF Connect广告发现。和TGV Max对比过：TGV Max月费80€，但二线城市-巴黎票价最高39€不值得。每月使用1-2次，主要通勤。满意度高但餐车福利无法使用。希望App显示施工信息和不可预订原因。期待自动筛选折扣票的功能。</div></div>
+</div>
+<div class="section"><div class="section-head" style="border-left-color:#e67e22"><span class="snum" style="background:#e67e22">4</span>住宿偏好</div>
+<div class="qa"><div class="qa-q">住宿类型偏好</div><div class="qa-a">Booking、Airbnb、Agoda三个平台。瑞士旅行特别用Agoda——价格更好且新会员有折扣。法语国家自己比价预订，亚洲交给旅行社。</div></div>
+<div class="qa"><div class="qa-q">住宿优先因素</div><div class="qa-a">主要看价格（尤其去瑞士会花大量时间比较价格）。车站/机场位置（父母住近郊）。其他因素未详细讨论。</div></div>
+<div class="qa"><div class="qa-q">取消政策态度</div><div class="qa-a">未讨论取消政策。</div></div>
+</div>
+<div class="section"><div class="section-head" style="border-left-color:#8e44ad"><span class="snum" style="background:#8e44ad">5</span>体验与活动</div>
+<div class="qa"><div class="qa-q">提前预订活动</div><div class="qa-a">欧洲旅行在现场直接安排——看到建筑/餐厅就进去问。不在线预订活动。亚洲旅行全部由旅行社安排。以目的地大型节庆为规划核心。</div></div>
+<div class="qa"><div class="qa-q">体验平台使用</div><div class="qa-a">不使用GetYourGuide。知道Airbnb Experiences但不买——看看有什么但认为太普通或太贵，会找替代。使用The Fork找餐厅。</div></div>
+</div>
+<div class="section"><div class="section-head" style="border-left-color:#16a085"><span class="snum" style="background:#16a085">6</span>旅游攻略 &amp; 分享</div>
+<div class="qa"><div class="qa-q">攻略分享意愿</div><div class="qa-a">和朋友（包括网友/Twitter互关）共同维护城市推荐PDF分享。这在法国年轻人中比较常见——&#x27;年轻人会把自己收藏的地址分享给亲近的人&#x27;。不介意和八年前在Twitter上聊过的人分享。</div></div>
+</div>
+<div class="section"><div class="section-head" style="border-left-color:#c0392b"><span class="snum" style="background:#c0392b">7</span>产品 Demo</div>
+<div class="qa"><div class="qa-q">产品 Demo 反馈</div><div class="qa-a">对Demo非常正面：&#x27;It&#x27;s very precise. I like it a lot.&#x27; 喜欢完整行程+一键预订概念。法国从未买过套餐但感兴趣。指出打包产品对不住在法国的外国游客更有吸引力。主动提出愿意做测试用户。</div></div>
+<div class="qa"><div class="qa-q">产品改进意见</div><div class="qa-a">建议：1）聚焦不太知名的城市（如Les Sables d&#x27;Olonne而非Bordeaux）。2）提供niche内容——如Bibliothèque Forney（巴黎免费艺术手工艺图书馆，连巴黎人都不知道）。3）关注法国美食节（如Angers的包容性美食节）。4）推广适合步行的城市（Bordeaux Rue Saint Catherine, Reims）。5）需要建立大量本地合作关系。</div></div>
+<div class="qa"><div class="qa-q">补充信息</div><div class="qa-a">美食学专业视角独特。推荐二线城市的Cité Internationale de la Gastronomie。指出Angers虽以葡萄酒闻名但比Bordeaux/Bourgogne知名度低。计划2027-2028去成都看熊猫吃美食。主动要求做产品测试用户。法国本土vs外国游客的双轨产品定位建议。</div></div>
+</div>
+
+</div>
+</body>
+</html>

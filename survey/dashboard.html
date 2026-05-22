@@ -5,471 +5,64 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>访谈记录看板</title>
 <style>
-:root{--blue:#1a3a6b;--light:#4a7bc8;--gold:#c9a84c;--red:#c0392b;--green:#27ae60;--bg:#f5f6fa;--text:#2c3e50;--border:#dde3ed;--hint:#8895a7;--card:#fff;--radius:12px}
+:root{--blue:#1a3a6b;--light:#4a7bc8;--gold:#c9a84c;--bg:#f5f6fa;--text:#2c3e50;--border:#dde3ed;--hint:#8895a7;--card:#fff;--radius:12px}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.75;-webkit-font-smoothing:antialiased}
-
-/* ===== Header ===== */
-header{background:linear-gradient(135deg,var(--blue) 0%,#2c5282 100%);color:#fff;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.15)}
-header h1{font-size:1.25rem;font-weight:700;letter-spacing:.5px}
-.header-btns{display:flex;gap:8px;flex-wrap:wrap}
-.btn{padding:8px 16px;border:none;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
-.btn-white{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3)}
-.btn-white:hover{background:rgba(255,255,255,.25)}
-.btn-sm{padding:6px 12px;font-size:.78rem;border-radius:6px}
-
-/* ===== Container ===== */
-.container{max-width:1100px;margin:0 auto;padding:24px 16px 60px}
-
-/* ===== Stats strip ===== */
-.stats{display:flex;gap:0;background:var(--card);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;margin-bottom:24px}
+header{background:linear-gradient(135deg,var(--blue),#2c5282);color:#fff;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,.15)}
+header h1{font-size:1.25rem;font-weight:700}
+.header-btns{display:flex;gap:8px}
+.btn{padding:8px 16px;border:none;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;transition:.2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3)}
+.btn:hover{background:rgba(255,255,255,.25)}
+.wrap{max-width:900px;margin:0 auto;padding:28px 18px 60px}
+.stats{display:flex;gap:0;background:var(--card);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;margin-bottom:28px}
 .stat-item{flex:1;text-align:center;padding:16px 8px;border-right:1px solid var(--border)}
 .stat-item:last-child{border-right:none}
 .stat-num{font-size:1.6rem;font-weight:800;color:var(--blue)}
-.stat-label{font-size:.72rem;color:var(--hint);margin-top:2px;letter-spacing:.3px}
-@media(max-width:600px){.stats{flex-wrap:wrap}.stat-item{flex:none;width:33.33%}.stat-item:nth-child(3){border-right:none}}
-
-/* ===== Tabs ===== */
-.tabs{display:flex;gap:6px;margin-bottom:20px}
-.tab-btn{padding:10px 20px;border:1px solid var(--border);background:var(--card);color:var(--hint);font-weight:700;font-size:.85rem;cursor:pointer;border-radius:var(--radius);transition:.2s}
-.tab-btn.active{background:var(--blue);color:#fff;border-color:var(--blue)}
-
-/* ===== Search bar ===== */
-.search-bar{margin-bottom:20px;position:relative}
-.search-bar input{width:100%;padding:12px 16px 12px 40px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:.9rem;background:var(--card);color:var(--text);font-family:inherit;transition:.2s}
-.search-bar input:focus{outline:none;border-color:var(--light);box-shadow:0 0 0 3px rgba(74,123,200,.12)}
-.search-bar::before{content:'🔍';position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:.9rem}
-
-/* ===== Cards ===== */
-.card-grid{display:grid;grid-template-columns:1fr;gap:14px}
-.case-card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:20px 22px;cursor:pointer;transition:all .2s;display:grid;grid-template-columns:1fr auto;align-items:start;gap:16px}
-.case-card:hover{border-color:var(--light);box-shadow:0 4px 16px rgba(26,58,107,.08);transform:translateY(-1px)}
-.card-main{min-width:0}
-.card-title{font-size:1.05rem;font-weight:700;color:var(--blue);margin-bottom:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.card-meta{font-size:.8rem;color:var(--hint);display:flex;flex-wrap:wrap;gap:4px 14px;margin-bottom:8px}
-.card-tags{display:flex;flex-wrap:wrap;gap:5px}
-.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.72rem;font-weight:600;letter-spacing:.3px}
+.stat-label{font-size:.72rem;color:var(--hint);margin-top:2px}
+h2{font-size:1.05rem;font-weight:700;color:var(--hint);margin-bottom:14px;letter-spacing:.5px}
+.card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:20px 22px;margin-bottom:12px;transition:.2s;display:block;color:inherit;text-decoration:none}
+.card:hover{border-color:var(--light);box-shadow:0 4px 16px rgba(26,58,107,.08);transform:translateY(-1px);text-decoration:none}
+.card-top{display:flex;justify-content:space-between;align-items:start;gap:12px;margin-bottom:6px}
+.card-name{font-size:1.1rem;font-weight:700;color:var(--blue)}
+.card-date{font-size:.8rem;color:var(--hint);white-space:nowrap}
+.card-meta{font-size:.82rem;color:var(--hint);margin-bottom:8px}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
+.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.72rem;font-weight:600}
 .tag-lang{background:#e3f2fd;color:#1565c0}
 .tag-done{background:#e8f5e9;color:#2e7d32}
-.tag-draft{background:#fff8e1;color:#f57f17}
-.tag-src{background:#f3e8fd;color:#7b1fa2}
-.tag-cloud{background:#e3f2fd;color:#1565c0}
-.card-preview{font-size:.82rem;color:var(--hint);margin-top:8px;line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.card-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0}
-.card-date{font-size:.78rem;color:var(--hint);white-space:nowrap}
-.card-arrow{color:var(--border);font-size:1.2rem;margin-top:auto}
-.case-card:hover .card-arrow{color:var(--light)}
-
-/* ===== Empty state ===== */
-.empty-state{text-align:center;padding:60px 20px;color:var(--hint)}
-.empty-state .icon{font-size:3rem;margin-bottom:12px}
-
-/* ===== Charts ===== */
-.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-@media(max-width:640px){.chart-grid{grid-template-columns:1fr}}
-.chart-card{background:var(--card);border-radius:var(--radius);padding:18px;border:1px solid var(--border)}
-.chart-title{font-size:.88rem;font-weight:700;color:var(--blue);margin-bottom:12px}
-.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:.8rem}
-.bar-label{width:110px;color:var(--hint);text-align:right;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.bar-wrap{flex:1;background:#edf0f5;border-radius:4px;height:16px;overflow:hidden}
-.bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--light),var(--gold));transition:.5s}
-.bar-count{width:30px;font-weight:700;color:var(--text);text-align:right;flex-shrink:0}
-
-/* ===== Detail Page ===== */
-#detail-page{display:none;animation:fadeIn .25s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.detail-back{display:inline-flex;align-items:center;gap:6px;font-size:.85rem;color:var(--light);cursor:pointer;margin-bottom:20px;font-weight:600;padding:6px 0;border:none;background:none}
-.detail-back:hover{color:var(--blue)}
-
-.detail-header{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:24px;margin-bottom:20px}
-.detail-title{font-size:1.3rem;font-weight:800;color:var(--blue);margin-bottom:8px}
-.detail-meta-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px 20px;font-size:.84rem}
-.detail-meta-grid .label{color:var(--hint);font-size:.76rem;letter-spacing:.3px}
-.detail-meta-grid .value{font-weight:600}
-.detail-notes{margin-top:12px;padding:10px 14px;background:#f8f9fc;border-radius:8px;font-size:.83rem;color:var(--hint);border-left:3px solid var(--gold)}
-
-/* Detail tabs */
-.detail-tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
-.dtab{padding:9px 18px;border:1px solid var(--border);background:var(--card);color:var(--hint);font-weight:700;font-size:.84rem;cursor:pointer;border-radius:8px;transition:.2s}
-.dtab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
-
-/* Base questionnaire in detail */
-.base-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(max-width:600px){.base-grid{grid-template-columns:1fr}}
-.base-item{background:var(--card);border-radius:10px;border:1px solid var(--border);padding:14px 16px}
-.base-item .q-code{font-size:.72rem;color:var(--hint);letter-spacing:.5px;margin-bottom:2px}
-.base-item .q-title{font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:6px}
-.base-item .q-ans{font-size:.95rem;font-weight:700;color:var(--light)}
-.base-item .q-ans.empty{color:var(--hint);font-weight:400;font-style:italic;font-size:.85rem}
-
-/* Interview sections in detail */
-.interview-section{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);margin-bottom:16px;overflow:hidden}
-.section-head{background:linear-gradient(135deg,var(--blue),#2c5282);color:#fff;padding:12px 18px;font-size:.88rem;font-weight:700;display:flex;align-items:center;gap:8px}
-.section-head .snum{background:rgba(255,255,255,.2);width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;flex-shrink:0}
-.qa-item{padding:16px 18px;border-bottom:1px solid var(--border)}
-.qa-item:last-child{border-bottom:none}
-.qa-q{font-size:.82rem;font-weight:700;color:var(--blue);margin-bottom:6px;display:flex;align-items:center;gap:6px}
-.qa-q::before{content:'Q';background:var(--gold);color:#fff;font-size:.65rem;font-weight:800;width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.qa-a{font-size:.88rem;line-height:1.85;color:var(--text);padding:10px 14px;background:#f8f9fc;border-radius:8px;border-left:3px solid var(--gold);white-space:pre-wrap;word-break:break-word}
-.qa-a.empty{color:var(--hint);font-style:italic;background:transparent;border-left-color:var(--border)}
-.qa-a strong,.qa-a b{color:var(--blue)}
+.tag-style{background:#eef2ff;color:var(--light)}
+.card-preview{font-size:.84rem;color:#555;line-height:1.7;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-cta{display:inline-block;margin-top:10px;font-size:.82rem;font-weight:600;color:var(--light)}
 </style>
 </head>
 <body>
-
 <header>
   <h1>📊 访谈记录看板</h1>
   <div class="header-btns">
-    <a href="interview.html" class="btn btn-white">➕ 新建</a>
-    <button class="btn btn-white" onclick="document.getElementById('importFile').click()">📤 导入</button>
-    <input type="file" id="importFile" accept=".json,application/json" style="display:none" onchange="importJSON(this.files[0])"/>
+    <a href="interview.html" class="btn">➕ 新建访谈</a>
   </div>
 </header>
-
-<!-- ===== List View ===== -->
-<div class="container" id="list-view">
+<div class="wrap">
   <div class="stats">
-    <div class="stat-item"><div class="stat-num" id="s-total">0</div><div class="stat-label">总访谈</div></div>
-    <div class="stat-item"><div class="stat-num" id="s-done">0</div><div class="stat-label">已完成</div></div>
-    <div class="stat-item"><div class="stat-num" id="s-draft">0</div><div class="stat-label">草稿</div></div>
-    <div class="stat-item"><div class="stat-num" id="s-cloud">0</div><div class="stat-label">云端</div></div>
-    <div class="stat-item"><div class="stat-num" id="s-base">0</div><div class="stat-label">有基础问卷</div></div>
+    <div class="stat-item"><div class="stat-num">2</div><div class="stat-label">总案例</div></div>
+    <div class="stat-item"><div class="stat-num">2</div><div class="stat-label">已完成</div></div>
+    <div class="stat-item"><div class="stat-num">2</div><div class="stat-label">语言</div></div>
   </div>
-
-  <div class="tabs">
-    <button class="tab-btn active" onclick="showTab('list',this)">📋 案例列表</button>
-    <button class="tab-btn" onclick="showTab('charts',this)">📊 统计分析</button>
-  </div>
-
-  <div id="tab-list">
-    <div class="search-bar">
-      <input type="text" id="search" placeholder="搜索受访者、访谈员…" oninput="renderCards()"/>
-    </div>
-    <div class="card-grid" id="card-container"></div>
-    <div class="empty-state" id="empty" style="display:none">
-      <div class="icon">📭</div>
-      <div>暂无访谈记录</div>
-      <a href="interview.html" class="btn btn-white" style="margin-top:14px;color:var(--blue);border:1.5px solid var(--blue);padding:10px 20px">➕ 开始第一个访谈</a>
-    </div>
-  </div>
-
-  <div id="tab-charts" style="display:none">
-    <div class="chart-grid" id="charts-container"></div>
-  </div>
+  <h2>全部案例</h2>
+  <a class="card" href="cases/interview_2026-05-21_P01.html">
+    <div class="card-top"><div class="card-name">受访者P01</div><div class="card-date">2026-05-21</div></div>
+    <div class="card-meta">线下（面对面访谈） </div>
+    <div class="tags"><span class="tag tag-lang">🇫🇷 Français</span><span class="tag tag-done">✅ 完成</span><span class="tag tag-style">文化/历史/艺术</span><span class="tag tag-style">徒步/自然</span><span class="tag tag-style">海滨度假</span></div>
+    <div class="card-preview">最近一次旅行是2026年4月去了Venise（威尼斯），独自一人待了4-5天，目的是真正了解这座城市。之前2月和一个朋友去了Martinique（马提尼克），1月独自去了Bretagne（布列塔尼）两天。去年在法国国内旅行两次：一次Bretagne，一次Côte d&#x27;Azur（Antibes）。在法…</div>
+    <div class="card-cta">查看完整案例 →</div>
+  </a>
+  <a class="card" href="cases/interview_2026-05-21_P02.html">
+    <div class="card-top"><div class="card-name">受访者P02</div><div class="card-date">2026-05-21</div></div>
+    <div class="card-meta">线上视频会议 </div>
+    <div class="tags"><span class="tag tag-lang">🇬🇧 English</span><span class="tag tag-done">✅ 完成</span><span class="tag tag-style">美食/手工艺</span><span class="tag tag-style">文化/历史/艺术</span><span class="tag tag-style">徒步/自然</span></div>
+    <div class="card-preview">住在二线城市并在当地上学，工作在Paris，有两份工作。大多独自旅行。去过法国南部和瑞士。2023年去韩国，2024年去泰国，两个月后再去泰国。父母住在巴黎近郊。火车是最常用交通，只有跨洲才坐飞机。正在改变习惯——尽可能选火车不选飞机。火车主要用于商务出行（二线城市-巴黎通勤）。…</div>
+    <div class="card-cta">查看完整案例 →</div>
+  </a>
 </div>
-
-<!-- ===== Detail View ===== -->
-<div class="container" id="detail-page">
-  <button class="detail-back" onclick="hideDetail()">← 返回列表</button>
-  <div id="detail-content"></div>
-</div>
-
-<script>
-// ===== Maps =====
-const AGE_MAP={A:'18–24',B:'25–34',C:'35–44',D:'45–54',E:'55+'};
-const EDU_MAP={A:'Inf. Bac',B:'Bac',C:'Bac+2',D:'Bac+3',E:'Bac+5+',F:'Doctorat'};
-const FAM_MAP={A:'Célibataire',B:'Concubinage',C:'Pacsé(e)',D:'Marié(e)',E:'Divorcé(e)/Veuf(ve)'};
-const CHILD_MAP={0:'Aucun',1:'1',2:'2','3+':'3+'};
-const INC_MAP={A:'–1500€',B:'1500–2500€',C:'2501–4000€',D:'4001–6000€',E:'+6000€',F:'不透露'};
-const FREQ_MAP={A:'从不',B:'1次',C:'2–3次',D:'4–5次',E:'6次+'};
-const DEST_MAP={A:'法国',B:'欧洲其他',C:'北非/地中海',D:'美洲',E:'亚洲',F:'其他远途'};
-const BUDA_MAP={A:'–500€',B:'500–1500€',C:'1501–3000€',D:'3001–6000€',E:'+6000€'};
-const BUDP_MAP={A:'–300€',B:'300–800€',C:'801–1500€',D:'1501–3000€',E:'+3000€'};
-const STYLE_MAP={A:'海滨度假',B:'露营/户外',C:'徒步/自然',D:'山地/滑雪',E:'文化/历史/艺术',F:'美食/手工艺',G:'节庆/传统'};
-const LANG_LABEL={zh:'🇨🇳 中文',en:'🇬🇧 English',fr:'🇫🇷 Français'};
-
-const SECTION_TITLES=['开场破冰','行前过程','交通选择','住宿偏好','体验与活动','旅游攻略 & 分享','产品 Demo'];
-const SECTION_QS=[['s0q1'],['s1q1','s1q2','s1q3','s1q4','s1q5','s1q6','s1q7','s1q8','s1q9','s1q10'],['s2q1','s2q2'],['s3q1','s3q2','s3q3'],['s4q1','s4q2'],['s5q1'],['s6q1','s6q2','s6q3']];
-const Q_LABELS={s0q1:'最近一次旅行',s1q1:'旅行动机',s1q2:'信息渠道',s1q3:'目的地了解程度',s1q4:'提前规划时间',s1q5:'规划工具',s1q6:'AI 工具使用',s1q7:'分开预订 vs 打包',s1q8:'Package 产品态度',s1q9:'预订痛点',s1q10:'支付方式',s2q1:'法国境内交通',s2q2:'TGV 折扣卡',s3q1:'住宿类型偏好',s3q2:'住宿优先因素',s3q3:'取消政策态度',s4q1:'提前预订活动',s4q2:'体验平台使用',s5q1:'攻略分享意愿',s6q1:'产品 Demo 反馈',s6q2:'产品改进意见',s6q3:'补充信息'};
-
-// ===== Data =====
-let _remoteCases = [];
-let _allData = [];
-
-function loadAll() {
-  const list = JSON.parse(localStorage.getItem('interview_list')||'[]');
-  const localMap = new Map();
-  list.forEach(k => {
-    const raw = localStorage.getItem(k);
-    if (!raw) return;
-    try { localMap.set(k,{key:k,...JSON.parse(raw)}); } catch(e){}
-  });
-  const merged = new Map();
-  _remoteCases.forEach(r => { if(r&&r.key) merged.set(r.key,{...r,_src:'github'}); });
-  localMap.forEach((v,k) => merged.set(k,{...v,_src:'local'}));
-  return [...merged.values()];
-}
-
-async function fetchRemoteCases() {
-  try {
-    const resp = await fetch('cases.json?t='+Date.now());
-    if (!resp.ok) throw new Error(resp.status);
-    _remoteCases = await resp.json();
-  } catch(e) {
-    console.warn('Remote cases load failed:',e);
-    _remoteCases = [];
-  }
-  renderCards();
-}
-
-// ===== Tabs =====
-function showTab(id,btn) {
-  document.getElementById('tab-list').style.display = id==='list'?'block':'none';
-  document.getElementById('tab-charts').style.display = id==='charts'?'block':'none';
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  if (id==='charts') renderCharts();
-}
-
-// ===== Cards =====
-function renderCards() {
-  _allData = loadAll();
-  const all = _allData;
-
-  // Stats
-  document.getElementById('s-total').textContent = all.length;
-  document.getElementById('s-done').textContent = all.filter(d=>d.meta?.submitted).length;
-  document.getElementById('s-draft').textContent = all.filter(d=>!d.meta?.submitted).length;
-  document.getElementById('s-cloud').textContent = all.filter(d=>d._src==='github').length;
-  document.getElementById('s-base').textContent = all.filter(d=>d.base?.q1).length;
-
-  const search = document.getElementById('search').value.toLowerCase();
-  let filtered = all.filter(d => {
-    const m = d.meta||{};
-    if (search && !((m.interviewee||'').toLowerCase().includes(search)||(m.interviewer||'').toLowerCase().includes(search)||(m.notes||'').toLowerCase().includes(search))) return false;
-    return true;
-  });
-
-  const container = document.getElementById('card-container');
-  const empty = document.getElementById('empty');
-  if (!filtered.length) { container.innerHTML=''; empty.style.display='block'; return; }
-  empty.style.display='none';
-
-  container.innerHTML = filtered.map((d,i) => {
-    const m = d.meta||{}, b = d.base||{}, ans = d.answers||{};
-    const age = b.q1 ? AGE_MAP[b.q1]||b.q1 : '';
-    const styles = b.q10 ? b.q10.split(',').filter(Boolean).map(v=>STYLE_MAP[v]||v).join(' · ') : '';
-    const preview = ans.s0q1 || ans.s1q1 || '';
-    const langTag = LANG_LABEL[m.lang] || m.lang || '';
-    const srcTag = d._src==='github' ? '<span class="tag tag-cloud">☁️ 云端</span>' : '<span class="tag tag-src">💾 本地</span>';
-    const statusTag = m.submitted ? '<span class="tag tag-done">✅ 完成</span>' : '<span class="tag tag-draft">📝 草稿</span>';
-
-    return `<div class="case-card" onclick="showDetail('${d.key}')">
-      <div class="card-main">
-        <div class="card-title">${m.interviewee||'未命名受访者'}</div>
-        <div class="card-meta">
-          <span>${m.date||''}</span>
-          ${m.interviewer ? '<span>访谈员: '+m.interviewer+'</span>' : ''}
-          ${age ? '<span>'+age+'</span>' : ''}
-          ${styles ? '<span>'+styles+'</span>' : ''}
-        </div>
-        <div class="card-tags">
-          <span class="tag tag-lang">${langTag}</span>
-          ${statusTag}
-          ${srcTag}
-        </div>
-        ${preview ? '<div class="card-preview">'+preview.slice(0,120)+(preview.length>120?'…':'')+'</div>' : ''}
-      </div>
-      <div class="card-right">
-        <div class="card-arrow">›</div>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-// ===== Detail =====
-function showDetail(key) {
-  const d = _allData.find(x=>x.key===key);
-  if (!d) {
-    // Try localStorage
-    const raw = localStorage.getItem(key);
-    if (!raw) return;
-    showDetailData({key,...JSON.parse(raw),_src:'local'});
-    return;
-  }
-  showDetailData(d);
-}
-
-function showDetailData(d) {
-  const m=d.meta||{}, b=d.base||{}, ans=d.answers||{};
-  const fmt = (v,map) => v ? (map[v]||v) : null;
-  const fmtMulti = (v,map) => v ? v.split(',').filter(Boolean).map(x=>map[x]||x).join('、') : null;
-
-  // Header
-  let html = `<div class="detail-header">
-    <div class="detail-title">${m.interviewee||'受访者'} <span style="font-weight:400;font-size:.85rem;color:var(--hint)">· ${m.date||''}</span></div>
-    <div class="detail-meta-grid">
-      <div><div class="label">访谈员</div><div class="value">${m.interviewer||'—'}</div></div>
-      <div><div class="label">地点</div><div class="value">${m.location||'—'}</div></div>
-      <div><div class="label">语言</div><div class="value">${LANG_LABEL[m.lang]||m.lang||'—'}</div></div>
-      <div><div class="label">状态</div><div class="value">${m.submitted?'✅ 已完成':'📝 草稿'}</div></div>
-      <div><div class="label">来源</div><div class="value">${d._src==='github'?'☁️ 云端':'💾 本地'}</div></div>
-    </div>
-    ${m.notes ? '<div class="detail-notes">'+m.notes+'</div>' : ''}
-  </div>`;
-
-  // Tabs
-  html += `<div class="detail-tabs">
-    <button class="dtab active" onclick="switchDetailTab('dtab-base',this)">📝 基础问卷</button>
-    <button class="dtab" onclick="switchDetailTab('dtab-interview',this)">🎙 深度访谈</button>
-  </div>`;
-
-  // Base questionnaire
-  const baseQs = [
-    {code:'Q1',title:'年龄段',val:fmt(b.q1,AGE_MAP)},
-    {code:'Q2',title:'学历',val:fmt(b.q2,EDU_MAP)},
-    {code:'Q3',title:'婚姻状况',val:fmt(b.q3,FAM_MAP)},
-    {code:'Q4',title:'子女',val:b.q4!==undefined?(CHILD_MAP[b.q4]||b.q4):null},
-    {code:'Q5',title:'家庭月收入',val:fmt(b.q5,INC_MAP)},
-    {code:'Q6',title:'年旅行频率',val:fmt(b.q6,FREQ_MAP)},
-    {code:'Q7',title:'主要目的地',val:fmtMulti(b.q7,DEST_MAP)},
-    {code:'Q8',title:'年度旅行预算',val:fmt(b.q8,BUDA_MAP)},
-    {code:'Q9',title:'单次旅行预算',val:fmt(b.q9,BUDP_MAP)},
-    {code:'Q10',title:'旅行风格偏好',val:fmtMulti(b.q10,STYLE_MAP)},
-  ];
-  if (b.q10_rank1) {
-    baseQs.push({code:'Q10★',title:'风格排序',val:
-      '1️⃣ '+(STYLE_MAP[b.q10_rank1]||b.q10_rank1)+
-      (b.q10_rank2?' ‣ 2️⃣ '+(STYLE_MAP[b.q10_rank2]||b.q10_rank2):'')+
-      (b.q10_rank3?' ‣ 3️⃣ '+(STYLE_MAP[b.q10_rank3]||b.q10_rank3):'')
-    });
-  }
-
-  html += `<div id="dtab-base">
-    <div class="base-grid">${baseQs.map(q =>
-      `<div class="base-item">
-        <div class="q-code">${q.code}</div>
-        <div class="q-title">${q.title}</div>
-        <div class="q-ans ${q.val?'':'empty'}">${q.val||'未填写'}</div>
-      </div>`
-    ).join('')}</div>
-  </div>`;
-
-  // Interview sections
-  let intHtml = '';
-  SECTION_QS.forEach((qids,si) => {
-    const hasAny = qids.some(id=>ans[id]&&ans[id].trim());
-    if (!hasAny) return;
-    intHtml += `<div class="interview-section">
-      <div class="section-head"><div class="snum">${si+1}</div>${SECTION_TITLES[si]}</div>`;
-    qids.forEach(id => {
-      const val = (ans[id]||'').trim();
-      intHtml += `<div class="qa-item">
-        <div class="qa-q">${Q_LABELS[id]||id}</div>
-        <div class="qa-a ${val?'':'empty'}">${val||'（未填写）'}</div>
-      </div>`;
-    });
-    intHtml += '</div>';
-  });
-
-  html += `<div id="dtab-interview" style="display:none">
-    ${intHtml || '<div style="text-align:center;padding:40px;color:var(--hint)">暂无深度访谈记录</div>'}
-  </div>`;
-
-  // Action buttons
-  html += `<div style="margin-top:24px;display:flex;gap:8px;flex-wrap:wrap">
-    <a href="interview.html?key=${d.key}" class="btn btn-sm" style="background:var(--light);color:#fff">✏️ 编辑</a>
-    ${d._src==='local'?'<button class="btn btn-sm" style="background:var(--red);color:#fff" onclick="deleteAndBack(\''+d.key+'\')">🗑 删除</button>':''}
-  </div>`;
-
-  document.getElementById('detail-content').innerHTML = html;
-  document.getElementById('list-view').style.display = 'none';
-  document.getElementById('detail-page').style.display = 'block';
-  window.scrollTo(0,0);
-}
-
-function switchDetailTab(id,btn) {
-  document.querySelectorAll('.dtab').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  ['dtab-base','dtab-interview'].forEach(t => {
-    document.getElementById(t).style.display = t===id ? 'block' : 'none';
-  });
-}
-
-function hideDetail() {
-  document.getElementById('detail-page').style.display = 'none';
-  document.getElementById('list-view').style.display = 'block';
-}
-
-function deleteAndBack(key) {
-  if (!confirm('确认删除此条记录？')) return;
-  localStorage.removeItem(key);
-  let list = JSON.parse(localStorage.getItem('interview_list')||'[]');
-  localStorage.setItem('interview_list',JSON.stringify(list.filter(k=>k!==key)));
-  hideDetail();
-  renderCards();
-}
-
-// ===== Charts =====
-function renderCharts() {
-  const all = _allData.length ? _allData : loadAll();
-  const container = document.getElementById('charts-container');
-  const charts = [
-    {title:'Q1 年龄分布',field:'q1',map:AGE_MAP},
-    {title:'Q2 学历分布',field:'q2',map:EDU_MAP},
-    {title:'Q3 婚姻状况',field:'q3',map:FAM_MAP},
-    {title:'Q5 家庭月收入',field:'q5',map:INC_MAP},
-    {title:'Q6 年旅行频率',field:'q6',map:FREQ_MAP},
-    {title:'Q8 年旅行预算',field:'q8',map:BUDA_MAP},
-    {title:'Q9 单次旅行预算',field:'q9',map:BUDP_MAP},
-    {title:'Q10 旅行风格偏好',field:'q10',map:STYLE_MAP,multi:true},
-    {title:'Q7 主要目的地',field:'q7',map:DEST_MAP,multi:true},
-  ];
-  container.innerHTML = charts.map(c => {
-    const counts = {};
-    all.forEach(d => {
-      const val = (d.base||{})[c.field]||'';
-      if (!val) return;
-      if (c.multi) val.split(',').forEach(v=>{if(v)counts[v]=(counts[v]||0)+1;});
-      else counts[val]=(counts[val]||0)+1;
-    });
-    const total = all.filter(d=>(d.base||{})[c.field]).length;
-    const maxVal = Math.max(...Object.values(counts),1);
-    const rows = Object.entries(c.map).map(([k,label])=>{
-      const cnt=counts[k]||0;
-      const pct=Math.round(cnt/maxVal*100);
-      return `<div class="bar-row"><div class="bar-label" title="${label}">${label}</div><div class="bar-wrap"><div class="bar-fill" style="width:${pct}%"></div></div><div class="bar-count">${cnt}</div></div>`;
-    }).join('');
-    return `<div class="chart-card"><div class="chart-title">${c.title} <span style="font-size:.72rem;font-weight:400;color:var(--hint)">(n=${total})</span></div>${rows||'<div style="color:var(--hint);font-size:.82rem">暂无数据</div>'}</div>`;
-  }).join('');
-}
-
-// ===== Import =====
-function importJSON(file) {
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    let data;
-    try { data = JSON.parse(e.target.result); } catch(err) { alert('JSON 解析失败：\n'+err.message); return; }
-    if (!Array.isArray(data)) { alert('导入失败：文件必须是 JSON 数组'); return; }
-    const existingList = JSON.parse(localStorage.getItem('interview_list')||'[]');
-    const existingSet = new Set(existingList);
-    const conflicts = data.filter(r=>r&&typeof r==='object'&&r.key&&existingSet.has(r.key)).length;
-    let mode = 'merge';
-    if (conflicts>0) {
-      mode = confirm(`${conflicts} 条记录已存在。\n确定 = 覆盖，取消 = 跳过`) ? 'overwrite' : 'skip-existing';
-    }
-    let added=0,updated=0,skipped=0,invalid=0;
-    const newSet = new Set(existingList);
-    data.forEach(r => {
-      if (!r||typeof r!=='object'||!r.key){invalid++;return;}
-      const key=r.key, exists=existingSet.has(key);
-      if (exists&&mode==='skip-existing'){skipped++;return;}
-      const rec=Object.assign({},r); delete rec.key;
-      localStorage.setItem(key,JSON.stringify(rec));
-      newSet.add(key);
-      if(exists)updated++;else added++;
-    });
-    localStorage.setItem('interview_list',JSON.stringify([...newSet]));
-    document.getElementById('importFile').value='';
-    alert(`导入完成\n新增：${added}，覆盖：${updated}，跳过：${skipped}，无效：${invalid}`);
-    renderCards();
-  };
-  reader.readAsText(file,'utf-8');
-}
-
-// ===== Init =====
-fetchRemoteCases();
-</script>
 </body>
 </html>
