@@ -1,13 +1,79 @@
-<!DOCTYPE html><html lang='zh-CN'><head><meta charset='UTF-8'/><title>Case 12 — 家庭自驾与露营用户</title><style>
-body{font-family:'Segoe UI','Microsoft YaHei',sans-serif;background:#f5f6fa;color:#2c3e50;line-height:1.8;margin:0;padding:28px}
-.wrap{max-width:860px;margin:0 auto;background:#fff;border:1px solid #dde3ed;border-radius:12px;padding:28px}
-h1{color:#1a3a6b;font-size:24px;margin-bottom:8px}.meta{color:#8895a7;margin-bottom:20px}
-.section{border:1px solid #dde3ed;border-radius:10px;margin:14px 0;overflow:hidden}.head{background:#fafbfe;border-left:4px solid #4a7bc8;padding:10px 14px;font-weight:700;color:#1a3a6b}.body{padding:12px 16px;white-space:pre-wrap}
-</style></head><body><div class='wrap'><h1>Case 12 — 家庭自驾与露营用户</h1><div class='meta'>已脱敏 · 访谈摘要</div><div class='section'><div class='head'>1. 开场破冰</div><div class='body'>12 号受访者目前在电视行业工作，拥有一个典型的五口之家，三名子女的年龄分别为 13 岁、24 岁和 27 岁。其家庭旅行频率相对稳定，每年大约外出旅游 3-4 次，高峰期集中在 8 月份；圣诞节期间则习惯留在家中接待亲友。</div></div>
-<div class='section'><div class='head'>2. 行前过程</div><div class='body'>受访者的规划周期较长，通常会提前 4-5 个月准备，针对蔚蓝海岸等热门地区甚至会提前半年。在信息获取方面，他几乎不使用社交媒体，而是依赖 Google 和地图应用独立搜索。预订逻辑通常为“先定交通，后定住宿”，且两者往往在 24 小时内完成。</div></div>
-<div class='section'><div class='head'>3. 交通选择</div><div class='body'>在境内旅行中，受访者明确偏好自驾而非火车。对于 5 人家庭而言，5 张火车票的成本远超自驾费用。涉及国际或长途旅行时，会通过航空公司官网比价并直接预订，更青睐法航或 Transavia 等服务稳定的航司。为追求安心感，习惯购买包含取消险和行李额度的高阶票务方案。</div></div>
-<div class='section'><div class='head'>4. 住宿偏好</div><div class='body'>受访者是露营度假的忠实用户，偏好现代且整洁的 Mobile Home。选择住宿时的核心优先级是内部设施、房屋质量和地理位置，尤其要求步行可达海滩，以避开夏季海滨区域交通拥堵。长期使用 Booking.com 和 Hotels.com，并依赖地图筛选功能。</div></div>
-<div class='section'><div class='head'>5. 体验与活动</div><div class='body'>受访者排斥大团游，认为缺乏灵活性且餐饮不可控，因此坚持自主安排。度假期间喜欢海上活动，例如租私人船只、桨板、浮潜等，也常前往有朋友居住的目的地，以会友方式共享度假时光。</div></div>
-<div class='section'><div class='head'>6. 旅游攻略 & 分享</div><div class='body'>地图应用是最重要的决策工具。受访者旅游经验丰富，但缺乏在社交媒体上持续发布的动力，更倾向于面对面向同事和朋友分享真实旅行评价与建议。</div></div>
-<div class='section'><div class='head'>7. 产品 Demo</div><div class='body'>受访者建议产品提高城市推荐精准度，避免搜索巴黎时混入波尔多等不相关城市。家庭用户更需要“整包总价”而非单人价格。若平台能加入火车与自驾成本对比，包括油耗和过路费估算，会显著提高家庭用户决策效率。受访者反感 sponsored results，认为会污染真实搜索结果。</div></div>
-</div></body></html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Case 12 — 家庭自驾与露营用户 — 访谈案例</title>
+<style>:root{--blue:#1a3a6b;--light:#4a7bc8;--gold:#c9a84c;--bg:#f5f6fa;--text:#2c3e50;--border:#dde3ed;--hint:#8895a7;--card:#fff;--radius:12px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.8;-webkit-font-smoothing:antialiased}
+a{color:var(--light);text-decoration:none}a:hover{text-decoration:underline}
+.topbar{background:linear-gradient(135deg,var(--blue),#2c5282);color:#fff;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.15)}
+.topbar h1{font-size:1rem;font-weight:600;opacity:.9}
+.topbar a{color:#fff;font-size:.85rem;opacity:.8}.topbar a:hover{opacity:1;text-decoration:none}
+.wrap{max-width:860px;margin:0 auto;padding:28px 18px 60px}
+.case-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px}
+.nav-link{padding:6px 14px;border-radius:20px;font-size:.8rem;font-weight:600;border:1.5px solid var(--border);background:var(--card);color:var(--hint);transition:.2s}
+.nav-link:hover{border-color:var(--light);color:var(--light);text-decoration:none}
+.nav-link.current{background:var(--blue);color:#fff;border-color:var(--blue)}
+.hero{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:28px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.hero-name{font-size:1.5rem;font-weight:800;color:var(--blue);margin-bottom:4px}
+.hero-date{font-size:.88rem;color:var(--hint);margin-bottom:14px}
+.meta-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px 24px;font-size:.85rem;margin-bottom:14px}
+.meta-row .label{font-size:.72rem;color:var(--hint);letter-spacing:.3px;text-transform:uppercase}
+.meta-row .value{font-weight:600}
+.hero-notes{padding:10px 14px;background:#f8f9fc;border-radius:8px;font-size:.84rem;color:var(--hint);border-left:3px solid var(--gold);margin-top:10px}
+.tag-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+.tag{padding:4px 12px;border-radius:20px;font-size:.74rem;font-weight:600;background:#eef2ff;color:var(--light)}
+h2{font-size:1.15rem;font-weight:700;color:var(--blue);margin:28px 0 16px;padding-bottom:8px;border-bottom:2px solid var(--border)}
+.base-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:600px){.base-grid{grid-template-columns:1fr}}
+.base-item{background:var(--card);border-radius:10px;border:1px solid var(--border);padding:14px 16px}
+.q-code{font-size:.7rem;color:var(--hint);letter-spacing:.5px;font-weight:700}
+.q-title{font-size:.82rem;font-weight:600;margin-bottom:4px}
+.q-val{font-size:.95rem;font-weight:700;color:var(--light)}
+.empty{color:var(--hint);font-weight:400;font-style:italic;font-size:.85rem}
+.section{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);margin-bottom:16px;overflow:hidden}
+.section-head{padding:14px 18px;font-size:.92rem;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:10px;border-left:4px solid var(--light);background:#fafbfe}
+.snum{width:26px;height:26px;border-radius:50%;color:#fff;font-size:.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.qa{padding:16px 18px 16px 22px;border-bottom:1px solid var(--border)}
+.qa:last-child{border-bottom:none}
+.qa-q{font-size:.83rem;font-weight:700;color:var(--blue);margin-bottom:6px}
+.qa-a{font-size:.9rem;line-height:1.9;color:var(--text);padding:10px 14px;background:#f8f9fc;border-radius:8px;border-left:3px solid var(--gold);white-space:pre-wrap;word-break:break-word}</style>
+</head>
+<body>
+<div class="topbar"><h1>📊 访谈案例</h1><a href="../dashboard.html">← 返回看板</a></div>
+<div class="wrap">
+  <div class="case-nav"><a class="nav-link" href="interview_2026-05-21_CaseA.html">Case A — 巴黎年轻女性</a><a class="nav-link" href="interview_2026-05-21_CaseB.html">Case B — 巴黎自由职业者</a><a class="nav-link" href="interview_2026-05-21_CaseC.html">Case C — 折扣卡用户</a><a class="nav-link" href="interview_2026-05-21_CaseD.html">Case D — 小组访谈</a><a class="nav-link" href="interview_2026-05-22_CaseE.html">Case E — 餐厅环境</a><span class="nav-link current">Case 12 — 家庭露营</span><a class="nav-link" href="interview_2026-05-22_Case14-17-20-21.html">Case 14/17/20/21 — 中文小组</a><a class="nav-link" href="interview_2026-05-23_Case16.html">Case 16 — 中文访谈</a></div>
+  <div class="hero">
+    <div class="hero-name">Case 12 — 家庭自驾与露营用户</div>
+    <div class="hero-date">2026-05-22 · 🇫🇷 Français / 中文</div>
+    <div class="meta-row">
+      <div><div class="label">访谈员</div><div class="value">—</div></div>
+      <div><div class="label">地点</div><div class="value">线下面对面访谈</div></div>
+      <div><div class="label">状态</div><div class="value">✅ 已完成</div></div>
+    </div>
+    <div class="hero-notes">受访者编号 12。原始 MP3 时长头异常，已容错解码为标准 WAV 后完整识别。家庭出行、露营和自驾是核心线索。</div>
+    <div class="tag-row"><span class="tag">12号</span><span class="tag">家庭旅行</span><span class="tag">露营</span><span class="tag">海滨</span></div>
+  </div>
+  <h2>📝 基础信息</h2>
+  <div class="base-grid"><div class="base-item"><div class="q-code">ID</div><div class="q-title">受访者编号</div><div class="q-val">12</div></div><div class="base-item"><div class="q-code">圈层</div><div class="q-title">主要类型</div><div class="q-val">家庭 / 露营 / 海滨</div></div><div class="base-item"><div class="q-code">技术备注</div><div class="q-title">音频处理</div><div class="q-val">MP3 时长头异常，已修复识别</div></div><div class="base-item"><div class="q-code">状态</div><div class="q-title">处理状态</div><div class="q-val">✅ 已完成</div></div></div>
+  <h2>🎙 深度访谈</h2>
+  <div class="section"><div class="section-head" style="border-left-color:#4a7bc8"><span class="snum" style="background:#4a7bc8">1</span>开场破冰</div>
+<div class="qa"><div class="qa-q">家庭与旅行频率</div><div class="qa-a">受访者在电视行业工作，五口之家，三名子女年龄分别为 13、24、27 岁。家庭旅行频率稳定，每年约 3-4 次，高峰集中在 8 月；圣诞节多留在家中接待亲友。</div></div>
+</div><div class="section"><div class="section-head" style="border-left-color:#c9a84c"><span class="snum" style="background:#c9a84c">2</span>行前过程</div>
+<div class="qa"><div class="qa-q">规划周期</div><div class="qa-a">规划周期较长，通常提前 4-5 个月准备；蔚蓝海岸等热门地区会提前半年。信息获取几乎不依赖社交媒体，而是使用 Google 和地图独立搜索。预订逻辑通常是先交通后住宿，且两者常在 24 小时内完成。</div></div>
+</div><div class="section"><div class="section-head" style="border-left-color:#27ae60"><span class="snum" style="background:#27ae60">3</span>交通选择</div>
+<div class="qa"><div class="qa-q">自驾优先</div><div class="qa-a">法国境内明确偏好自驾而非火车。核心理由是家庭五人同行时，五张火车票成本远高于自驾的油费和过路费。国际或长途旅行会直接在航空公司官网比价预订，更信任法航或 Transavia 等服务稳定航司，并倾向购买带取消险和行李额度的高阶票。</div></div>
+</div><div class="section"><div class="section-head" style="border-left-color:#e67e22"><span class="snum" style="background:#e67e22">4</span>住宿偏好</div>
+<div class="qa"><div class="qa-q">露营 Mobile Home</div><div class="qa-a">受访者是露营度假忠实用户，偏好现代且整洁的 Mobile Home。选择住宿时最看重内部设施、房屋质量和地理位置，尤其要求步行可达海滩以规避旺季交通拥堵。长期使用 Booking.com 和 Hotels.com，并依赖地图筛选。</div></div>
+</div><div class="section"><div class="section-head" style="border-left-color:#8e44ad"><span class="snum" style="background:#8e44ad">5</span>体验与活动</div>
+<div class="qa"><div class="qa-q">自主安排</div><div class="qa-a">排斥大团游，认为缺乏灵活性且餐饮不可控。偏好自主安排海上活动，例如租船、桨板、浮潜等，也会前往朋友居住的目的地，以会友方式共享假期。</div></div>
+</div><div class="section"><div class="section-head" style="border-left-color:#16a085"><span class="snum" style="background:#16a085">6</span>旅游攻略 &amp; 分享</div>
+<div class="qa"><div class="qa-q">线下分享</div><div class="qa-a">地图应用是主要决策工具。虽然旅行经验丰富，但缺乏持续在社交媒体发布的动力，更倾向面对面向同事和朋友分享真实评价与建议。</div></div>
+</div><div class="section"><div class="section-head" style="border-left-color:#c0392b"><span class="snum" style="background:#c0392b">7</span>产品 Demo</div>
+<div class="qa"><div class="qa-q">家庭用户需求</div><div class="qa-a">建议产品提高城市推荐精准度，避免混入不相关目的地。家庭用户更需要整包总价，而非单人价格。若平台能加入火车与自驾成本对比，包括油耗和过路费估算，会显著提升家庭用户决策效率。受访者反感 sponsored results，认为会污染真实搜索结果。</div></div>
+</div>
+</div>
+</body>
+</html>
