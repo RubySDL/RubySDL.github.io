@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Case D — 小组访谈（英语） — 访谈案例</title>
+<style>
+:root{--blue:#1a3a6b;--light:#4a7bc8;--gold:#c9a84c;--bg:#f5f6fa;--text:#2c3e50;--border:#dde3ed;--hint:#8895a7;--card:#fff;--radius:12px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.8;-webkit-font-smoothing:antialiased}
+a{color:var(--light);text-decoration:none}a:hover{text-decoration:underline}
+.topbar{background:linear-gradient(135deg,var(--blue),#2c5282);color:#fff;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.15)}
+.topbar h1{font-size:1rem;font-weight:600;opacity:.9}
+.topbar a{color:#fff;font-size:.85rem;opacity:.8}.topbar a:hover{opacity:1;text-decoration:none}
+.wrap{max-width:860px;margin:0 auto;padding:28px 18px 60px}
+.case-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px}
+.nav-link{padding:6px 14px;border-radius:20px;font-size:.8rem;font-weight:600;border:1.5px solid var(--border);background:var(--card);color:var(--hint);transition:.2s}
+.nav-link:hover{border-color:var(--light);color:var(--light);text-decoration:none}
+.nav-link.current{background:var(--blue);color:#fff;border-color:var(--blue)}
+.hero{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:28px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.hero-name{font-size:1.5rem;font-weight:800;color:var(--blue);margin-bottom:4px}
+.hero-date{font-size:.88rem;color:var(--hint);margin-bottom:14px}
+.meta-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px 24px;font-size:.85rem;margin-bottom:14px}
+.meta-row .label{font-size:.72rem;color:var(--hint);letter-spacing:.3px;text-transform:uppercase}
+.meta-row .value{font-weight:600}
+.hero-notes{padding:10px 14px;background:#f8f9fc;border-radius:8px;font-size:.84rem;color:var(--hint);border-left:3px solid var(--gold);margin-top:10px}
+.tag-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+.tag{padding:4px 12px;border-radius:20px;font-size:.74rem;font-weight:600;background:#eef2ff;color:var(--light)}
+h2{font-size:1.15rem;font-weight:700;color:var(--blue);margin:28px 0 16px;padding-bottom:8px;border-bottom:2px solid var(--border)}
+.base-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:600px){.base-grid{grid-template-columns:1fr}}
+.base-item{background:var(--card);border-radius:10px;border:1px solid var(--border);padding:14px 16px}
+.q-code{font-size:.7rem;color:var(--hint);letter-spacing:.5px;font-weight:700}
+.q-title{font-size:.82rem;font-weight:600;margin-bottom:4px}
+.q-val{font-size:.95rem;font-weight:700;color:var(--light)}
+.empty{color:var(--hint);font-weight:400;font-style:italic;font-size:.85rem}
+.section{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);margin-bottom:16px;overflow:hidden}
+.section-head{padding:14px 18px;font-size:.92rem;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:10px;border-left:4px solid var(--light);background:#fafbfe}
+.snum{width:26px;height:26px;border-radius:50%;color:#fff;font-size:.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.qa{padding:16px 18px 16px 22px;border-bottom:1px solid var(--border)}
+.qa:last-child{border-bottom:none}
+.qa-q{font-size:.83rem;font-weight:700;color:var(--blue);margin-bottom:6px}
+.qa-a{font-size:.9rem;line-height:1.9;color:var(--text);padding:10px 14px;background:#f8f9fc;border-radius:8px;border-left:3px solid var(--gold);white-space:pre-wrap;word-break:break-word}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <h1>📊 访谈案例</h1>
+  <a href="../dashboard.html">← 返回看板</a>
+</div>
+<div class="wrap">
+  <div class="case-nav"><a class="nav-link" href="interview_2026-05-21_CaseA.html">Case A — 巴黎年轻女性（通用）</a><a class="nav-link" href="interview_2026-05-21_CaseB.html">Case B — 巴黎自由职业者（通用）</a><a class="nav-link" href="interview_2026-05-21_CaseC.html">Case C — 折扣卡用户（英语）</a><span class="nav-link current">Case D — 小组访谈（英语）</span></div>
+
+  <div class="hero">
+    <div class="hero-name">Case D — 小组访谈（英语）</div>
+    <div class="hero-date">2026-05-21 · 🇬🇧 English</div>
+    <div class="meta-row">
+      <div><div class="label">访谈员</div><div class="value">—</div></div>
+      <div><div class="label">地点</div><div class="value">线下面对面访谈</div></div>
+      <div><div class="label">状态</div><div class="value">✅ 已完成</div></div>
+    </div>
+    <div class="hero-notes">英语小组访谈，4人参与。第一部分为参与者15（Amandine）个人访谈，第二部分为参与者15/16/18/19小组讨论。参与者背景多样：包括实习生、摩洛哥硕士生、艺术管理本科生、在美国长大的法国房地产从业者。</div>
+    <div class="tag-row"><span class="tag">小组访谈</span><span class="tag">18-24岁</span><span class="tag">海滩度假</span><span class="tag">SNCF优惠卡</span></div>
+  </div>
+
+  <h2>📝 参与者档案</h2>
+  <div class="base-grid">
+<div class="base-item"><div class="q-code">15</div><div class="q-title">Amandine</div><div class="q-val">18岁，斯特拉斯堡读书，伊夫林省HR实习</div></div>
+<div class="base-item"><div class="q-code">16</div><div class="q-title">Elias</div><div class="q-val">摩洛哥，市场营销管理硕士一年级</div></div>
+<div class="base-item"><div class="q-code">18</div><div class="q-title">Eleanor</div><div class="q-val">22岁，布雷斯特，艺术管理本科</div></div>
+<div class="base-item"><div class="q-code">19</div><div class="q-title">Marwan</div><div class="q-val">法国人，纽约/伦敦长大，经济/金融，房地产</div></div>
+<div class="base-item"><div class="q-code">Q1</div><div class="q-title">年龄段</div><div class="q-val">18–24</div></div>
+<div class="base-item"><div class="q-code">Q6</div><div class="q-title">旅行偏好</div><div class="q-val">海滩度假</div></div>
+<div class="base-item"><div class="q-code">Q10</div><div class="q-title">SNCF卡</div><div class="q-val">持有Carte Avantage Jeune</div></div>
+<div class="base-item"><div class="q-code">Q7</div><div class="q-title">旅行目的地</div><div class="q-val">布列塔尼、尼斯、韩国釜山</div></div>
+  </div>
+
+  <h2>🎙 深度访谈</h2>
+<div class="section"><div class="section-head" style="border-left-color:#4a7bc8"><span class="snum" style="background:#4a7bc8">1</span>开场破冰</div>
+<div class="qa"><div class="qa-q">参与者背景</div><div class="qa-a">Amandine（15号）：18岁，在斯特拉斯堡读书，父母住在伊夫林省，目前在巴黎近郊HR部门实习。日常出行使用公交/有轨电车/自行车（斯特拉斯堡）和地铁/火车（巴黎）。
+
+Eleanor（18号）：22岁，来自布列塔尼布雷斯特，正在完成艺术管理本科。日常出行主要地铁，远途倾向飞机。
+
+Marwan（19号）：法国人但在美国纽约和伦敦长大，巴黎学习经济学和金融工程，从事房地产。国内开车或坐火车，出国坐飞机。
+
+Elias（16号）：来自摩洛哥，市场营销管理硕士一年级。所在城市只有有轨电车，旅行通常坐飞机。</div></div>
+<div class="qa"><div class="qa-q">最近旅行经历</div><div class="qa-a">Amandine最近去过布列塔尼的圣皮埃尔-基伯龙（与家人，火车）、尼斯（与家人，火车）、韩国釜山（与交换家庭）。Eleanor最近一次是5月8号回布雷斯特。Marwan最近去了德国慕尼黑。Elias至少每月坐一次火车，上次是三天前从斯特拉斯堡到巴黎。</div></div>
+</div>
+
+<div class="section"><div class="section-head" style="border-left-color:#c9a84c"><span class="snum" style="background:#c9a84c">2</span>行前过程</div>
+<div class="qa"><div class="qa-q">规划风格</div><div class="qa-a">Amandine喜欢提前规划——火车票通常提前3个月，飞机票3-6个月，因为临时买非常贵。Eleanor偏好提前但实际常常临时购票（提前约两周），导致价格上升。Marwan完全临时型——工作繁忙，需要休息时突然订票，最多提前一周。Elias也倾向临时决策，出发前2-3天才买票。</div></div>
+<div class="qa"><div class="qa-q">信息渠道</div><div class="qa-a">Amandine：主要通过SNCF官网买火车票，不太看社交媒体旅行内容，靠网络搜索和身边人推荐。
+
+Elias：关注Instagram和TikTok上的旅行博主，他们分享各目的地的优惠信息，不同博主专注不同目的地。
+
+Eleanor：利用当地社交媒体平台（如小红书）查看真实用户体验，会下载目的地国家常用的本地App。
+
+Marwan：使用谷歌搜索和AI工具（曾用ChatGPT，现用Claude），询问必看地点、文化、自然、历史等方面信息。</div></div>
+<div class="qa"><div class="qa-q">AI 工具使用</div><div class="qa-a">Marwan积极使用Claude——询问必看地点，获取简要描述后逐个深入搜索。认为AI快速且高效。
+
+Elias认为AI目前只是优化过的搜索引擎，使用意愿一般，更喜欢到了地方自己探索。
+
+Eleanor完全不用AI规划旅行，喜欢到了之后探索发现。
+
+Amandine从未主动提及使用AI工具。
+
+共识：如果AI能整合真人社交媒体信息（视频/图片）做推荐会更有吸引力。年轻人选择便利性和最简单方案——如果AI能找到最简单最便宜的选项就会用。</div></div>
+<div class="qa"><div class="qa-q">分开预订 vs 打包</div><div class="qa-a">所有参与者倾向分开预订。Elias不喜欢在同一应用买所有东西，会分别在官网或平台订。Eleanor将航空/铁路和酒店分开处理。预订顺序一致：先交通→住宿→活动。但如果是为了特定活动（如演唱会）旅行，会先买活动票再订交通。</div></div>
+<div class="qa"><div class="qa-q">预订痛点</div><div class="qa-a">SNCF App四大痛点：
+1）显示的"最低价格"在实际列车中不一定可用，令人费解；
+2）界面显示最优价格但浏览所有时间段找不到那个最便宜选项；
+3）某些火车站名称搜索时容易混淆；
+4）缺乏多目的地/多中转点支持。
+Amandine曾改用TrainLine替代SNCF，因为SNCF有时会卡顿。</div></div>
+<div class="qa"><div class="qa-q">支付方式</div><div class="qa-a">Elias和Eleanor主要使用信用卡。Eleanor如果可能优先选PayPal。Marwan通常在电脑上规划旅行，使用信用卡支付。</div></div>
+</div>
+
+<div class="section"><div class="section-head" style="border-left-color:#27ae60"><span class="snum" style="background:#27ae60">3</span>交通选择</div>
+<div class="qa"><div class="qa-q">SNCF 折扣卡使用</div><div class="qa-a">全部参与者了解或持有Carte Avantage Jeune。Amandine的卡由母亲几年前购买并每年续费。Eleanor有卡但从3月起不再续订（近期无坐火车计划）。Marwan因周围人推荐而持有。Elias因经常坐火车而持有。
+
+使用频率：Eleanor约每月或每两个月一次；Elias至少每月一次。
+
+局限性：卡只在特定平台/列车有效（SNCF可用，OUIGO不一定）。Elias还有另一张"Fluo卡"可享五折，但Fluo列车非常稀少。Eleanor指出最小购卡年龄16岁，大多数年轻人会自动购买。</div></div>
+<div class="qa"><div class="qa-q">交通方式偏好</div><div class="qa-a">Amandine：法国境内主要火车，和家人出行开车。斯特拉斯堡日常用公交/有轨电车/自行车。
+
+Eleanor：日常地铁，远途偏好飞机。
+
+Marwan：国内开车或火车，出国飞机。
+
+Elias：所在城市只有有轨电车，旅行通常飞机。</div></div>
+</div>
+
+<div class="section"><div class="section-head" style="border-left-color:#e67e22"><span class="snum" style="background:#e67e22">4</span>住宿偏好</div>
+<div class="qa"><div class="qa-q">预订平台</div><div class="qa-a">Amandine：在酒店官网或Airbnb直接预订，认为提前网上预订比现场排队好。
+
+Elias：分别在网上查找酒店或Airbnb，直接在官网预订。
+
+Eleanor：主要用Booking.com。
+
+Marwan：喜欢舒适旅行，总提前订酒店，通常用Booking.com（有折扣），有时Airbnb（取决于城市）。</div></div>
+<div class="qa"><div class="qa-q">预订优先级</div><div class="qa-a">所有参与者一致：先交通→住宿→活动。Marwan最后才订住宿以确保交通已确定。如果为特定活动出行，活动票优先于交通。</div></div>
+</div>
+
+<div class="section"><div class="section-head" style="border-left-color:#8e44ad"><span class="snum" style="background:#8e44ad">5</span>体验与活动</div>
+<div class="qa"><div class="qa-q">活动规划方式</div><div class="qa-a">Amandine会提前在网上看有什么活动并预订，避免现场排队。但有时网上信息不真实或过时。
+
+Eleanor不提前规划，到达后再计划——有时问当地人或酒店工作人员。但特定活动（如音乐会）会提前买票。
+
+Marwan也很少提前规划，到了之后才决定，通过网络搜索或AI获取建议。
+
+Elias认为搜索和比较本身很有趣——可以选自己喜欢的酒店和活动。</div></div>
+<div class="qa"><div class="qa-q">对计划过程的态度</div><div class="qa-a">分歧明显：Elias认为搜索和比较很令人兴奋，是有趣的体验。Eleanor则认为很无聊，这就是她用AI的原因——想要高效直接出门。Amandine不喜欢提前计划活动，担心失望或计划不按预期进行，但有必做项目（如博物馆/美术馆——她的专业领域）。</div></div>
+</div>
+
+<div class="section"><div class="section-head" style="border-left-color:#16a085"><span class="snum" style="background:#16a085">6</span>旅游攻略 &amp; 分享</div>
+<div class="qa"><div class="qa-q">信息获取偏好</div><div class="qa-a">Elias：关注Instagram/TikTok旅行博主，通过话题标签搜索目的地内容。
+
+Eleanor：利用当地社交媒体（小红书）查找当地人常去的地方，认为比TripAdvisor前50名推荐更有参考价值。
+
+Marwan：向AI询问必看地点后逐个查找，认为比浏览社交媒体更高效。
+
+Amandine和Eleanor不太使用社交媒体获取旅行信息，更多靠网络搜索和身边人推荐。</div></div>
+</div>
+
+<div class="section"><div class="section-head" style="border-left-color:#c0392b"><span class="snum" style="background:#c0392b">7</span>产品 Demo &amp; 改进建议</div>
+<div class="qa"><div class="qa-q">SNCF App 改进建议</div><div class="qa-a">Elias：首先显示三种选项——最便宜、最快、便宜+最快的组合。增加多目的地/多中转点支持。总体认为SNCF App已经相当完美，这是唯一改进空间。
+
+Marwan：增加最后时刻修改选项的便利性——让用户更容易更改选项、换车或调整时间。
+
+Eleanor：Booking.com是理想参照——各种选项齐全，按需付费，高效好用。</div></div>
+<div class="qa"><div class="qa-q">奖励积分系统</div><div class="qa-a">Eleanor建议类似航空公司里程积分系统——购买车票获得奖励，通过应用内购票获得积分，激励用户多出行。
+
+Amandine支持这个想法——她利用母亲的里程积分购买了去韩国的部分机票，节省大量费用。</div></div>
+<div class="qa"><div class="qa-q">目的地推荐</div><div class="qa-a">Amandine希望输入目的地时系统能推荐最佳住宿地点——由于不一定了解目的地，智能推荐会非常有帮助，用户可以看到推荐后直接预订，避免迷茫。</div></div>
+<div class="qa"><div class="qa-q">核心痛点总结</div><div class="qa-a">1）SNCF显示的"最低价格"有时实际不可用
+2）无法搜索包含多中转点的复杂路线
+3）缺乏里程/积分奖励机制
+4）住宿推荐功能不足
+5）界面修改选项不够便捷</div></div>
+</div>
+
+</div>
+</body>
+</html>
