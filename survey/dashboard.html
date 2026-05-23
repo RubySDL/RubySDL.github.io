@@ -4,44 +4,16 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>访谈记录看板</title>
-<style>
-:root{--blue:#1a3a6b;--light:#4a7bc8;--gold:#c9a84c;--bg:#f5f6fa;--text:#2c3e50;--border:#dde3ed;--hint:#8895a7;--card:#fff;--radius:12px}
+<style>:root{--blue:#1a3a6b;--light:#4a7bc8;--gold:#c9a84c;--bg:#f5f6fa;--text:#2c3e50;--border:#dde3ed;--hint:#8895a7;--card:#fff;--radius:12px}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.75;-webkit-font-smoothing:antialiased}
 header{background:linear-gradient(135deg,var(--blue),#2c5282);color:#fff;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,.15)}
-header h1{font-size:1.25rem;font-weight:700}
-.header-btns{display:flex;gap:8px}
-.btn{padding:8px 16px;border:none;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;transition:.2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3)}
-.btn:hover{background:rgba(255,255,255,.25)}
-.wrap{max-width:900px;margin:0 auto;padding:28px 18px 60px}
-.stats{display:flex;gap:0;background:var(--card);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;margin-bottom:28px}
-.stat-item{flex:1;text-align:center;padding:16px 8px;border-right:1px solid var(--border)}
-.stat-item:last-child{border-right:none}
-.stat-num{font-size:1.6rem;font-weight:800;color:var(--blue)}
-.stat-label{font-size:.72rem;color:var(--hint);margin-top:2px}
-h2{font-size:1.05rem;font-weight:700;color:var(--hint);margin-bottom:14px;letter-spacing:.5px}
-.card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:20px 22px;margin-bottom:12px;transition:.2s;display:block;color:inherit;text-decoration:none}
-.card:hover{border-color:var(--light);box-shadow:0 4px 16px rgba(26,58,107,.08);transform:translateY(-1px);text-decoration:none}
-.card-top{display:flex;justify-content:space-between;align-items:start;gap:12px;margin-bottom:6px}
-.card-name{font-size:1.1rem;font-weight:700;color:var(--blue)}
-.card-date{font-size:.8rem;color:var(--hint);white-space:nowrap}
-.card-meta{font-size:.82rem;color:var(--hint);margin-bottom:8px}
-.tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
-.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.72rem;font-weight:600}
-.tag-lang{background:#e3f2fd;color:#1565c0}
-.tag-done{background:#e8f5e9;color:#2e7d32}
-.tag-style{background:#eef2ff;color:var(--light)}
-.card-preview{font-size:.84rem;color:#555;line-height:1.7;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.card-cta{display:inline-block;margin-top:10px;font-size:.82rem;font-weight:600;color:var(--light)}
-</style>
+header h1{font-size:1.25rem;font-weight:700}.header-btns{display:flex;gap:8px}.btn{padding:8px 16px;border:none;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;transition:.2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3)}.btn:hover{background:rgba(255,255,255,.25)}
+.wrap{max-width:900px;margin:0 auto;padding:28px 18px 60px}.stats{display:flex;gap:0;background:var(--card);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;margin-bottom:28px}.stat-item{flex:1;text-align:center;padding:16px 8px;border-right:1px solid var(--border)}.stat-item:last-child{border-right:none}.stat-num{font-size:1.6rem;font-weight:800;color:var(--blue)}.stat-label{font-size:.72rem;color:var(--hint);margin-top:2px}
+h2{font-size:1.05rem;font-weight:700;color:var(--hint);margin-bottom:14px;letter-spacing:.5px}.card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:20px 22px;margin-bottom:12px;transition:.2s;display:block;color:inherit;text-decoration:none}.card:hover{border-color:var(--light);box-shadow:0 4px 16px rgba(26,58,107,.08);transform:translateY(-1px);text-decoration:none}.card-top{display:flex;justify-content:space-between;align-items:start;gap:12px;margin-bottom:6px}.card-name{font-size:1.1rem;font-weight:700;color:var(--blue)}.card-date{font-size:.8rem;color:var(--hint);white-space:nowrap}.card-meta{font-size:.82rem;color:var(--hint);margin-bottom:8px}.tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.72rem;font-weight:600}.tag-lang{background:#e3f2fd;color:#1565c0}.tag-done{background:#e8f5e9;color:#2e7d32}.tag-style{background:#eef2ff;color:var(--light)}.card-preview{font-size:.84rem;color:#555;line-height:1.7;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.card-cta{display:inline-block;margin-top:10px;font-size:.82rem;font-weight:600;color:var(--light)}</style>
 </head>
 <body>
-<header>
-  <h1>📊 访谈记录看板</h1>
-  <div class="header-btns">
-    <a href="interview.html" class="btn">➕ 新建访谈</a>
-  </div>
-</header>
+<header><h1>📊 访谈记录看板</h1><div class="header-btns"><a href="interview.html" class="btn">➕ 新建访谈</a></div></header>
 <div class="wrap">
   <div class="stats">
     <div class="stat-item"><div class="stat-num">8</div><div class="stat-label">总案例</div></div>
@@ -53,56 +25,56 @@ h2{font-size:1.05rem;font-weight:700;color:var(--hint);margin-bottom:14px;letter
     <div class="card-top"><div class="card-name">Case A — 巴黎年轻女性（通用）</div><div class="card-date">2026-05-21</div></div>
     <div class="card-meta">线下面对面访谈</div>
     <div class="tags"><span class="tag tag-lang">🇫🇷 Français</span><span class="tag tag-done">✅ 完成</span><span class="tag tag-style">徒步/自然</span><span class="tag tag-style">文化/历史/艺术</span><span class="tag tag-style">美食/手工艺</span></div>
-    <div class="card-preview">最近一次法国境内旅行是去鲁昂（Rouen），三天，两人同行，乘TGV前往。偏好安静、漂亮、和大城市不一样的地方，强调环保意识，法国境内优先火车。…</div>
+    <div class="card-preview">最近一次法国境内旅行是去鲁昂，三天，两人同行，乘 TGV 前往。偏好安静、漂亮、和大城市不一样的地方，强调环保意识，法国境内优先火车。…</div>
     <div class="card-cta">查看完整案例 →</div>
   </a>
   <a class="card" href="cases/interview_2026-05-21_CaseB.html">
     <div class="card-top"><div class="card-name">Case B — 巴黎自由职业者（通用）</div><div class="card-date">2026-05-21</div></div>
     <div class="card-meta">线下面对面访谈</div>
     <div class="tags"><span class="tag tag-lang">🇫🇷 Français</span><span class="tag tag-done">✅ 完成</span><span class="tag tag-style">文化/历史/艺术</span><span class="tag tag-style">徒步/自然</span><span class="tag tag-style">海滨度假</span></div>
-    <div class="card-preview">独自旅行频繁，信息渠道包括博客、社交媒体、TripAdvisor、Booking/Airbnb。重视自由度、目的地氛围与性价比，对AI规划持开放但谨慎态度。…</div>
+    <div class="card-preview">独自旅行频繁，信息渠道包括博客、社交媒体、TripAdvisor、Booking/Airbnb。重视自由度、目的地氛围与性价比，对 AI 规划持开放但谨慎态度。…</div>
     <div class="card-cta">查看完整案例 →</div>
   </a>
   <a class="card" href="cases/interview_2026-05-21_CaseC.html">
     <div class="card-top"><div class="card-name">Case C — 折扣卡用户（英语）</div><div class="card-date">2026-05-21</div></div>
     <div class="card-meta">线上视频会议</div>
     <div class="tags"><span class="tag tag-lang">🇬🇧 English</span><span class="tag tag-done">✅ 完成</span><span class="tag tag-style">SNCF优惠卡</span><span class="tag tag-style">美食/手工艺</span><span class="tag tag-style">文化/历史/艺术</span></div>
-    <div class="card-preview">持有Carte Avantage，二线城市-巴黎通勤，旅行偏美食与文化。对SNCF App施工信息、餐车福利和不可预订原因有明确痛点。…</div>
+    <div class="card-preview">持有 Carte Avantage，二线城市-巴黎通勤，旅行偏美食与文化。对 SNCF App 施工信息、餐车福利和不可预订原因有明确痛点。…</div>
     <div class="card-cta">查看完整案例 →</div>
   </a>
   <a class="card" href="cases/interview_2026-05-21_CaseD.html">
     <div class="card-top"><div class="card-name">Case D — 小组访谈（英语）</div><div class="card-date">2026-05-21</div></div>
     <div class="card-meta">线下面对面访谈 · 4人小组</div>
     <div class="tags"><span class="tag tag-lang">🇬🇧 English</span><span class="tag tag-done">✅ 完成</span><span class="tag tag-style">小组访谈</span><span class="tag tag-style">SNCF优惠卡</span><span class="tag tag-style">海滩度假</span></div>
-    <div class="card-preview">4人英语小组访谈，讨论SNCF优惠卡、AI工具态度、预订习惯、活动规划与产品Demo反馈。…</div>
+    <div class="card-preview">4 人英语小组访谈，讨论 SNCF 优惠卡、AI 工具态度、预订习惯、活动规划与产品 Demo 反馈。…</div>
     <div class="card-cta">查看完整案例 →</div>
   </a>
   <a class="card" href="cases/interview_2026-05-22_CaseE.html">
     <div class="card-top"><div class="card-name">Case E — 餐厅环境折扣卡用户</div><div class="card-date">2026-05-22</div></div>
     <div class="card-meta">线下面对面访谈 · 环境嘈杂</div>
     <div class="tags"><span class="tag tag-lang">🇬🇧 English / 中文</span><span class="tag tag-done">✅ 完成</span><span class="tag tag-style">13号</span><span class="tag tag-style">SNCF优惠卡</span><span class="tag tag-style">AI规划</span></div>
-    <div class="card-preview">受访者曾居住伦敦和日本，回到法国后频繁旅行。重度使用SNCF青年卡、Booking.com和Claude，对价格汇总、行程自动同步和非标准行程记录有强需求。…</div>
+    <div class="card-preview">餐厅环境录音，背景噪声较多。受访者长期跨国生活，重度使用 SNCF 青年卡、Booking.com 与 AI 工具。…</div>
     <div class="card-cta">查看完整案例 →</div>
   </a>
   <a class="card" href="cases/interview_2026-05-22_Case12.html">
     <div class="card-top"><div class="card-name">Case 12 — 家庭自驾与露营用户</div><div class="card-date">2026-05-22</div></div>
-    <div class="card-meta">线下面对面访谈 · MP3已修复</div>
+    <div class="card-meta">线下面对面访谈</div>
     <div class="tags"><span class="tag tag-lang">🇫🇷 Français / 中文</span><span class="tag tag-done">✅ 完成</span><span class="tag tag-style">12号</span><span class="tag tag-style">家庭旅行</span><span class="tag tag-style">露营/海滨</span></div>
-    <div class="card-preview">五口之家，每年旅行3-4次。偏好自驾和露营移动房，重视整包总价、地图筛选、海滩可达性，以及火车与自驾的成本对比。…</div>
+    <div class="card-preview">五口之家，每年旅行 3-4 次。偏好自驾和露营移动房，重视整包总价、地图筛选、海滩可达性，以及火车与自驾成本对比。…</div>
     <div class="card-cta">查看完整案例 →</div>
   </a>
   <a class="card" href="cases/interview_2026-05-22_Case14-17-20-21.html">
     <div class="card-top"><div class="card-name">Case 14/17/20/21 — 中文小组访谈</div><div class="card-date">2026-05-22</div></div>
     <div class="card-meta">线下面对面访谈 · 中文4人小组</div>
     <div class="tags"><span class="tag tag-lang">🇨🇳 中文</span><span class="tag tag-done">✅ 完成</span><span class="tag tag-style">14/17/20/21</span><span class="tag tag-style">Excel校准</span><span class="tag tag-style">AI定制行程</span></div>
-    <div class="card-preview">中文四人小组访谈，已结合Excel工作人员记录校准。讨论小红书、Instagram、Google Maps、SNCF痛点、AI定制行程、一键下单和支付偏好。…</div>
+    <div class="card-preview">中文四人小组访谈，已结合 Excel 工作人员记录校准。讨论小红书、Instagram、Google Maps、SNCF 痛点、AI 定制行程、一键下单和支付偏好。…</div>
     <div class="card-cta">查看完整案例 →</div>
   </a>
   <a class="card" href="cases/interview_2026-05-23_Case16.html">
     <div class="card-top"><div class="card-name">Case 16 — 新录音中文访谈</div><div class="card-date">2026-05-23</div></div>
     <div class="card-meta">线下面对面访谈 · 中文</div>
     <div class="tags"><span class="tag tag-lang">🇨🇳 中文</span><span class="tag tag-done">✅ 完成</span><span class="tag tag-style">16号</span><span class="tag tag-style">华人/留学生</span><span class="tag tag-style">AI规划</span></div>
-    <div class="card-preview">中文访谈，围绕小红书、Instagram、ChatGPT/AI旅行规划、Airbnb体验型住宿、Skyscanner/SNCF交通选择，以及按次付费/订阅意愿展开。…</div>
+    <div class="card-preview">中文访谈，围绕小红书、Instagram、ChatGPT/AI 旅行规划、Airbnb 体验型住宿、Skyscanner/SNCF 交通选择，以及按次付费/订阅意愿展开。…</div>
     <div class="card-cta">查看完整案例 →</div>
   </a>
 </div>
